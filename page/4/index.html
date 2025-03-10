@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Lunatic.red</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Lunatic.red"><meta name="msapplication-TileImage" content="/resource/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Lunatic.red"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="技術系備忘録"><meta property="og:type" content="blog"><meta property="og:title" content="Lunatic.red"><meta property="og:url" content="http://lunatic.red/"><meta property="og:site_name" content="Lunatic.red"><meta property="og:description" content="技術系備忘録"><meta property="og:locale" content="ja_JP"><meta property="og:image" content="http://lunatic.red/img/og_image.png"><meta property="article:author" content="fuchse-ohren"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://lunatic.red/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://lunatic.red"},"headline":"Lunatic.red","image":["http://lunatic.red/img/og_image.png"],"author":{"@type":"Person","name":"fuchse-ohren"},"publisher":{"@type":"Organization","name":"Lunatic.red","logo":{"@type":"ImageObject","url":"http://lunatic.red/resource/logo.svg"}},"description":"技術系備忘録"}</script><link rel="alternate" href="/atom.xml" title="Lunatic.red" type="application/atom+xml"><link rel="icon" href="/resource/favicon.svg"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&amp;display=swap;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/resource/logo.svg" alt="Lunatic.red" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">ホーム</a><a class="navbar-item" href="/archives">記事一覧</a><a class="navbar-item" href="/tags">分類</a><a class="navbar-item" href="/tools">ツール</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="RSS" href="/atom.xml"><i class="fas fa-rss"></i></a><a class="navbar-item search" title="検索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-04-24T17:46:00.000Z" title="4/25/2024, 2:46:00 AM">2024-04-25</time>に投稿</span><span class="level-item"><time dateTime="2025-03-10T09:08:50.596Z" title="3/10/2025, 6:08:50 PM">2025-03-10</time>に更新</span><span class="level-item">6分で読む (約863語)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2024/04/25/certbot%E3%81%A8ngix%E3%81%AE%E7%AB%B6%E5%90%88%E3%81%A7nginx%E3%81%8C%E5%8B%9D%E6%89%8B%E3%81%AB%E8%90%BD%E3%81%A1%E3%82%8B%E4%B8%8D%E5%85%B7%E5%90%88%E3%81%AE%E8%A7%A3%E6%B6%88/">certbotとngixの競合でnginxが勝手に落ちる不具合の解消</a></p><div class="content"><h1 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h1><p>・certbotがnginxを殺してた<br>・設定ミスがありcertbotが更新にコケていた<br>・crontabを使用していたが、更新用のdaemonが裏で動いていて、予期せぬ時刻に障害が発生した</p>
+<h1 id="事の発端"><a href="#事の発端" class="headerlink" title="事の発端"></a>事の発端</h1><p>ある日、自宅のサーバで運用しているWebページが落ちていることに気がつき、  その理由を探ったところ、SSLアクセラレータとして使っているnginxのサービスが停止しているようだった。</p>
+<p>落ちてから1時間ぐらいすると生き返ると言う状況から当初はリソース不足かと思い、VMのメモリ割り当てを4GBまで増やして再起動したところ正常に復旧した。</p>
+<p>しかし、翌日またnginxが落ちておりヤケクソでvCPUを8コア&#x2F;メモリ割り当てを64GBにしたが、nginxは落ちてしまった。</p>
+<h1 id="原因究明"><a href="#原因究明" class="headerlink" title="原因究明"></a>原因究明</h1><p><code>/var/log/messages/</code>　を見たら速攻で分かった。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Apr 24 10:22:23 *hostname* systemd[1]: Starting This service automatically renews any certbot certificates found...</span><br><span class="line">Apr 24 10:22:24 *hostname* certbot[99744]: Saving debug log to /var/log/letsencrypt/letsencrypt.log</span><br><span class="line">Apr 24 10:22:24 *hostname* certbot[99744]: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span><br><span class="line">Apr 24 10:22:24 *hostname* certbot[99744]: Processing /etc/letsencrypt/renewal/*****.conf</span><br><span class="line">Apr 24 10:22:24 *hostname* certbot[99744]: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span><br><span class="line">Apr 24 10:22:25 *hostname* certbot[99744]: Certificate not yet due for renewal</span><br><span class="line">Apr 24 10:22:25 *hostname* certbot[99744]: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span><br><span class="line">Apr 24 10:22:25 *hostname* certbot[99744]: Processing /etc/letsencrypt/renewal/*****.conf</span><br><span class="line">Apr 24 10:22:25 *hostname* certbot[99744]: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span><br><span class="line">Apr 24 10:22:27 *hostname* systemd[1]: Stopping The nginx HTTP and reverse proxy server...</span><br><span class="line">Apr 24 10:22:27 *hostname* systemd[1]: nginx.service: Deactivated successfully.</span><br><span class="line">Apr 24 10:22:27 *hostname* systemd[1]: Stopped The nginx HTTP and reverse proxy server.</span><br><span class="line">Apr 24 10:22:27 *hostname* systemd[1]: nginx.service: Consumed 26.757s CPU time.</span><br><span class="line">Apr 24 10:22:27 *hostname* certbot[99744]: Renewing an existing certificate for *****</span><br></pre></td></tr></table></figure>
+
+<p>certbotが証明書を更新する際にnginxが落とされていた。<br>しかも悪いことに証明書の更新にコケて固まっていた模様。(しばらくするとタイムアウトになってnginxが甦生される)</p>
+<h2 id="証明書の更新にコケた理由"><a href="#証明書の更新にコケた理由" class="headerlink" title="証明書の更新にコケた理由"></a>証明書の更新にコケた理由</h2><p>certbotが延々と遅延していた理由としては、firewalldの設定が間違っていて80番ポートが塞がっていたのでACMEチャレンジで延々と待たされていただけのようであった。</p>
+<h2 id="予期せぬタイミングで動作したcertbot"><a href="#予期せぬタイミングで動作したcertbot" class="headerlink" title="予期せぬタイミングで動作したcertbot"></a>予期せぬタイミングで動作したcertbot</h2><p>自分の場合、certbotは毎月1日の午前3時に動かすようcrontabを組んでいたが何故か4&#x2F;24にも障害が発生。<br>こちらも気になったので調査してみた。</p>
+<p>その結果、<code>certbot-renew.timer</code>というサービスが存在している事が判明。</p>
+<h1 id="対策"><a href="#対策" class="headerlink" title="対策"></a>対策</h1><h2 id="firewalldの設定変更"><a href="#firewalldの設定変更" class="headerlink" title="firewalldの設定変更"></a>firewalldの設定変更</h2><p>以下のコマンドで80番を穴開け</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo firewall-cmd --permanent --zone=dmz --add-service=http</span><br><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<h2 id="crontabからcertbot-renew-timerへの切り替え"><a href="#crontabからcertbot-renew-timerへの切り替え" class="headerlink" title="crontabからcertbot-renew.timerへの切り替え"></a>crontabから<code>certbot-renew.timer</code>への切り替え</h2><p>今回は何故かcrontabの方にしか設定していない<code>pre-hook</code>と<code>post-hook</code>が動いていたようだが、この際なのできちんと設定を行っておく</p>
+<p><code>/etc/sysconfig/certbot</code> ファイルをお好みのエディタで開いて<code>PRE_HOOK</code>と<code>POST_HOOK</code>の行を以下の通り書き換えればOK</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PRE_HOOK=&quot;--pre-hook &#x27;systemctl stop nginx&#x27;&quot;</span><br><span class="line">POST_HOOK=&quot;--post-hook &#x27;systemctl restart nginx&#x27;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>最後に<code>certbot-renew.timer</code>を再起動しておく</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart certbot-renew.timer</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a target="_blank" rel="noopener" href="https://tackweb.net/index.php/2020/09/21/auto_renew_ssl/">【簡単】Let’s Encryptの自動更新をcronなしで実現しよう | TACK-WEB</a></p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-03-22T09:05:00.000Z" title="3/22/2024, 6:05:00 PM">2024-03-22</time>に投稿</span><span class="level-item"><time dateTime="2025-03-10T09:08:50.596Z" title="3/10/2025, 6:08:50 PM">2025-03-10</time>に更新</span><span class="level-item">7分で読む (約1061語)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2024/03/22/Openssl%E3%81%A7EC-%E6%A5%95%E5%86%86%E6%9B%B2%E7%B7%9A-%E3%81%AE%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B/">OpensslでEC(楕円曲線)のクライアント証明書を作成する</a></p><div class="content"><h1 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h1><p>Opensslでクライアント証明書を作成する方法はよく紹介されているが<br>ほとんどがRSA暗号を用いた物だったため、EC(楕円曲線)暗号を用いたクライアント証明書の作成方法を調べました。</p>
+<p>おまけとしてnginxで利用する際の設定も紹介します</p>
+<h1 id="CA証明書の生成"><a href="#CA証明書の生成" class="headerlink" title="CA証明書の生成"></a>CA証明書の生成</h1><p>CAとは証明書を発行する機関の事です。<br>PKIはクライアントがCAを信頼しそのCAが発行した証明書を許可するという仕組みのため、オレオレ証明書でもCAの作成が必要です。</p>
+<h2 id="設定ファイルの記述"><a href="#設定ファイルの記述" class="headerlink" title="設定ファイルの記述"></a>設定ファイルの記述</h2><p><code>CA.txt</code>というファイル名でファイルを作成し、以下の内容をコピペします。<br>これは参考文献(1)からそのまま持ってきました。</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">subjectKeyIdentifier</span>=hash</span><br><span class="line"><span class="attr">authorityKeyIdentifier</span>=keyid:always,issuer:always</span><br><span class="line"><span class="attr">basicConstraints</span>=CA:<span class="literal">TRUE</span></span><br><span class="line"><span class="attr">keyUsage</span>=keyCertSign,cRLSign</span><br></pre></td></tr></table></figure>
+
+<h2 id="証明書の生成"><a href="#証明書の生成" class="headerlink" title="証明書の生成"></a>証明書の生成</h2><p>以下のコマンドを実行します。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> openssl ecparam -name secp384r1 -genkey -noout -out CA.key</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> openssl req -new -key CA.key -out CA.csr -subj <span class="string">&quot;/CN=Selfsign Root CA&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> openssl x509 -req -days 3650 -<span class="keyword">in</span> CA.csr -signkey CA.key -extfile CA.txt -out CA.crt</span></span><br></pre></td></tr></table></figure>
+<p>これで以下の通りファイルが生成されます</p>
+<table>
+<thead>
+<tr>
+<th>ファイル名</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CA.key</td>
+<td>CAの秘密鍵</td>
+</tr>
+<tr>
+<td>CA.csr</td>
+<td>CAの証明書発行要求</td>
+</tr>
+<tr>
+<td>CA.crt</td>
+<td>CAの証明書</td>
+</tr>
+</tbody></table>
+<h1 id="クライアント証明書の発行"><a href="#クライアント証明書の発行" class="headerlink" title="クライアント証明書の発行"></a>クライアント証明書の発行</h1><p>続いて、実際に使用するクライアント証明書を作成します。</p>
+<h2 id="設定ファイルの記述-1"><a href="#設定ファイルの記述-1" class="headerlink" title="設定ファイルの記述"></a>設定ファイルの記述</h2><p><code>Client.txt</code>というファイル名でファイルを作成し、以下の内容をコピペします。<br>これは参考文献(1)からそのまま持ってきました。</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">basicConstraints</span>=CA:<span class="literal">FALSE</span></span><br><span class="line"><span class="attr">subjectKeyIdentifier</span>=hash</span><br><span class="line"><span class="attr">authorityKeyIdentifier</span>=keyid,issuer:always</span><br><span class="line"><span class="attr">extendedKeyUsage</span>=clientAuth</span><br><span class="line"><span class="attr">keyUsage</span>=digitalSignature</span><br></pre></td></tr></table></figure>
+
+<h2 id="クライアント証明書の生成"><a href="#クライアント証明書の生成" class="headerlink" title="クライアント証明書の生成"></a>クライアント証明書の生成</h2><p>以下のコマンドを実行します。 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> openssl ecparam -name secp384r1 -genkey -noout -out Client.key</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> openssl req -new -key Client.key -out Client.csr -subj <span class="string">&quot;/CN=Client&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> openssl x509 -req -<span class="keyword">in</span> Client.csr -CA CA.crt -CAkey CA.key -CAcreateserial -days 3650 -extfile Client.txt -out Client.crt</span></span><br></pre></td></tr></table></figure>
+
+<p>これで以下の通りファイルが生成されます</p>
+<table>
+<thead>
+<tr>
+<th>ファイル名</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client.key</td>
+<td>クライアントの秘密鍵</td>
+</tr>
+<tr>
+<td>Client.csr</td>
+<td>クライアントの証明書発行要求</td>
+</tr>
+<tr>
+<td>Client.crt</td>
+<td>クライアントの証明書</td>
+</tr>
+</tbody></table>
+<h1 id="Nginxへの設定方法-おまけ"><a href="#Nginxへの設定方法-おまけ" class="headerlink" title="Nginxへの設定方法(おまけ)"></a>Nginxへの設定方法(おまけ)</h1><p><code>ssl_certificate</code>とかの設定が書いてある所に書いてください。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ssl_client_certificate</span> <span class="string">&quot;&lt;CA.crtのファイルパス&gt;&quot;</span>;</span><br><span class="line"><span class="attribute">ssl_verify_client</span> <span class="literal">on</span>;</span><br></pre></td></tr></table></figure>
+
+<h1 id="WindowsやAndroidに証明書をインポートする方法"><a href="#WindowsやAndroidに証明書をインポートする方法" class="headerlink" title="WindowsやAndroidに証明書をインポートする方法"></a>WindowsやAndroidに証明書をインポートする方法</h1><p>PKCS12形式に変換します。<br>※ここで<code>-legacy</code>オプションをつけないとAndroidにインポートできない</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">sudo</span> openssl pkcs12 -<span class="built_in">export</span> -legacy -<span class="keyword">in</span> Client.crt -inkey Client.key -certfile CA.crt -out Client.pfx</span></span><br></pre></td></tr></table></figure>
+
+<p>これでWindows&#x2F;Androidで扱える形式になりました。<br><code>Client.pfx</code>をコピーして、利用してください。</p>
+<hr>
+<p>Windowsの場合は、ダブルクリックするとウィザードが立ち上がるので指示に従ってインストールしてください。<br>主要なブラウザからはこれだけで使えるようになります。</p>
+<hr>
+<p>Androidの場合は以下の通り設定画面を開く<br>設定 -&gt; セキュリティ -&gt; セキュリティの詳細設定 -&gt; 暗号化と認証情報 -&gt; 証明書のインストール -&gt; VPNとアプリユーザー証明書</p>
+<p>ファイルピッカーが表示されたら<code>Client.pfx</code>をタップして開く</p>
+<p>パスワードの入力を求められたら、変換時に入力したパスワードを入力する。</p>
+<p>Androidでオレオレクライアント証明書を扱えるブラウザは(自分が試した限りでは)Operaだけでした。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a target="_blank" rel="noopener" href="https://qiita.com/nobrin/items/ec5dba787637fabfd79e">(1) 自己署名CAをOpenSSLコマンドラインオプションで使う #OpenSSL - Qiita</a></p>
+</div></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/page/3/">前</a></div><div class="pagination-next"><a href="/page/5/">次</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/">1</a></li><li><a class="pagination-link" href="/page/2/">2</a></li><li><a class="pagination-link" href="/page/3/">3</a></li><li><a class="pagination-link is-current" href="/page/4/">4</a></li><li><a class="pagination-link" href="/page/5/">5</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="https://avatars.githubusercontent.com/u/27682702" alt="Fuchse-ohren"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Fuchse-ohren</p><p class="is-size-6 is-block">インターネット・ユーザー</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>狐耳</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">投稿</p><a href="/archives/"><p class="title">10</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">カテゴリ</p><a href="/categories/"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">タグ</p><a href="/tags/"><p class="title">7</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/fuchse-ohren" target="_blank" rel="me noopener">フォローする</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Github" href="https://github.com/fuchse-ohren"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Twitter" href="https://x.com/GRX133_VMWBMT"><i class="fab fa-x-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="RSS" href="/atom.xml"><i class="fas fa-rss"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">タグ</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/%E3%82%B5%E3%83%BC%E3%83%90/"><span class="tag">サーバ</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Windows/"><span class="tag">Windows</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/"><span class="tag">セキュリティ</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%BA%83%E5%91%8A%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF/"><span class="tag">広告ブロック</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF/"><span class="tag">ネットワーク</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/nginx/"><span class="tag">nginx</span><span class="tag">1</span></a></div></div></div></div></div><!--!--><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最近の記事</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2038-01-18T18:14:07.000Z">2038-01-19</time></p><p class="title"><a href="/2038/01/19/index/">トップページ</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-03-07T07:40:19.000Z">2025-03-07</time></p><p class="title"><a href="/2025/03/07/NFStream%E3%81%AE%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97-WSL-OracleLinux9-Python3-12/">NFStreamのセットアップ(WSL+OracleLinux9+Python3.12)</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-03-05T14:30:25.000Z">2025-03-05</time></p><p class="title"><a href="/2025/03/05/LibreOffice-Draw%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6PDF%E6%96%87%E6%9B%B8%E3%82%92PDF-A%E5%BD%A2%E5%BC%8F%E3%81%AB%E5%A4%89%E6%8F%9B%E3%81%99%E3%82%8B/">LibreOffice Drawを使ってPDF文書をPDF/A形式に変換する</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-25T20:29:00.000Z">2024-09-26</time></p><p class="title"><a href="/2024/09/26/Windows%E3%81%A7Yubikey%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6SSH%E9%8D%B5%E3%82%92%E7%AE%A1%E7%90%86%E3%81%99%E3%82%8B-ssh-agent%E5%91%A8%E3%82%8A%E3%81%AE%E8%A8%AD%E5%AE%9A/">WindowsでYubikeyを使ってSSH鍵を管理する(ssh-agent周りの設定)</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-25T20:27:00.000Z">2024-09-26</time></p><p class="title"><a href="/2024/09/26/Windows11%E7%92%B0%E5%A2%83%E3%81%A7%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC-Yubikey-%E5%88%A9%E7%94%A8%E6%99%82%E3%81%AB%E5%87%BA%E3%82%8B%E3%80%8CiPhone%E3%80%81iPad%E3%80%81%E3%81%BE%E3%81%9F%E3%81%AFAndroid%E3%83%87%E3%83%90%E3%82%A4%E3%82%B9%E3%80%8D%E3%81%AE%E9%81%B8%E6%8A%9E%E8%82%A2%E3%82%92%E6%B6%88%E3%81%99%E6%96%B9%E6%B3%95/">Windows11環境でパスキー(Yubikey)利用時に出る「iPhone、iPad、またはAndroidデバイス」の選択肢を消す方法</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">アーカイブ</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2038/01/"><span class="level-start"><span class="level-item">1月 2038</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2025/03/"><span class="level-start"><span class="level-item">3月 2025</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/09/"><span class="level-start"><span class="level-item">9月 2024</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/06/"><span class="level-start"><span class="level-item">6月 2024</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/04/"><span class="level-start"><span class="level-item">4月 2024</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/03/"><span class="level-start"><span class="level-item">3月 2024</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">リンク</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li><li><a class="level is-mobile" href="https://bulma.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Bulma</span></span><span class="level-right"><span class="level-item tag">bulma.io</span></span></a></li></ul></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/resource/logo.svg" alt="Lunatic.red" height="28"></a><p class="is-size-7"><span>&copy; 2025 fuchse-ohren</span></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("ja");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/js/column.js"></script><a id="back-to-top" title="トップに戻る" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "このウェブサイトはあなたの経験を改善するためにCookieを使用しています。",
+          dismiss: "了解しました",
+          allow: "Cookiesを許可する",
+          deny: "拒否する",
+          link: "もっと詳しく知る",
+          policy: "Cookieポリシー",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="何かを入力してください..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script data-pjax src="/js/insight.js" defer></script><script data-pjax>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"何かを入力してください...","untitled":"(無題)","posts":"投稿","pages":"ページ","categories":"カテゴリ","tags":"タグ"});
+        });</script></body></html>
