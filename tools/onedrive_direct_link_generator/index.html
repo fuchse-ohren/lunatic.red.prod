@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<HTML>
+	<HEAD>
+		<TITLE>ワンドライブ直リン生成器</TITLE>
+		<META charset="UTF-8">
+	</HEAD>
+	<BODY>
+		<H1>ワンドライブ直リン生成器</H1>
+		<FORM id="generator" action="#">
+			<TABLE>
+				<TR>
+					<TD>
+						<LABEL for="share_link">共有リンクを入力: </LABEL>
+					</TD>
+					<TD>
+					<INPUT name="share_link" id="share_link" placeholder="https://1drv.ms/u/s!~~~" size="50" />
+					</TD>
+					<TD>
+						<INPUT type="reset" />
+					</TD>
+				</TR>
+				<TR>
+					<TD>
+						<LABEL for="output">結果: </LABEL>
+					</TD>
+					<TD>
+						<INPUT name="output" id="output" size="50" readonly="True" />
+					</TD>
+					<TD>
+						<INPUT id="copy" type="button" value="Copy" />
+					</TD>
+				</TR>
+				<TR>
+					<TD colspan="3">
+						<INPUT id="gen" type="button" style="width:100%;" value="直リン生成" />
+					</TD>
+				</TR>
+			</TABLE>
+			
+		</FORM>
+	</BODY>
+	<SCRIPT>
+		document.querySelector('#gen').addEventListener(
+			'click',
+			(event)=>{
+				var pattern = /^https:\/\/(1drv.ms\/u\/s\!|onedrive.live.com\/redir\?).*$/g 
+				if( document.querySelector("#share_link").value.match(pattern) == null ){
+					alert("この形式の共有リンクは利用できません");
+				}else{
+					var share_b64 = btoa(document.querySelector("#share_link").value)
+										.replace(/\//,"_")
+										.replace(/\+/,"-")
+										.replace(/=/,"");
+				
+					document.querySelector("#output").value = `https://api.onedrive.com/v1.0/shares/u!${share_b64}/root/content`;
+				}
+			}
+		);
+		document.querySelector('#copy').addEventListener(
+			'click',
+			(event)=>{
+				navigator.clipboard.writeText(document.querySelector("#output").value)
+					.then(()=>{
+						alert("直リンURLをクリップボードにコピーしました");
+					})
+					.catch(e=>{
+						alert("コピーがブラウザに制限されています。\n手動でコピーをお願いします");
+					})
+			}
+		);
+	</SCRIPT>
+</HTML>

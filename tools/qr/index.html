@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRコード生成</title>
+    <script src="./qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #qrcode {
+			width:256px;
+			height:256px;
+            margin:20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h2>QRコード生成</h2>
+	<table style="width:256px; margin:0 auto;">
+	<tr>
+		<td>テキスト:</td>
+		<td><input type="text" id="text" placeholder="テキストを入力"></td>
+	</tr>
+	<tr>
+		<td>前景色:</td>
+		<td><input type="color" id="foreground" value="#000000"></td>
+	</tr>
+	<tr>
+		<td>背景色:</td>
+		<td><input type="color" id="background" value="#ffffff"></td>
+	</tr>
+	</table>
+	<br>
+    <button onclick="generateQRCode()" style="width:256px;height:32px;">生成</button>
+	<hr>
+    <div id="qrcode"></div>
+
+    <script>
+        function generateQRCode() {
+            const text = document.getElementById("text").value;
+            const size = 256;
+            const foreground = document.getElementById("foreground").value;
+            const background = document.getElementById("background").value;
+            const qrCodeContainer = document.getElementById("qrcode");
+            qrCodeContainer.innerHTML = ""; // クリア
+            if (text.trim() !== "") {
+                new QRCode(qrCodeContainer, {
+                    text: text,
+                    width: size,
+                    height: size,
+                    colorDark: foreground,
+                    colorLight: background
+                });
+            }
+        }
+
+        // URLのハッシュをチェックし、QRコードを即座に生成
+        window.onload = function() {
+            const hashText = decodeURIComponent(window.location.hash.substring(1));
+            if (hashText) {
+                document.getElementById("text").value = hashText;
+                generateQRCode();
+            }
+        };
+    </script>
+</body>
+</html>
