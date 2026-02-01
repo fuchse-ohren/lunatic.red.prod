@@ -1,52 +1,116 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QRコード生成</title>
-    <script src="./qrcode.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        #qrcode {
-			width:256px;
-			height:256px;
-            margin:20px auto;
-        }
-    </style>
-</head>
-<body>
-    <h2>QRコード生成</h2>
-	<table style="width:256px; margin:0 auto;">
-	<tr>
-		<td>テキスト:</td>
-		<td><input type="text" id="text" placeholder="テキストを入力"></td>
-	</tr>
-	<tr>
-		<td>前景色:</td>
-		<td><input type="color" id="foreground" value="#000000"></td>
-	</tr>
-	<tr>
-		<td>背景色:</td>
-		<td><input type="color" id="background" value="#ffffff"></td>
-	</tr>
-	</table>
-	<br>
-    <button onclick="generateQRCode()" style="width:256px;height:32px;">生成</button>
-	<hr>
-    <div id="qrcode"></div>
+<HTML>
+	<HEAD>
+		<title>QRコード生成</title>
+		<META charset="UTF-8">
+		<link rel="stylesheet" href="../../design-system/src/global.css">
+		<link rel="stylesheet" href="../../design-system/src/components/input-text/input-text.css">
+		<link rel="stylesheet" href="../../design-system/src/components/form-control-label/form-control-label.css">
+		<link rel="stylesheet" href="../../design-system/src/components/heading/heading.css">
+		<link rel="stylesheet" href="../../design-system/src/components/button/button.css">
+		<link rel="stylesheet" href="../../design-system/src/components/card/card-example-2.css">
+		<style>
+			/* Animation for card addition */
+			@keyframes fadeInUp {
+			from {
+				opacity: 0;
+				transform: translateX(-20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateX(0);
+			}
+			}
+
+			.fade-in-up {
+			animation: fadeInUp 0.2s ease-out;
+			}
+		</style>
+        <script src="./qrcode.min.js"></script>
+	</HEAD>
+	<BODY>
+
+		<!-- コンテンツラッパー -->
+		<div style="width:80vw; max-width:640px; margin:auto; margin-top:2em;">
+
+			<div class="dads-heading" data-size="36">
+				<h2 class="dads-heading__heading">
+					QRコード生成器
+				</h2>
+			</div>
+
+			<div class="dads-form-control-label" data-size="md" style="margin-top:2em;">
+				<label class="dads-form-control-label__label" for="with-label-input">
+					文字列
+					<span class="dads-form-control-label__requirement" data-required="true">※必須</span>
+				</label>
+				<p id="with-label-support-text" class="dads-form-control-label__support-text">QRコードに含めたい文字列やURLを入力してください</p>
+				<div>
+					<span class="dads-input-text">
+					<input name="qr_input" id="with-label-input" class="dads-input-text__input" type="text" data-size="md" aria-invalid="false" aria-describedby="with-label-error-text with-label-support-text" style="width:100%;">
+					<span id="input_required_label" class="dads-input-text__error-text" style="display:none;">＊この項目は入力必須です</span>
+					</span>
+				</div>
+			</div>
+
+			
+
+			<button class="dads-button" id="gen" data-size="lg" data-type="solid-fill" style="width:100%; margin-top:1em;" onclick="generateQRCode()">QRコード生成</button>
+
+			<!-- 出力欄 -->
+			<div style="margin-top:4em;">
+				<ul id="output-list" class="dads-card-example-2-list">
+
+					<li id="mock-card" style="display: none;">
+						<div class="dads-card-example-2" style="display:block;">
+							<div class="dads-card-example-2__main" style="margin-top: 0.5em; margin-bottom: 0.5em;">
+                                <div class="qrcode" style="margin:auto;"></div>
+                                <input name="input_text" class="dads-input-text__input" type="text" data-size="sm" readonly style="width:100%;" value="mock">
+							</div>
+						</div>
+					</li>
+
+				</ul>
+			</div>
+
+		</div>
+
+	</BODY>
 
     <script>
         function generateQRCode() {
-            const text = document.getElementById("text").value;
+
+            const text = document.querySelector("#with-label-input").value;
             const size = 256;
-            const foreground = document.getElementById("foreground").value;
-            const background = document.getElementById("background").value;
-            const qrCodeContainer = document.getElementById("qrcode");
-            qrCodeContainer.innerHTML = ""; // クリア
+            //const foreground = document.getElementById("foreground").value;
+            //const background = document.getElementById("background").value;
+            const foreground = "#000000";
+            const background = "#ffffff";
+
+            // 空文字チェック
+            if (text.trim() === "") {
+                document.getElementById("input_required_label").style.display = "block";
+                document.getElementById("with-label-input").ariaInvalid = "true";
+                return;
+            } else {
+                document.getElementById("input_required_label").style.display = "none";
+                document.getElementById("with-label-input").ariaInvalid = "false";
+            }
+
+            // 新しいカードを準備
+            const output_list = document.getElementById("output-list");
+            const mock_card = document.getElementById("mock-card");
+
+            const new_card = mock_card.cloneNode(true);
+            new_card.style.display = "block";
+            new_card.classList.add("fade-in-up");
+
+            // カードにQRコードとテキストを設定
+            const inputTextField = new_card.querySelector("input[name='input_text']");
+            inputTextField.value = text;
+
+            const qrCodeContainer = new_card.querySelector(".qrcode");
+            qrCodeContainer.innerHTML = "";
             if (text.trim() !== "") {
                 new QRCode(qrCodeContainer, {
                     text: text,
@@ -56,16 +120,18 @@
                     colorLight: background
                 });
             }
+
+            // カードをリストの先頭に追加
+            output_list.insertBefore(new_card, output_list.firstChild);
         }
 
         // URLのハッシュをチェックし、QRコードを即座に生成
         window.onload = function() {
             const hashText = decodeURIComponent(window.location.hash.substring(1));
             if (hashText) {
-                document.getElementById("text").value = hashText;
+                document.querySelector("#with-label-input").value = hashText;
                 generateQRCode();
             }
         };
     </script>
-</body>
 </html>
