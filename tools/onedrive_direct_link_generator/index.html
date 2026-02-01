@@ -1,138 +1,167 @@
 <!DOCTYPE html>
 <HTML>
-	<HEAD>
-		<TITLE>ワンドライブ直リン生成器</TITLE>
-		<META charset="UTF-8">
-		<link rel="stylesheet" href="../../design-system/src/global.css">
-		<link rel="stylesheet" href="../../design-system/src/components/input-text/input-text.css">
-		<link rel="stylesheet" href="../../design-system/src/components/form-control-label/form-control-label.css">
-		<link rel="stylesheet" href="../../design-system/src/components/heading/heading.css">
-		<link rel="stylesheet" href="../../design-system/src/components/button/button.css">
-		<link rel="stylesheet" href="../../design-system/src/components/card/card-example-2.css">
-		<style>
-			/* Animation for card addition */
-			@keyframes fadeInUp {
+
+<HEAD>
+	<TITLE>ワンドライブ直リン生成器</TITLE>
+	<META charset="UTF-8">
+	<link rel="stylesheet" href="../../design-system/src/global.css">
+	<link rel="stylesheet" href="../../design-system/src/components/input-text/input-text.css">
+	<link rel="stylesheet" href="../../design-system/src/components/form-control-label/form-control-label.css">
+	<link rel="stylesheet" href="../../design-system/src/components/heading/heading.css">
+	<link rel="stylesheet" href="../../design-system/src/components/button/button.css">
+	<link rel="stylesheet" href="../../design-system/src/components/card/card-example-2.css">
+	<link rel="stylesheet" href="../../design-system/src/components/emergency-banner/emergency-banner.css">
+	<style>
+		/* Animation for card addition */
+		@keyframes fadeInUp {
 			from {
 				opacity: 0;
 				transform: translateX(-20px);
 			}
+
 			to {
 				opacity: 1;
 				transform: translateX(0);
 			}
-			}
+		}
 
-			.fade-in-up {
+		.fade-in-up {
 			animation: fadeInUp 0.2s ease-out;
-			}
-		</style>
-	</HEAD>
-	<BODY>
+		}
+	</style>
+</HEAD>
 
-		<!-- コンテンツラッパー -->
-		<div style="width:80vw; max-width:640px; margin:auto; margin-top:2em;">
+<BODY>
 
-			<div class="dads-heading" data-size="36">
-				<h2 class="dads-heading__heading">
-					ワンドライブ直リン生成器
-				</h2>
+	<!-- コンテンツラッパー -->
+	<div style="width:80vw; max-width:640px; margin:auto; margin-top:2em;">
+
+		<article class="dads-emergency-banner" style="margin-bottom: 2em;">
+			<header class="dads-emergency-banner__header">
+				<h2 class="dads-emergency-banner__heading">このスクリプトはもう多分動きません</h2>
+				<time class="dads-emergency-banner__timestamp" >2026年2月2日 更新</time>
+			</header>
+			<div class="dads-emergency-banner__body">
+				<p>
+					このスクリプトは長い間メンテされておらず，さっき試したら過去生成した直リン含めて動きませんでした．
+					<br>
+					ワンドライブ側の仕様変更によるもののため，復旧見込みはありません．
+				</p>
 			</div>
+		</article>
 
-			<div class="dads-form-control-label" data-size="md" style="margin-top:2em;">
-				<label class="dads-form-control-label__label" for="with-label-input">
-					OneDrive共有リンク
-					<span class="dads-form-control-label__requirement" data-required="true">※必須</span>
-				</label>
-				<p id="with-label-support-text" class="dads-form-control-label__support-text">「https://1drv.ms/u/s!~~~」の形式のリンクを入力してください</p>
-				<div>
-					<span class="dads-input-text">
-					<input name="share_link" id="with-label-input" class="dads-input-text__input" type="text" data-size="md" aria-invalid="false" aria-describedby="with-label-error-text with-label-support-text" style="width:100%;">
-					<span id="link_err_label" class="dads-input-text__error-text" style="display:none;">＊不正なリンク形式です</span>
-					<span id="input_required_label" class="dads-input-text__error-text" style="display:none;">＊この項目は入力必須です</span>
-					</span>
-				</div>
-			</div>
-
-			
-
-			<button class="dads-button" id="gen" data-size="lg" data-type="solid-fill" style="width:100%; margin-top:1em;">直リン生成</button>
-
-			<!-- 出力欄 -->
-			<div style="margin-top:4em;">
-				<ul id="output-list" class="dads-card-example-2-list">
-
-					<li id="mock-card" style="display: none;">
-						<div class="dads-card-example-2" style="display:block;">
-							<div class="dads-card-example-2__main" style="margin-bottom: 1em;">
-								<h3 class="dads-card-example-2__heading">共有リンク</h3>
-								<p class="dads-card-example-2__contents">
-									<span class="dads-input-text">
-									<input name="original_link" class="dads-input-text__input" type="text" data-size="sm" readonly style="width:100%;" value="mock">
-									</span>
-								</p>
-								<div class="dads-card-example-2__divider"></div>
-								<h3 class="dads-card-example-2__heading">直リンク</h3>
-								<p class="dads-card-example-2__contents">
-									<span class="dads-input-text" style="display:grid;grid-template-columns: 74% 24%;gap:1%;">
-										<input name="direct_link" class="dads-input-text__input" type="text" data-size="sm" readonly style="width:100%;" value="mock">
-										<button class="dads-button" data-size="sm" data-type="solid" style="width:100%;" OnClick="navigator.clipboard.writeText('mock');">コピー</button>
-									</span>
-								</p>
-							</div>
-						</div>
-					</li>
-
-				</ul>
-			</div>
-
+		<div class="dads-heading" data-size="36">
+			<h2 class="dads-heading__heading">
+				ワンドライブ直リン生成器
+			</h2>
 		</div>
 
-	</BODY>
-	<SCRIPT>
-		document.querySelector('#gen').addEventListener(
-			'click',
-			(event)=>{
-				var pattern = /^https:\/\/(1drv.ms\/|onedrive.live.com\/redir\?).*$/g 
-				const share_link = document.querySelector("input[name='share_link']");
+		<div class="dads-form-control-label" data-size="md" style="margin-top:2em;">
+			<label class="dads-form-control-label__label" for="with-label-input">
+				OneDrive共有リンク
+				<span class="dads-form-control-label__requirement" data-required="true">※必須</span>
+			</label>
+			<p id="with-label-support-text" class="dads-form-control-label__support-text">
+				「https://1drv.ms/u/s!~~~」の形式のリンクを入力してください</p>
+			<div>
+				<span class="dads-input-text">
+					<input name="share_link" id="with-label-input" class="dads-input-text__input" type="text"
+						data-size="md" aria-invalid="false"
+						aria-describedby="with-label-error-text with-label-support-text" style="width:100%;">
+					<span id="link_err_label" class="dads-input-text__error-text"
+						style="display:none;">＊不正なリンク形式です</span>
+					<span id="input_required_label" class="dads-input-text__error-text"
+						style="display:none;">＊この項目は入力必須です</span>
+				</span>
+			</div>
+		</div>
 
-				// エラーメッセージ初期化
-				document.querySelector("#link_err_label").style.display = "none";
-				document.querySelector("#input_required_label").style.display = "none";
-				share_link.ariaInvalid = "false";
 
-				// 入力チェック
-				if( share_link.value.length == 0 ){
-					document.querySelector("#input_required_label").style.display = "";
-					share_link.ariaInvalid = "true";
-					return;
-				}
 
-				if( share_link.value.match(pattern) == null ){
-					document.querySelector("#link_err_label").style.display = "";
-					share_link.ariaInvalid = "true";
-				}else{
-					var share_b64 = btoa(share_link.value)
-										.replace(/\//,"_")
-										.replace(/\+/,"-")
-										.replace(/=/,"");
-				
+		<button class="dads-button" id="gen" data-size="lg" data-type="solid-fill"
+			style="width:100%; margin-top:1em;">直リン生成</button>
 
-					// カードを追加
-					const output_list = document.querySelector("#output-list");
-					const mock_card = document.querySelector("#mock-card");
-					const new_card = mock_card.cloneNode(true);
-					new_card.style.display = "";
-					new_card.querySelector("input[name='original_link']").value = share_link.value;
-					new_card.querySelector("input[name='direct_link']").value = `https://api.onedrive.com/v1.0/shares/u!${share_b64}/root/content`;
-					new_card.querySelector("button").onclick = function(){
-						navigator.clipboard.writeText(`https://api.onedrive.com/v1.0/shares/u!${share_b64}/root/content`);
-					};
-					output_list.appendChild(new_card);
-					new_card.classList.add('fade-in-up');
-					
+		<!-- 出力欄 -->
+		<div style="margin-top:4em;">
+			<ul id="output-list" class="dads-card-example-2-list">
 
-				}
+				<li id="mock-card" style="display: none;">
+					<div class="dads-card-example-2" style="display:block;">
+						<div class="dads-card-example-2__main" style="margin-bottom: 1em;">
+							<h3 class="dads-card-example-2__heading">共有リンク</h3>
+							<p class="dads-card-example-2__contents">
+								<span class="dads-input-text">
+									<input name="original_link" class="dads-input-text__input" type="text"
+										data-size="sm" readonly style="width:100%;" value="mock">
+								</span>
+							</p>
+							<div class="dads-card-example-2__divider"></div>
+							<h3 class="dads-card-example-2__heading">直リンク</h3>
+							<p class="dads-card-example-2__contents">
+								<span class="dads-input-text"
+									style="display:grid;grid-template-columns: 74% 24%;gap:1%;">
+									<input name="direct_link" class="dads-input-text__input" type="text" data-size="sm"
+										readonly style="width:100%;" value="mock">
+									<button class="dads-button" data-size="sm" data-type="solid" style="width:100%;"
+										OnClick="navigator.clipboard.writeText('mock');">コピー</button>
+								</span>
+							</p>
+						</div>
+					</div>
+				</li>
+
+			</ul>
+		</div>
+
+	</div>
+
+</BODY>
+<SCRIPT>
+	document.querySelector('#gen').addEventListener(
+		'click',
+		(event) => {
+			var pattern = /^https:\/\/(1drv.ms\/|onedrive.live.com\/redir\?).*$/g
+			const share_link = document.querySelector("input[name='share_link']");
+
+			// エラーメッセージ初期化
+			document.querySelector("#link_err_label").style.display = "none";
+			document.querySelector("#input_required_label").style.display = "none";
+			share_link.ariaInvalid = "false";
+
+			// 入力チェック
+			if (share_link.value.length == 0) {
+				document.querySelector("#input_required_label").style.display = "";
+				share_link.ariaInvalid = "true";
+				return;
 			}
-		);
-	</SCRIPT>
+
+			if (share_link.value.match(pattern) == null) {
+				document.querySelector("#link_err_label").style.display = "";
+				share_link.ariaInvalid = "true";
+			} else {
+				var share_b64 = btoa(share_link.value)
+					.replace(/\//, "_")
+					.replace(/\+/, "-")
+					.replace(/=/, "");
+
+
+				// カードを追加
+				const output_list = document.querySelector("#output-list");
+				const mock_card = document.querySelector("#mock-card");
+				const new_card = mock_card.cloneNode(true);
+				new_card.style.display = "";
+				new_card.querySelector("input[name='original_link']").value = share_link.value;
+				new_card.querySelector("input[name='direct_link']").value = `https://api.onedrive.com/v1.0/shares/u!${share_b64}/root/content`;
+				new_card.querySelector("button").onclick = function () {
+					navigator.clipboard.writeText(`https://api.onedrive.com/v1.0/shares/u!${share_b64}/root/content`);
+				};
+				output_list.appendChild(new_card);
+				new_card.classList.add('fade-in-up');
+
+
+			}
+		}
+	);
+</SCRIPT>
+
 </HTML>
