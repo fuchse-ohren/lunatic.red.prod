@@ -1,0 +1,11 @@
+{
+  "names": {
+    "Pesec": "7f8ab1784bf52a16b581e71fdf5bbf0d11e48806b7349720f90f9be2a0c138d5"
+  },
+  "relays": {
+    "7f8ab1784bf52a16b581e71fdf5bbf0d11e48806b7349720f90f9be2a0c138d5": [
+      "wss://relay-jp.nostr.wirednet.jp/",
+      "wss://nostr.fediverse.jp"
+    ]
+  }
+}
