@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察 - Lunatic.red</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Lunatic.red"><meta name="msapplication-TileImage" content="/resource/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Lunatic.red"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="新SNS「POPOPO」の利用リスクを考察。中国クラウド経由による通話音声の取り扱い、著作権トラブル、サービス継続性の3つのリスクを詳しく解説。"><meta property="og:type" content="blog"><meta property="og:title" content="メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察"><meta property="og:url" content="https://lunatic.red/2026/03/18/%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA%E3%80%8CPOPOPO%E3%80%8D%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E4%B8%80%E8%80%83%E5%AF%9F/"><meta property="og:site_name" content="Lunatic.red"><meta property="og:description" content="新SNS「POPOPO」の利用リスクを考察。中国クラウド経由による通話音声の取り扱い、著作権トラブル、サービス継続性の3つのリスクを詳しく解説。"><meta property="og:locale" content="ja_JP"><meta property="og:image" content="https://lunatic.red/2026/03/18/メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察/cover.png"><meta property="article:published_time" content="2026-03-18T11:45:15.000Z"><meta property="article:modified_time" content="2026-03-18T17:07:14.381Z"><meta property="article:author" content="fuchse-ohren"><meta property="article:tag" content="セキュリティ"><meta property="article:tag" content="POPOPO"><meta property="article:tag" content="メタバース"><meta property="article:tag" content="プライバシー"><meta property="article:tag" content="中国クラウド"><meta property="article:tag" content="Tencent TRTC"><meta property="article:tag" content="著作権"><meta property="article:tag" content="著作者人格権"><meta property="article:tag" content="VRChat"><meta property="article:tag" content="SNS"><meta property="article:tag" content="リスク分析"><meta property="article:tag" content="通話アプリ"><meta property="article:tag" content="データ保護"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://lunatic.red/2026/03/18/メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察/cover.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lunatic.red/2026/03/18/%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA%E3%80%8CPOPOPO%E3%80%8D%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E4%B8%80%E8%80%83%E5%AF%9F/"},"headline":"メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察","image":["https://lunatic.red/2026/03/18/メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察/cover.png"],"datePublished":"2026-03-18T11:45:15.000Z","dateModified":"2026-03-18T17:07:14.381Z","author":{"@type":"Person","name":"fuchse-ohren"},"publisher":{"@type":"Organization","name":"Lunatic.red","logo":{"@type":"ImageObject","url":"https://lunatic.red/resource/logo.svg"}},"description":"新SNS「POPOPO」の利用リスクを考察。中国クラウド経由による通話音声の取り扱い、著作権トラブル、サービス継続性の3つのリスクを詳しく解説。"}</script><link rel="canonical" href="https://lunatic.red/2026/03/18/%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA%E3%80%8CPOPOPO%E3%80%8D%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E4%B8%80%E8%80%83%E5%AF%9F/"><link rel="alternate" href="/atom.xml" title="Lunatic.red" type="application/atom+xml"><link rel="icon" href="/resource/favicon.svg"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&amp;display=swap;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察 - Lunatic.red</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Lunatic.red"><meta name="msapplication-TileImage" content="/resource/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Lunatic.red"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="新SNS「POPOPO」の利用リスクを考察。中国クラウド経由による通話音声の取り扱い、著作権トラブル、サービス継続性の3つのリスクを詳しく解説。"><meta property="og:type" content="blog"><meta property="og:title" content="メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察"><meta property="og:url" content="https://lunatic.red/2026/03/18/%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA%E3%80%8CPOPOPO%E3%80%8D%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E4%B8%80%E8%80%83%E5%AF%9F/"><meta property="og:site_name" content="Lunatic.red"><meta property="og:description" content="新SNS「POPOPO」の利用リスクを考察。中国クラウド経由による通話音声の取り扱い、著作権トラブル、サービス継続性の3つのリスクを詳しく解説。"><meta property="og:locale" content="ja_JP"><meta property="og:image" content="https://lunatic.red/2026/03/18/メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察/cover.png"><meta property="article:published_time" content="2026-03-18T11:45:15.000Z"><meta property="article:modified_time" content="2026-03-18T17:14:20.728Z"><meta property="article:author" content="fuchse-ohren"><meta property="article:tag" content="セキュリティ"><meta property="article:tag" content="POPOPO"><meta property="article:tag" content="メタバース"><meta property="article:tag" content="プライバシー"><meta property="article:tag" content="中国クラウド"><meta property="article:tag" content="Tencent TRTC"><meta property="article:tag" content="著作権"><meta property="article:tag" content="著作者人格権"><meta property="article:tag" content="VRChat"><meta property="article:tag" content="SNS"><meta property="article:tag" content="リスク分析"><meta property="article:tag" content="通話アプリ"><meta property="article:tag" content="データ保護"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://lunatic.red/2026/03/18/メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察/cover.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lunatic.red/2026/03/18/%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA%E3%80%8CPOPOPO%E3%80%8D%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E4%B8%80%E8%80%83%E5%AF%9F/"},"headline":"メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察","image":["https://lunatic.red/2026/03/18/メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察/cover.png"],"datePublished":"2026-03-18T11:45:15.000Z","dateModified":"2026-03-18T17:14:20.728Z","author":{"@type":"Person","name":"fuchse-ohren"},"publisher":{"@type":"Organization","name":"Lunatic.red","logo":{"@type":"ImageObject","url":"https://lunatic.red/resource/logo.svg"}},"description":"新SNS「POPOPO」の利用リスクを考察。中国クラウド経由による通話音声の取り扱い、著作権トラブル、サービス継続性の3つのリスクを詳しく解説。"}</script><link rel="canonical" href="https://lunatic.red/2026/03/18/%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA%E3%80%8CPOPOPO%E3%80%8D%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E4%B8%80%E8%80%83%E5%AF%9F/"><link rel="alternate" href="/atom.xml" title="Lunatic.red" type="application/atom+xml"><link rel="icon" href="/resource/favicon.svg"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&amp;display=swap;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
   (function () {
       function switchTab() {
           if (!location.hash) {
@@ -29,30 +29,26 @@
       switchTab();
       window.addEventListener('hashchange', switchTab, false);
   })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/resource/logo.svg" alt="Lunatic.red" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">ホーム</a><a class="navbar-item" href="/archives">記事一覧</a><a class="navbar-item" href="/tools">ツール</a><a class="navbar-item" href="mailto:lunaticred_admin@kitsune.aleeas.com">お問い合わせ</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="RSS" href="/atom.xml"><i class="fas fa-rss"></i></a><a class="navbar-item search" title="検索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2026-03-18T11:45:15.000Z" title="2026/3/18 20:45:15">2026-03-18</time>に投稿</span><span class="level-item"><time dateTime="2026-03-18T17:07:14.381Z" title="2026/3/19 2:07:14">2026-03-19</time>に更新</span><span class="level-item"><a class="link-muted" href="/categories/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/">セキュリティ</a><span> / </span><a class="link-muted" href="/categories/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/%E3%81%9D%E3%81%AE%E4%BB%96/">その他</a></span><span class="level-item">36分で読む (約5377語)</span></div></div><h1 class="title is-3 is-size-4-mobile">メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察</h1><div class="content"><p><img src="../%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA%E3%80%8CPOPOPO%E3%80%8D%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E4%B8%80%E8%80%83%E5%AF%9F/cover.png" alt></p>
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/resource/logo.svg" alt="Lunatic.red" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">ホーム</a><a class="navbar-item" href="/archives">記事一覧</a><a class="navbar-item" href="/tools">ツール</a><a class="navbar-item" href="mailto:lunaticred_admin@kitsune.aleeas.com">お問い合わせ</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="RSS" href="/atom.xml"><i class="fas fa-rss"></i></a><a class="navbar-item search" title="検索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2026-03-18T11:45:15.000Z" title="2026/3/18 20:45:15">2026-03-18</time>に投稿</span><span class="level-item"><time dateTime="2026-03-18T17:14:20.728Z" title="2026/3/19 2:14:20">2026-03-19</time>に更新</span><span class="level-item"><a class="link-muted" href="/categories/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/">セキュリティ</a><span> / </span><a class="link-muted" href="/categories/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/%E3%81%9D%E3%81%AE%E4%BB%96/">その他</a></span><span class="level-item">36分で読む (約5377語)</span></div></div><h1 class="title is-3 is-size-4-mobile">メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察</h1><div class="content"><p><img src="/2026/03/18/%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA%E3%80%8CPOPOPO%E3%80%8D%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E4%B8%80%E8%80%83%E5%AF%9F/cover.png"></p>
 <hr>
-<h1 tabindex="-1"><span id="概要">概要</span></h1>
-<p>2026/03/18 15:00にリリースされた新SNS「POPOPO」利用上の様々なリスクについて、<br>
-利用規約や公式の発表する情報を元に考察してみました。</p>
+<h1><span id="概要">概要</span></h1><p>2026&#x2F;03&#x2F;18 15:00にリリースされた新SNS「POPOPO」利用上の様々なリスクについて、<br>利用規約や公式の発表する情報を元に考察してみました。</p>
 <p>その結果、以下のような問題があり、<strong>POPOPOでのプライベートな会話は控えるべき</strong>と考えられます。</p>
 <ul>
 <li>通話音声が<strong>中国クラウドサービス</strong>「Tencent TRTC」を経由</li>
 <li>著作権トラブルのリスク(<strong>著作者人格権の不行使条項</strong>)</li>
 <li>サービスの<strong>持続可能性</strong>に関するリスク</li>
 </ul>
-<p>そこで上記3点の問題に注目し、<br>
-さらに具体的に掘り下げた解説していきたいと思います。</p>
+<p>そこで上記3点の問題に注目し、<br>さらに具体的に掘り下げた解説していきたいと思います。</p>
 <span id="more"></span>
 <hr>
-<h1 tabindex="-1"><span id="目次">目次</span></h1>
-<div class="toc">
+<h1><span id="目次">目次</span></h1><div class="toc">
+
 <!-- toc -->
+
 <ul>
-<li><a href="#%E4%B8%AD%E5%9B%BD%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E7%B5%8C%E7%94%B1%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF">中国クラウド経由のリスク</a>
-<ul>
+<li><a href="#%E4%B8%AD%E5%9B%BD%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E7%B5%8C%E7%94%B1%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF">中国クラウド経由のリスク</a><ul>
 <li><a href="#%E3%83%97%E3%83%A9%E3%82%A4%E3%83%90%E3%82%B7%E3%83%BC%E3%83%9D%E3%83%AA%E3%82%B7%E3%83%BC%E3%81%AE%E8%A8%98%E8%BC%89">プライバシーポリシーの記載</a></li>
-<li><a href="#%E5%AE%9F%E9%9A%9B%E3%81%AB%E4%B8%AD%E5%9B%BD%E3%82%92%E7%B5%8C%E7%94%B1%E3%81%99%E3%82%8B%E3%81%8B">実際に中国を経由するか</a>
-<ul>
+<li><a href="#%E5%AE%9F%E9%9A%9B%E3%81%AB%E4%B8%AD%E5%9B%BD%E3%82%92%E7%B5%8C%E7%94%B1%E3%81%99%E3%82%8B%E3%81%8B">実際に中国を経由するか</a><ul>
 <li><a href="#%E5%AE%9F%E9%9A%9B%E3%81%AB%E4%B8%AD%E5%9B%BD%E3%82%92%E7%B5%8C%E7%94%B1%E3%81%99%E3%82%8B%E3%81%8B-%E5%9B%BD%E5%86%85%E6%B3%95%E3%81%AE%E5%BD%B1%E9%9F%BF">実際に中国を経由するか - 国内法の影響</a></li>
 <li><a href="#%E5%AE%9F%E9%9A%9B%E3%81%AB%E4%B8%AD%E5%9B%BD%E3%82%92%E7%B5%8C%E7%94%B1%E3%81%99%E3%82%8B%E3%81%8B-%E7%B5%90%E8%AB%96">実際に中国を経由するか - 結論</a></li>
 </ul>
@@ -60,14 +56,12 @@
 <li><a href="#%E9%80%9A%E8%A9%B1%E9%9F%B3%E5%A3%B0%E4%BB%A5%E5%A4%96%E3%81%AE%E5%80%8B%E4%BA%BA%E6%83%85%E5%A0%B1%E3%81%AE%E5%AE%89%E5%85%A8%E6%80%A7">通話音声以外の個人情報の安全性</a></li>
 </ul>
 </li>
-<li><a href="#%E8%91%97%E4%BD%9C%E6%A8%A9%E3%83%88%E3%83%A9%E3%83%96%E3%83%AB%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF">著作権トラブルのリスク</a>
-<ul>
+<li><a href="#%E8%91%97%E4%BD%9C%E6%A8%A9%E3%83%88%E3%83%A9%E3%83%96%E3%83%AB%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF">著作権トラブルのリスク</a><ul>
 <li><a href="#%E8%91%97%E4%BD%9C%E8%80%85%E4%BA%BA%E6%A0%BC%E6%A8%A9%E3%81%A8%E3%81%AF">著作者人格権とは</a></li>
 <li><a href="#popopo%E3%81%AF%E3%81%82%E3%81%AA%E3%81%9F%E3%81%AE%E4%BD%9C%E5%93%81%E3%82%92%E3%81%A9%E3%81%93%E3%81%BE%E3%81%A7%E4%BD%BF%E3%81%88%E3%82%8B%E3%81%AE%E3%81%8B">POPOPOはあなたの作品をどこまで使えるのか？</a></li>
 </ul>
 </li>
-<li><a href="#%E4%BA%8B%E6%A5%AD%E7%B6%99%E7%B6%9A%E3%83%AA%E3%82%B9%E3%82%AF">事業継続リスク</a>
-<ul>
+<li><a href="#%E4%BA%8B%E6%A5%AD%E7%B6%99%E7%B6%9A%E3%83%AA%E3%82%B9%E3%82%AF">事業継続リスク</a><ul>
 <li><a href="#vrchat%E3%81%A8%E3%81%AE%E6%AF%94%E8%BC%83">VRChatとの比較</a></li>
 <li><a href="#%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%E7%B5%82%E4%BA%86%E6%99%82%E3%81%AB%E3%81%A9%E3%81%86%E3%81%AA%E3%82%8B%E3%81%8B">サービス終了時にどうなるか</a></li>
 </ul>
@@ -77,87 +71,58 @@
 <li><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">参考文献</a></li>
 </ul>
 <!-- tocstop -->
+
 </div>
+
 <hr>
-<h1 tabindex="-1"><span id="中国クラウド経由のリスク">中国クラウド経由のリスク</span></h1>
-<p>まず一番大きなリスクとして、通話音声が<strong>中国クラウドサービスを経由する</strong>という点が挙げられます。</p>
+<h1><span id="中国クラウド経由のリスク">中国クラウド経由のリスク</span></h1><p>まず一番大きなリスクとして、通話音声が<strong>中国クラウドサービスを経由する</strong>という点が挙げられます。</p>
 <hr>
-<h2 tabindex="-1"><span id="プライバシーポリシーの記載">プライバシーポリシーの記載</span></h2>
-<p>「POPOPO」プライバシーポリシー[1]にはTencent TRTC SDKを用いて音声データを収集する点が明記されており、<br>
-これは最大30人の低遅延同時通話を実現するために活用されていると推測されます。</p>
+<h2><span id="プライバシーポリシーの記載">プライバシーポリシーの記載</span></h2><p>「POPOPO」プライバシーポリシー[1]にはTencent TRTC SDKを用いて音声データを収集する点が明記されており、<br>これは最大30人の低遅延同時通話を実現するために活用されていると推測されます。</p>
 <blockquote>
 <p>Tencent TRTC SDK</p>
-<p>提供者：Tencent<br>
-取得項目：音声データ<br>
-取得方法：任意取得<br>
-利用目的：利用に関する動向調査、不具合調査、パフォーマンス測定、検証及び改善</p>
+<p>提供者：Tencent<br>取得項目：音声データ<br>取得方法：任意取得<br>利用目的：利用に関する動向調査、不具合調査、パフォーマンス測定、検証及び改善</p>
 <p>詳細は<a target="_blank" rel="noopener" href="https://trtc.io/ja/document/48827%E3%82%92%E3%81%94%E7%A2%BA%E8%AA%8D%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82">https://trtc.io/ja/document/48827をご確認ください。</a></p>
 </blockquote>
-<p>またTencent TRTC SDKでは、「テレビ電話」として最低限必須とされる<strong>E2EE機能を備えておらず</strong>、<br>
-これはサービス提供者によって容易に盗聴されうることを示しています。</p>
-<p>通話アプリとして競合であるDiscordやLINEは<strong>E2EE機能を標準で備えており</strong>、<br>
-テレビ電話を名乗る上では明確なウィークポイントといえます。</p>
+<p>またTencent TRTC SDKでは、「テレビ電話」として最低限必須とされる<strong>E2EE機能を備えておらず</strong>、<br>これはサービス提供者によって容易に盗聴されうることを示しています。</p>
+<p>通話アプリとして競合であるDiscordやLINEは<strong>E2EE機能を標準で備えており</strong>、<br>テレビ電話を名乗る上では明確なウィークポイントといえます。</p>
 <hr>
-<h2 tabindex="-1"><span id="実際に中国を経由するか">実際に中国を経由するか</span></h2>
-<p>Tencentのドキュメント[2]によるとTRTCのエンドポイントは<br>
-国内1リージョン、中国6リージョン、その他8リージョンが存在するようです。</p>
-<p>このうち、リージョンを明示的に指定しない場合の<br>
-エンドポイントである<code>trtc.tencentcloudapi.com</code>への<br>
-アクセスは<code>43.153.165.52</code>という日本国内に割り当てられた<br>
-IPアドレスへ繋がることが確認できました。</p>
-<p>そのため、次にtracertコマンドを使い、<br>
-このIPアドレスが本当に日本国内に存在するのか推定してみることにしました。</p>
+<h2><span id="実際に中国を経由するか">実際に中国を経由するか</span></h2><p>Tencentのドキュメント[2]によるとTRTCのエンドポイントは<br>国内1リージョン、中国6リージョン、その他8リージョンが存在するようです。  </p>
+<p>このうち、リージョンを明示的に指定しない場合の<br>エンドポイントである<code>trtc.tencentcloudapi.com</code>への<br>アクセスは<code>43.153.165.52</code>という日本国内に割り当てられた<br>IPアドレスへ繋がることが確認できました。</p>
+<p>そのため、次にtracertコマンドを使い、<br>このIPアドレスが本当に日本国内に存在するのか推定してみることにしました。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ traceroute 43.153.165.52 -n</span><br><span class="line">traceroute to 43.153.165.52 (43.153.165.52), 30 hops max, 60 byte packets</span><br><span class="line">1  ローカルIP (ルータ)</span><br><span class="line">2  ローカルIP (Dish)</span><br><span class="line">3  ローカルIP (ISP内)</span><br><span class="line">4  206.224.70.198 (SpaceX)  38.903 ms 206.224.70.194  38.897 ms 206.224.70.206  38.901 ms</span><br><span class="line">5  206.224.70.182 (SpaceX)  38.273 ms  38.264 ms 206.224.70.184  38.255 ms</span><br><span class="line">6  210.171.225.169 (JPIX)  38.866 ms  36.828 ms  36.817 ms</span><br><span class="line">7  * * 30.1.180.137 (United States Department of Defense)  29.590 ms</span><br><span class="line">8  29.109.129.206 (United States Department of Defense)  29.529 ms 29.109.129.100 (United States Department of Defense)   28.940 ms 29.109.129.92 (United States Department of Defense)  28.706 ms</span><br><span class="line">9  29.47.15.1 (United States Department of Defense)  29.094 ms  49.972 ms  49.950 ms</span><br></pre></td></tr></table></figure>
 <p><code>United States Department of Defense</code>って米国防総省？</p>
 <p>Starlinkは有事には盗聴されている可能性があるため回線を変えます。</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\admin&gt; tracert <span class="number">43.153</span>.<span class="number">165.52</span></span><br><span class="line"></span><br><span class="line"><span class="number">43.153</span>.<span class="number">165.52</span> へのルートをトレースしています。経由するホップ数は最大 <span class="number">30</span> です</span><br><span class="line"></span><br><span class="line">  <span class="number">1</span>    &lt;<span class="number">1</span> ms    &lt;<span class="number">1</span> ms    &lt;<span class="number">1</span> ms  _gateway</span><br><span class="line">  <span class="number">2</span>     <span class="number">3</span> ms     <span class="number">3</span> ms     <span class="number">3</span> ms  <span class="number">118.23</span>.<span class="number">89.251</span></span><br><span class="line">  <span class="number">3</span>     <span class="number">4</span> ms     <span class="number">5</span> ms     <span class="number">4</span> ms  <span class="number">118.23</span>.<span class="number">89.213</span></span><br><span class="line">  <span class="number">4</span>     <span class="number">7</span> ms     <span class="number">3</span> ms     <span class="number">3</span> ms  <span class="number">153.146</span>.<span class="number">171.89</span></span><br><span class="line">  <span class="number">5</span>     <span class="number">4</span> ms     <span class="number">4</span> ms     <span class="number">4</span> ms  <span class="number">122.1</span>.<span class="number">245.57</span></span><br><span class="line">  <span class="number">6</span>     <span class="number">4</span> ms     <span class="number">4</span> ms     <span class="number">4</span> ms  <span class="number">210.254</span>.<span class="number">188.33</span></span><br><span class="line">  <span class="number">7</span>     <span class="number">4</span> ms     <span class="number">4</span> ms     <span class="number">4</span> ms  <span class="number">122.1</span>.<span class="number">245.206</span></span><br><span class="line">  <span class="number">8</span>     <span class="number">4</span> ms     <span class="number">4</span> ms     <span class="number">4</span> ms  ae<span class="literal">-9</span>.a03.tokyjp05.jp.bb.gin.ntt.net [<span class="number">120.88</span><span class="type">.53.21</span>]</span><br><span class="line">  <span class="number">9</span>     <span class="number">7</span> ms     <span class="number">6</span> ms     <span class="number">7</span> ms  ae<span class="literal">-0</span>.zenlayer<span class="literal">-c3-networks</span>.tokyjp05.jp.bb.gin.ntt.net [<span class="number">61.120</span><span class="type">.146.54</span>]</span><br><span class="line"> <span class="number">10</span>     <span class="number">7</span> ms     <span class="number">6</span> ms     <span class="number">7</span> ms  <span class="number">98.98</span>.<span class="number">102.47</span> (Zenlayer Inc)</span><br><span class="line"> <span class="number">11</span>     *        *        *     要求がタイムアウトしました。</span><br><span class="line"> <span class="number">12</span>     <span class="number">5</span> ms     <span class="number">5</span> ms     <span class="number">6</span> ms  <span class="number">29.109</span>.<span class="number">129.92</span> (United States Department of Defense)</span><br><span class="line"> <span class="number">13</span>     <span class="number">6</span> ms     <span class="number">5</span> ms     <span class="number">5</span> ms  <span class="number">29.47</span>.<span class="number">15.1</span> (United States Department of Defense)</span><br><span class="line"> <span class="number">14</span>     <span class="number">6</span> ms     <span class="number">6</span> ms     <span class="number">6</span> ms  <span class="number">43.153</span>.<span class="number">165.52</span></span><br></pre></td></tr></table></figure>
 <p>回線変えても同じNWを経由しました。</p>
-<p>詳しく調査してみると、<code>29.47.15.1</code>は確実にDoDのものですが未使用であり、<br>
-JPIXとTencentとの接続点となる内部NW(日本国内)でTencentがこのIPアドレスを無断で流用している<br>
-可能性が極めて高いという結果になりました。</p>
+<p>詳しく調査してみると、<code>29.47.15.1</code>は確実にDoDのものですが未使用であり、<br>JPIXとTencentとの接続点となる内部NW(日本国内)でTencentがこのIPアドレスを無断で流用している<br>可能性が極めて高いという結果になりました。</p>
 <p>従って、<strong>通話音声は経路として第三国を経由しない</strong>といえます。</p>
 <hr>
-<h3 tabindex="-1"><span id="実際に中国を経由するか-国内法の影響">実際に中国を経由するか - 国内法の影響</span></h3>
-<p>しかし、Tencentは中国企業であり、中华人民共和国国家情报法[3]等の中国国内法を遵守する義務があります。</p>
+<h3><span id="実際に中国を経由するか-国内法の影響">実際に中国を経由するか - 国内法の影響</span></h3><p>しかし、Tencentは中国企業であり、中华人民共和国国家情报法[3]等の中国国内法を遵守する義務があります。</p>
 <blockquote>
 <p>第七条 任何组织和公民都应当依法支持、协助和配合国家情报工作，保守所知悉的国家情报工作秘密。国家对支持、协助和配合国家情报工作的个人和组织给予保护。</p>
 <p>第七条 いかなる組織及び国民も、法律に基づき国家情報活動を支持し、協力し、これに応じるとともに、知り得た国家情報活動の秘密を保持しなければならない。国は、国家情報活動を支持し、協力し、これに応じる個人及び組織を保護する。</p>
 </blockquote>
 <p>実際にTencentが運営しているWeChat等の製品においては、中国国内法によるリスクが既に指摘されています[4]。</p>
 <blockquote>
-<p>WeChat, a messaging, social media, and electronic payment application owned by the Chinese company Tencent Holdings Ltd., reportedly has over one billion users worldwide, including users in the United States.  Like TikTok, WeChat automatically captures vast swaths of information from its users.  This data collection threatens to allow the Chinese Communist Party access to Americans’ personal and proprietary information.</p>
+<p>WeChat, a messaging, social media, and electronic payment application owned by the Chinese company Tencent Holdings Ltd., reportedly has over one billion users worldwide, including users in the United States.  Like TikTok, WeChat automatically captures vast swaths of information from its users.  This data collection threatens to allow the Chinese Communist Party access to Americans’ personal and proprietary information. </p>
 <p>中国企業テンセント・ホールディングス傘下のメッセージング・ソーシャルメディア・電子決済アプリ「WeChat」は、米国を含む世界中で10億人以上のユーザーを抱えていると報じられている。TikTokと同様、WeChatもユーザーから膨大な量の情報を自動的に収集している。こうしたデータ収集により、中国共産党が米国人の個人情報や機密情報にアクセスできる恐れがある。</p>
 </blockquote>
-<p>そのため、Tencentが個人情報保護方針に反して盗聴や長期記録を支援し、<br>
-なおかつ「国家情報活動の秘密保持」という名目で一切の通知を行わない<strong>リスクは現実のものであるといえます</strong>。</p>
+<p>そのため、Tencentが個人情報保護方針に反して盗聴や長期記録を支援し、<br>なおかつ「国家情報活動の秘密保持」という名目で一切の通知を行わない<strong>リスクは現実のものであるといえます</strong>。</p>
 <hr>
-<h3 tabindex="-1"><span id="実際に中国を経由するか-結論">実際に中国を経由するか - 結論</span></h3>
-<p>結論としては<strong>通話音声は中国国内を通らない可能性が高い</strong>です。</p>
+<h3><span id="実際に中国を経由するか-結論">実際に中国を経由するか - 結論</span></h3><p>結論としては<strong>通話音声は中国国内を通らない可能性が高い</strong>です。</p>
 <p>一方で、Tencentが中国国内法を遵守する義務がある以上、<strong>日本国内のTencentの資産にもその影響が及びます</strong>。</p>
-<p>加えて、IANAの<strong>IPアドレス割り当て規則すら守らず</strong>に無断でIPアドレスを使用しているCSPが<br>
-収集した情報を事故で流出させるリスクが低いとは評価できません。</p>
-<p>E2EEを採用しない設計であり、サービス提供者による盗聴を防ぐ仕組みがないという点も、<br>
-盗聴リスクを大幅に引き上げているといえます。</p>
+<p>加えて、IANAの<strong>IPアドレス割り当て規則すら守らず</strong>に無断でIPアドレスを使用しているCSPが<br>収集した情報を事故で流出させるリスクが低いとは評価できません。</p>
+<p>E2EEを採用しない設計であり、サービス提供者による盗聴を防ぐ仕組みがないという点も、<br>盗聴リスクを大幅に引き上げているといえます。</p>
 <p>そのため、直接の中国国内経由はないものの<font color="red">プライバシーリスクが非常に高い</font>と考えられます。</p>
 <hr>
-<h2 tabindex="-1"><span id="通話音声以外の個人情報の安全性">通話音声以外の個人情報の安全性</span></h2>
-<p>音声がTencentのサービスを経由する一方で住所や名前といった<strong>個人情報</strong>については、<br>
-プライバシーポリシー[1]の記述からも、アメリカ合衆国以外の外国への提供はないと考えてよいです。</p>
+<h2><span id="通話音声以外の個人情報の安全性">通話音声以外の個人情報の安全性</span></h2><p>音声がTencentのサービスを経由する一方で住所や名前といった<strong>個人情報</strong>については、<br>プライバシーポリシー[1]の記述からも、アメリカ合衆国以外の外国への提供はないと考えてよいです。</p>
 <blockquote>
-<p>外国の第三者への提供<br>
-当社は、以下の場合に外国のクラウドサービスの利用に伴い個人情報を提供する場合があります。その場合に参考となるべき国別の情報は、現時点において、次のとおりです。なお、当該外国の第三者にて個人情報を取り扱う場合は、当該外国の個人情報の保護に関する制度等を把握、および当該サービスのセキュリティ管理体制等を定期的に確認しています。</p>
-<p>1.アメリカ合衆国<br>
-a.当該外国の個人情報保護制度<br>
-個人情報保護委員会が提供する情報を以下のリンクからご確認ください。<br>
-<a target="_blank" rel="noopener" href="https://www.ppc.go.jp/enforcement/infoprovision/laws/offshore_report_america/">https://www.ppc.go.jp/enforcement/infoprovision/laws/offshore_report_america/</a><br>
-b.第三者が講ずる個人情報保護措置<br>
-提供先は、概ね個人データの取扱いについて我が国の個人情報取扱事業者に求められる措置と同水準の措置を講じています。</p>
+<p>外国の第三者への提供<br>当社は、以下の場合に外国のクラウドサービスの利用に伴い個人情報を提供する場合があります。その場合に参考となるべき国別の情報は、現時点において、次のとおりです。なお、当該外国の第三者にて個人情報を取り扱う場合は、当該外国の個人情報の保護に関する制度等を把握、および当該サービスのセキュリティ管理体制等を定期的に確認しています。 </p>
+<p>1.アメリカ合衆国<br>a.当該外国の個人情報保護制度<br>個人情報保護委員会が提供する情報を以下のリンクからご確認ください。<br><a target="_blank" rel="noopener" href="https://www.ppc.go.jp/enforcement/infoprovision/laws/offshore_report_america/">https://www.ppc.go.jp/enforcement/infoprovision/laws/offshore_report_america/</a><br>b.第三者が講ずる個人情報保護措置<br>提供先は、概ね個人データの取扱いについて我が国の個人情報取扱事業者に求められる措置と同水準の措置を講じています。  </p>
 </blockquote>
-<p>さらに、アメリカ合衆国への個人情報提供については、アメリカ合衆国内で訴訟や法執行が発生した場合が主であり、<br>
-日本人向けのサービスである「POPO」においては<strong>無視できる程度のリスク</strong>と考えられます。</p>
+<p>さらに、アメリカ合衆国への個人情報提供については、アメリカ合衆国内で訴訟や法執行が発生した場合が主であり、<br>日本人向けのサービスである「POPO」においては<strong>無視できる程度のリスク</strong>と考えられます。</p>
 <hr>
-<h1 tabindex="-1"><span id="著作権トラブルのリスク">著作権トラブルのリスク</span></h1>
-<p><img src="../%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA%E3%80%8CPOPOPO%E3%80%8D%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E4%B8%80%E8%80%83%E5%AF%9F/steal.png" alt></p>
+<h1><span id="著作権トラブルのリスク">著作権トラブルのリスク</span></h1><p><img src="/2026/03/18/%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA%E3%80%8CPOPOPO%E3%80%8D%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E4%B8%80%E8%80%83%E5%AF%9F/steal.png"></p>
 <p>次に大きなリスクとして、著作権リスクが挙げられます。</p>
 <p>「POPOPO」利用規約[5]には以下のような記述があり、これが<strong>大きなリスクとなります</strong></p>
 <blockquote>
@@ -167,90 +132,53 @@ b.第三者が講ずる個人情報保護措置<br>
 <p>配信者コンテンツの著作権は、前項の通り配信者ご本人（又は原権利者）に帰属します。その上で、配信者は、当社が本サービスを円滑に提供・改良すること、本サービスの広告宣伝を行うこと、及び本サービス内のコミュニティを活性化させることを目的として、配信者コンテンツを国内外を問わず利用（複製、複写、改変、送信、頒布、貸与、翻訳、翻案等）することを、当社及び当社が指定する第三者に対して、無償かつ期間の定めなく許諾するものとします。なお、本項に基づく利用にあたり、配信者は著作者人格権を行使しないことに同意します。</p>
 </blockquote>
 <hr>
-<h2 tabindex="-1"><span id="著作者人格権とは">著作者人格権とは</span></h2>
-<p>まず、著作者人格権とは何かというと、日本の著作権法で定められている「人格的な権利」で、<br>
-クリエイターが自分の作品に対して持っている以下のような権利のことをいいます。</p>
-<p>同一性保持権：作品を勝手に改変されない権利<br>
-氏名表示権：作品を使うときに自分の名前を表示してほしい権利<br>
-公表権：まだ公開したくない作品を勝手に公開されない権利</p>
-<p>これらは譲渡できない（売れない）権利ですが、契約で「行使しない」と同意すれば放棄したことになります。<br>
-POPOPOはまさにこの<font color="red">「行使しない」ことを規約で強制</font>しています。</p>
+<h2><span id="著作者人格権とは">著作者人格権とは</span></h2><p>まず、著作者人格権とは何かというと、日本の著作権法で定められている「人格的な権利」で、<br>クリエイターが自分の作品に対して持っている以下のような権利のことをいいます。</p>
+<p>同一性保持権：作品を勝手に改変されない権利<br>氏名表示権：作品を使うときに自分の名前を表示してほしい権利<br>公表権：まだ公開したくない作品を勝手に公開されない権利</p>
+<p>これらは譲渡できない（売れない）権利ですが、契約で「行使しない」と同意すれば放棄したことになります。<br>POPOPOはまさにこの<font color="red">「行使しない」ことを規約で強制</font>しています。</p>
 <hr>
-<h2 tabindex="-1"><span id="popopoはあなたの作品をどこまで使えるのか">POPOPOはあなたの作品をどこまで使えるのか？</span></h2>
-<p>例えば、あなたが友人との通話でオリジナルの曲を披露したとします。</p>
+<h2><span id="popopoはあなたの作品をどこまで使えるのか">POPOPOはあなたの作品をどこまで使えるのか？</span></h2><p>例えば、あなたが友人との通話でオリジナルの曲を披露したとします。</p>
 <p>これを聞いていた会社側は：</p>
 <ul>
 <li>その声を抜き出して公式プロモ動画のBGMに使ったり</li>
 <li><font color="red">AIを使って声や音楽を編集</font>したり</li>
 </ul>
-<p>といったことを、 あなたの<strong>名前を表示せず</strong>、<strong>報酬は一切なし</strong>で行って、<br>
-YouTubeやTikTokで<strong>世界中に配信</strong>してもよいということになります。</p>
-<p>それでもあなたは「声いじくらないで！」「名前出して！」「報酬を支払って！」とは言えません。<br>
-規約で「著作者人格権を行使しない」と約束済みだからです。</p>
+<p>といったことを、 あなたの<strong>名前を表示せず</strong>、<strong>報酬は一切なし</strong>で行って、<br>YouTubeやTikTokで<strong>世界中に配信</strong>してもよいということになります。</p>
+<p>それでもあなたは「声いじくらないで！」「名前出して！」「報酬を支払って！」とは言えません。<br>規約で「著作者人格権を行使しない」と約束済みだからです。</p>
 <p>これらは<strong>著作権上のリスクが非常に高い</strong>、利用者にとって極めて不利な条件といえます。</p>
 <hr>
-<h1 tabindex="-1"><span id="事業継続リスク">事業継続リスク</span></h1>
-<p><img src="../%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA%E3%80%8CPOPOPO%E3%80%8D%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E4%B8%80%E8%80%83%E5%AF%9F/m.png" alt></p>
-<p>POPOPO（ぽぽぽ）は、声だけでリアルタイムに3Dアバターが動き、最大30人同時通話が可能な新感覚コミュニケーションサービスとして注目を集めています。<br>
-しかし、サービス開始直後から指摘されているのが事業継続性の観点です。<br>
-特に、クリエイターが自分のオリジナルコンテンツを柔軟に持ち込めない「閉鎖型」設計が、長期的なユーザー離れや収益悪化を招く可能性があります。</p>
-<p>さらに、大企業などによる財政的な支援がないスタートアップ企業であるため財政基盤が脆弱であり、<br>
-サービス終了リスクも一定以上考慮する必要があります。</p>
-<p>急なサービス終了が発生した場合、<strong>購入アイテムの消失</strong>や<strong>人間関係の途絶</strong>といった問題を引き起こす可能性があり、<br>
-これに備えた対応が必要になると考えられます。</p>
+<h1><span id="事業継続リスク">事業継続リスク</span></h1><p><img src="/2026/03/18/%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA%E3%80%8CPOPOPO%E3%80%8D%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E4%B8%80%E8%80%83%E5%AF%9F/m.png"></p>
+<p>POPOPO（ぽぽぽ）は、声だけでリアルタイムに3Dアバターが動き、最大30人同時通話が可能な新感覚コミュニケーションサービスとして注目を集めています。<br>しかし、サービス開始直後から指摘されているのが事業継続性の観点です。<br>特に、クリエイターが自分のオリジナルコンテンツを柔軟に持ち込めない「閉鎖型」設計が、長期的なユーザー離れや収益悪化を招く可能性があります。</p>
+<p>さらに、大企業などによる財政的な支援がないスタートアップ企業であるため財政基盤が脆弱であり、<br>サービス終了リスクも一定以上考慮する必要があります。</p>
+<p>急なサービス終了が発生した場合、<strong>購入アイテムの消失</strong>や<strong>人間関係の途絶</strong>といった問題を引き起こす可能性があり、<br>これに備えた対応が必要になると考えられます。</p>
 <hr>
-<h2 tabindex="-1"><span id="vrchatとの比較">VRChatとの比較</span></h2>
-<p>メタバースプラットフォームとして、ほぼ唯一事業を継続できているVRChatは、ユーザー生成コンテンツ（UGC）をプラットフォームの基盤に据えたモデルで成長しました。<br>
-ユーザーはUnityで作成したアバターやワールドを自由にアップロード・販売でき、クリエイター経済（Creator Economy）が活発に機能しています。<br>
-結果として、ユーザー自身がプラットフォームを豊かにし、長期的なエンゲージメントを支えています。</p>
-<p>一方、POPOPOは公式プリセット（ホロスーツ400種以上）と限定コラボIP（エヴァンゲリオン、東方Projectなど）のみを提供し、<br>
-ユーザーによるオリジナル3Dアバターやモデルの自由インポートを認めていません。<br>
-これは、CTOのVRM開発経験を活かした技術基盤でありながら、意図的に「管理されたエコシステム」を構築した結果です。<br>
-この違いは、クリエイターのモチベーションに直結します。</p>
-<p>VRChatでは「自分の作品を世界中に届け、収益化できる」自由度が高いのに対し、POPOPOでは「公式コンテンツを購入・使用するだけ」の消費者ポジションに留まりやすいのです。<br>
-結果として、ユーザー生成の多様性が不足し、飽きが早く来る可能性が高まります。</p>
+<h2><span id="vrchatとの比較">VRChatとの比較</span></h2><p>メタバースプラットフォームとして、ほぼ唯一事業を継続できているVRChatは、ユーザー生成コンテンツ（UGC）をプラットフォームの基盤に据えたモデルで成長しました。<br>ユーザーはUnityで作成したアバターやワールドを自由にアップロード・販売でき、クリエイター経済（Creator Economy）が活発に機能しています。<br>結果として、ユーザー自身がプラットフォームを豊かにし、長期的なエンゲージメントを支えています。</p>
+<p>一方、POPOPOは公式プリセット（ホロスーツ400種以上）と限定コラボIP（エヴァンゲリオン、東方Projectなど）のみを提供し、<br>ユーザーによるオリジナル3Dアバターやモデルの自由インポートを認めていません。<br>これは、CTOのVRM開発経験を活かした技術基盤でありながら、意図的に「管理されたエコシステム」を構築した結果です。<br>この違いは、クリエイターのモチベーションに直結します。</p>
+<p>VRChatでは「自分の作品を世界中に届け、収益化できる」自由度が高いのに対し、POPOPOでは「公式コンテンツを購入・使用するだけ」の消費者ポジションに留まりやすいのです。<br>結果として、ユーザー生成の多様性が不足し、飽きが早く来る可能性が高まります。</p>
 <hr>
-<h2 tabindex="-1"><span id="サービス終了時にどうなるか">サービス終了時にどうなるか</span></h2>
-<p>POPOPOの利用規約[5]は、事業継続リスクを明確に示しています。</p>
+<h2><span id="サービス終了時にどうなるか">サービス終了時にどうなるか</span></h2><p>POPOPOの利用規約[5]は、事業継続リスクを明確に示しています。</p>
 <blockquote>
 <p>当社は、当社の裁量により、いつでも本サービスの内容を変更し、又は提供を終了できるものとします。</p>
 <p>誤って退会手続をした場合その他理由の如何を問わず、POPOPO会員が本サービスを利用する権限を失った場合、POPOPO会員は、本サービス上に蓄積した情報を利用することができなくなります。</p>
 <p>退会等によりPOPOPO会員が会員資格を喪失した場合は、コンテンツの使用権も消滅するものとします。</p>
 <p>また、当社は理由の如何にかかわらず、すでに支払われた利用料金を一切返還しません。</p>
 </blockquote>
-<p>つまり、会社が「サービス終了」を決定した場合、またはアカウントが削除された場合、<br>
-購入済みのアバター・アイテム・プレミアム機能は即座に使用不能となり、一般的なソーシャルゲームなどで行われている返金対応などは行われない可能性が高いです。<br>
-データ保存義務もないため、過去の会話履歴やコミュニティ記録も失われます。</p>
+<p>つまり、会社が「サービス終了」を決定した場合、またはアカウントが削除された場合、<br>購入済みのアバター・アイテム・プレミアム機能は即座に使用不能となり、一般的なソーシャルゲームなどで行われている返金対応などは行われない可能性が高いです。<br>データ保存義務もないため、過去の会話履歴やコミュニティ記録も失われます。</p>
 <p>そのため、次のような対策を行ってプラットフォームと上手に付き合っていく必要があるといえます。</p>
 <ul>
 <li>重要な人間関係はアプリ外（LINE、Discordなど）でバックアップを取る</li>
 <li>クリエイター志向のユーザーは、VRChatや類似のオープン型プラットフォームを併用する</li>
 </ul>
 <hr>
-<h1 tabindex="-1"><span id="まとめ">まとめ</span></h1>
-<p>本記事では、メタバース通話アプリ「POPOPO」利用上の主なリスクとして、</p>
+<h1><span id="まとめ">まとめ</span></h1><p>本記事では、メタバース通話アプリ「POPOPO」利用上の主なリスクとして、</p>
 <ul>
 <li>中国クラウド経由のプライバシーリスク</li>
 <li>著作権トラブル</li>
-<li>事業継続性<br>
-を挙げました。</li>
+<li>事業継続性<br>を挙げました。</li>
 </ul>
-<p>サービスは挑戦的で新しく興味深いものですが、その背景に潜むリスクの程度は大きく、<br>
-<strong>不特定多数に向けた配信用のプラットフォーム</strong>としての活用が最も適しています。</p>
-<p>加えて、作品発表の場としてはほかのサービスを利用する等、<br>
-細心の注意を払った上での利用が推奨されます。</p>
-<h1 tabindex="-1"><span id="免責事項">免責事項</span></h1>
-<p>本記事は筆者の個人的な考察に基づき、公開情報から導かれたものであり、公式見解や法的アドバイスを代用するものではありません。<br>
-記載されたリスクは可能性を示すに過ぎず、確定的なものではありません。<br>
-サービス利用にあたっては、最新の利用規約およびプライバシーポリシーを直接確認し、必要に応じて専門家に相談してください。<br>
-記事内容によるいかなる損害についても、筆者は責任を負いません。</p>
-<h1 tabindex="-1"><span id="参考文献">参考文献</span></h1>
-<p>※アクセス日を明記しております。リンク切れの場合はInternet Archive等で情報ソースをご確認ください<br>
-[1]: <a target="_blank" rel="noopener" href="https://terms.popopo.com/privacy">プライバシーポリシー (Accessed:Wed Mar 18 2026)</a><br>
-[2]: <a target="_blank" rel="noopener" href="https://main.qcloudimg.com/raw/document/intl/product/pdf/647_20032_jp.pdf">Tencent Real-Time Communication サーバー側 API 製品ドキュメント</a><br>
-[3]: <a target="_blank" rel="noopener" href="http://www.npc.gov.cn/zgrdw/npc/xinwen/2018-06/12/content_2055873.htm">中华人民共和国国家情报法_中国人大网 (Accessed:Wed Mar 18 2026)</a><br>
-[4]: <a target="_blank" rel="noopener" href="https://trumpwhitehouse.archives.gov/presidential-actions/executive-order-addressing-threat-posed-wechat/">Executive Order on Addressing the Threat Posed by WeChat – The White House (Accessed:Thu Mar 19 2026)</a><br>
-[5]: <a target="_blank" rel="noopener" href="https://terms.popopo.com/">利用規約 (Accessed:Thu Mar 19 2026)</a></p>
+<p>サービスは挑戦的で新しく興味深いものですが、その背景に潜むリスクの程度は大きく、<br><strong>不特定多数に向けた配信用のプラットフォーム</strong>としての活用が最も適しています。</p>
+<p>加えて、作品発表の場としてはほかのサービスを利用する等、<br>細心の注意を払った上での利用が推奨されます。</p>
+<h1><span id="免責事項">免責事項</span></h1><p>本記事は筆者の個人的な考察に基づき、公開情報から導かれたものであり、公式見解や法的アドバイスを代用するものではありません。<br>記載されたリスクは可能性を示すに過ぎず、確定的なものではありません。<br>サービス利用にあたっては、最新の利用規約およびプライバシーポリシーを直接確認し、必要に応じて専門家に相談してください。<br>記事内容によるいかなる損害についても、筆者は責任を負いません。</p>
+<h1><span id="参考文献">参考文献</span></h1><p>※アクセス日を明記しております。リンク切れの場合はInternet Archive等で情報ソースをご確認ください<br>[1]: <a target="_blank" rel="noopener" href="https://terms.popopo.com/privacy">プライバシーポリシー (Accessed:Wed Mar 18 2026)</a><br>[2]: <a target="_blank" rel="noopener" href="https://main.qcloudimg.com/raw/document/intl/product/pdf/647_20032_jp.pdf">Tencent Real-Time Communication サーバー側 API 製品ドキュメント</a><br>[3]: <a target="_blank" rel="noopener" href="http://www.npc.gov.cn/zgrdw/npc/xinwen/2018-06/12/content_2055873.htm">中华人民共和国国家情报法_中国人大网 (Accessed:Wed Mar 18 2026)</a><br>[4]: <a target="_blank" rel="noopener" href="https://trumpwhitehouse.archives.gov/presidential-actions/executive-order-addressing-threat-posed-wechat/">Executive Order on Addressing the Threat Posed by WeChat – The White House (Accessed:Thu Mar 19 2026)</a><br>[5]: <a target="_blank" rel="noopener" href="https://terms.popopo.com/">利用規約 (Accessed:Thu Mar 19 2026)</a></p>
 </div><div class="article-licensing box"><div class="licensing-title"><p>メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察</p><p><a href="https://lunatic.red/2026/03/18/メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察/">https://lunatic.red/2026/03/18/メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>fuchse-ohren</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2026-03-18</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2026-03-19</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="CC0" href="https://creativecommons.org/publicdomain/zero/1.0/"><i class="icon fab fa-creative-commons-zero"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/">セキュリティ</a><a class="link-muted mr-2" rel="tag" href="/tags/POPOPO/">POPOPO</a><a class="link-muted mr-2" rel="tag" href="/tags/%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9/">メタバース</a><a class="link-muted mr-2" rel="tag" href="/tags/%E3%83%97%E3%83%A9%E3%82%A4%E3%83%90%E3%82%B7%E3%83%BC/">プライバシー</a><a class="link-muted mr-2" rel="tag" href="/tags/%E4%B8%AD%E5%9B%BD%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89/">中国クラウド</a><a class="link-muted mr-2" rel="tag" href="/tags/Tencent-TRTC/">Tencent TRTC</a><a class="link-muted mr-2" rel="tag" href="/tags/%E8%91%97%E4%BD%9C%E6%A8%A9/">著作権</a><a class="link-muted mr-2" rel="tag" href="/tags/%E8%91%97%E4%BD%9C%E8%80%85%E4%BA%BA%E6%A0%BC%E6%A8%A9/">著作者人格権</a><a class="link-muted mr-2" rel="tag" href="/tags/VRChat/">VRChat</a><a class="link-muted mr-2" rel="tag" href="/tags/SNS/">SNS</a><a class="link-muted mr-2" rel="tag" href="/tags/%E3%83%AA%E3%82%B9%E3%82%AF%E5%88%86%E6%9E%90/">リスク分析</a><a class="link-muted mr-2" rel="tag" href="/tags/%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA/">通話アプリ</a><a class="link-muted mr-2" rel="tag" href="/tags/%E3%83%87%E3%83%BC%E3%82%BF%E4%BF%9D%E8%AD%B7/">データ保護</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2038/01/19/index/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">トップページ</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/"><span class="level-item">JA3/JA4とは？DDoS対策やマルウェア検知に利用されるTLS指紋の解説</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card" id="comments"><div class="card-content"><h3 class="title is-5">コメント</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
             this.page.url = 'https://lunatic.red/2026/03/18/%E3%83%A1%E3%82%BF%E3%83%90%E3%83%BC%E3%82%B9%E9%80%9A%E8%A9%B1%E3%82%A2%E3%83%97%E3%83%AA%E3%80%8CPOPOPO%E3%80%8D%E5%88%A9%E7%94%A8%E4%B8%8A%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E4%B8%80%E8%80%83%E5%AF%9F/';
             this.page.identifier = '2026/03/18/メタバース通話アプリ「POPOPO」利用上のリスクに関する一考察/';

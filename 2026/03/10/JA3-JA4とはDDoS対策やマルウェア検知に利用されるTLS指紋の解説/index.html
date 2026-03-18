@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>JA3/JA4とは？DDoS対策やマルウェア検知に利用されるTLS指紋の解説 - Lunatic.red</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Lunatic.red"><meta name="msapplication-TileImage" content="/resource/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Lunatic.red"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="概要 セキュリティやネットワークの現場で耳にするJA3&amp;#x2F;JA4。 しかし、活用が進む反面、その仕組みについては知られていません。 そこで今回は、  「DDoS対策ができるらしいがどんな技術なのかイマイチわからない」 「WAF設定に投入している訳わからない乱数の意味が知りたい」  といった方に向けて、 セキュリティ技術者の視点からJA3&amp;#x2F;JA4などのTLSフィンガープリンティング技術がどう活用さ"><meta property="og:type" content="blog"><meta property="og:title" content="JA3/JA4とは？DDoS対策やマルウェア検知に利用されるTLS指紋の解説"><meta property="og:url" content="https://lunatic.red/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/"><meta property="og:site_name" content="Lunatic.red"><meta property="og:description" content="概要 セキュリティやネットワークの現場で耳にするJA3&amp;#x2F;JA4。 しかし、活用が進む反面、その仕組みについては知られていません。 そこで今回は、  「DDoS対策ができるらしいがどんな技術なのかイマイチわからない」 「WAF設定に投入している訳わからない乱数の意味が知りたい」  といった方に向けて、 セキュリティ技術者の視点からJA3&amp;#x2F;JA4などのTLSフィンガープリンティング技術がどう活用さ"><meta property="og:locale" content="ja_JP"><meta property="og:image" content="https://lunatic.red/2026/03/10/JA3-JA4とはDDoS対策やマルウェア検知に利用されるTLS指紋の解説/cover.png"><meta property="article:published_time" content="2026-03-10T13:53:11.000Z"><meta property="article:modified_time" content="2026-03-18T16:57:44.211Z"><meta property="article:author" content="fuchse-ohren"><meta property="article:tag" content="JA3"><meta property="article:tag" content="JA4"><meta property="article:tag" content="TLS指紋"><meta property="article:tag" content="TLSフィンガープリント"><meta property="article:tag" content="DDoS対策"><meta property="article:tag" content="マルウェア検知"><meta property="article:tag" content="Bot検知"><meta property="article:tag" content="TLSハンドシェイク"><meta property="article:tag" content="ネットワーク監視"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://lunatic.red/2026/03/10/JA3-JA4とはDDoS対策やマルウェア検知に利用されるTLS指紋の解説/cover.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lunatic.red/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/"},"headline":"JA3/JA4とは？DDoS対策やマルウェア検知に利用されるTLS指紋の解説","image":["https://lunatic.red/2026/03/10/JA3-JA4とはDDoS対策やマルウェア検知に利用されるTLS指紋の解説/cover.png"],"datePublished":"2026-03-10T13:53:11.000Z","dateModified":"2026-03-18T16:57:44.211Z","author":{"@type":"Person","name":"fuchse-ohren"},"publisher":{"@type":"Organization","name":"Lunatic.red","logo":{"@type":"ImageObject","url":"https://lunatic.red/resource/logo.svg"}},"description":"概要 セキュリティやネットワークの現場で耳にするJA3&#x2F;JA4。 しかし、活用が進む反面、その仕組みについては知られていません。 そこで今回は、  「DDoS対策ができるらしいがどんな技術なのかイマイチわからない」 「WAF設定に投入している訳わからない乱数の意味が知りたい」  といった方に向けて、 セキュリティ技術者の視点からJA3&#x2F;JA4などのTLSフィンガープリンティング技術がどう活用さ"}</script><link rel="canonical" href="https://lunatic.red/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/"><link rel="alternate" href="/atom.xml" title="Lunatic.red" type="application/atom+xml"><link rel="icon" href="/resource/favicon.svg"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&amp;display=swap;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>JA3/JA4とは？DDoS対策やマルウェア検知に利用されるTLS指紋の解説 - Lunatic.red</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Lunatic.red"><meta name="msapplication-TileImage" content="/resource/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Lunatic.red"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="概要セキュリティやネットワークの現場で耳にするJA3&amp;#x2F;JA4。しかし、活用が進む反面、その仕組みについては知られていません。 そこで今回は、    「DDoS対策ができるらしいがどんな技術なのかイマイチわからない」   「WAF設定に投入している訳わからない乱数の意味が知りたい」  といった方に向けて、セキュリティ技術者の視点からJA3&amp;#x2F;JA4などのTLSフィンガープリンテ"><meta property="og:type" content="blog"><meta property="og:title" content="JA3/JA4とは？DDoS対策やマルウェア検知に利用されるTLS指紋の解説"><meta property="og:url" content="https://lunatic.red/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/"><meta property="og:site_name" content="Lunatic.red"><meta property="og:description" content="概要セキュリティやネットワークの現場で耳にするJA3&amp;#x2F;JA4。しかし、活用が進む反面、その仕組みについては知られていません。 そこで今回は、    「DDoS対策ができるらしいがどんな技術なのかイマイチわからない」   「WAF設定に投入している訳わからない乱数の意味が知りたい」  といった方に向けて、セキュリティ技術者の視点からJA3&amp;#x2F;JA4などのTLSフィンガープリンテ"><meta property="og:locale" content="ja_JP"><meta property="og:image" content="https://lunatic.red/2026/03/10/JA3-JA4とはDDoS対策やマルウェア検知に利用されるTLS指紋の解説/cover.png"><meta property="article:published_time" content="2026-03-10T13:53:11.000Z"><meta property="article:modified_time" content="2026-03-18T16:57:44.211Z"><meta property="article:author" content="fuchse-ohren"><meta property="article:tag" content="JA3"><meta property="article:tag" content="JA4"><meta property="article:tag" content="TLS指紋"><meta property="article:tag" content="TLSフィンガープリント"><meta property="article:tag" content="DDoS対策"><meta property="article:tag" content="マルウェア検知"><meta property="article:tag" content="Bot検知"><meta property="article:tag" content="TLSハンドシェイク"><meta property="article:tag" content="ネットワーク監視"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://lunatic.red/2026/03/10/JA3-JA4とはDDoS対策やマルウェア検知に利用されるTLS指紋の解説/cover.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lunatic.red/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/"},"headline":"JA3/JA4とは？DDoS対策やマルウェア検知に利用されるTLS指紋の解説","image":["https://lunatic.red/2026/03/10/JA3-JA4とはDDoS対策やマルウェア検知に利用されるTLS指紋の解説/cover.png"],"datePublished":"2026-03-10T13:53:11.000Z","dateModified":"2026-03-18T16:57:44.211Z","author":{"@type":"Person","name":"fuchse-ohren"},"publisher":{"@type":"Organization","name":"Lunatic.red","logo":{"@type":"ImageObject","url":"https://lunatic.red/resource/logo.svg"}},"description":"概要セキュリティやネットワークの現場で耳にするJA3&#x2F;JA4。しかし、活用が進む反面、その仕組みについては知られていません。 そこで今回は、    「DDoS対策ができるらしいがどんな技術なのかイマイチわからない」   「WAF設定に投入している訳わからない乱数の意味が知りたい」  といった方に向けて、セキュリティ技術者の視点からJA3&#x2F;JA4などのTLSフィンガープリンテ"}</script><link rel="canonical" href="https://lunatic.red/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/"><link rel="alternate" href="/atom.xml" title="Lunatic.red" type="application/atom+xml"><link rel="icon" href="/resource/favicon.svg"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&amp;display=swap;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
   (function () {
       function switchTab() {
           if (!location.hash) {
@@ -29,53 +29,46 @@
       switchTab();
       window.addEventListener('hashchange', switchTab, false);
   })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/resource/logo.svg" alt="Lunatic.red" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">ホーム</a><a class="navbar-item" href="/archives">記事一覧</a><a class="navbar-item" href="/tools">ツール</a><a class="navbar-item" href="mailto:lunaticred_admin@kitsune.aleeas.com">お問い合わせ</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="RSS" href="/atom.xml"><i class="fas fa-rss"></i></a><a class="navbar-item search" title="検索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2026-03-10T13:53:11.000Z" title="2026/3/10 22:53:11">2026-03-10</time>に投稿</span><span class="level-item"><time dateTime="2026-03-18T16:57:44.211Z" title="2026/3/19 1:57:44">2026-03-19</time>に更新</span><span class="level-item"><a class="link-muted" href="/categories/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/">セキュリティ</a><span> / </span><a class="link-muted" href="/categories/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/%E6%8A%80%E8%A1%93%E8%A7%A3%E8%AA%AC/">技術解説</a></span><span class="level-item">26分で読む (約3923語)</span></div></div><h1 class="title is-3 is-size-4-mobile">JA3/JA4とは？DDoS対策やマルウェア検知に利用されるTLS指紋の解説</h1><div class="content"><p><img src="../JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/cover.png" alt></p>
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/resource/logo.svg" alt="Lunatic.red" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">ホーム</a><a class="navbar-item" href="/archives">記事一覧</a><a class="navbar-item" href="/tools">ツール</a><a class="navbar-item" href="mailto:lunaticred_admin@kitsune.aleeas.com">お問い合わせ</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="RSS" href="/atom.xml"><i class="fas fa-rss"></i></a><a class="navbar-item search" title="検索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2026-03-10T13:53:11.000Z" title="2026/3/10 22:53:11">2026-03-10</time>に投稿</span><span class="level-item"><time dateTime="2026-03-18T16:57:44.211Z" title="2026/3/19 1:57:44">2026-03-19</time>に更新</span><span class="level-item"><a class="link-muted" href="/categories/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/">セキュリティ</a><span> / </span><a class="link-muted" href="/categories/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/%E6%8A%80%E8%A1%93%E8%A7%A3%E8%AA%AC/">技術解説</a></span><span class="level-item">26分で読む (約3923語)</span></div></div><h1 class="title is-3 is-size-4-mobile">JA3/JA4とは？DDoS対策やマルウェア検知に利用されるTLS指紋の解説</h1><div class="content"><p><img src="/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/cover.png"></p>
 <hr>
-<h1 tabindex="-1"><span id="概要">概要</span></h1>
-<p>セキュリティやネットワークの現場で耳にする<strong>JA3/JA4</strong>。<br>
-しかし、活用が進む反面、その仕組みについては知られていません。</p>
-<p>そこで今回は、</p>
+<h1><span id="概要">概要</span></h1><p>セキュリティやネットワークの現場で耳にする<strong>JA3&#x2F;JA4</strong>。<br>しかし、活用が進む反面、その仕組みについては知られていません。</p>
+<p>そこで今回は、  </p>
 <ul>
-<li>「<strong>DDoS対策ができるらしいがどんな技術なのかイマイチわからない</strong>」</li>
+<li>「<strong>DDoS対策ができるらしいがどんな技術なのかイマイチわからない</strong>」  </li>
 <li>「<strong>WAF設定に投入している訳わからない乱数の意味が知りたい</strong>」</li>
 </ul>
-<p>といった方に向けて、<br>
-セキュリティ技術者の視点からJA3/JA4などのTLSフィンガープリンティング技術が<strong>どう活用</strong>され、<br>
-どのような<strong>仕組み</strong>で動作し、どんな<strong>利点・欠点</strong>があるか解説していきたいと思います。</p>
+<p>といった方に向けて、<br>セキュリティ技術者の視点からJA3&#x2F;JA4などのTLSフィンガープリンティング技術が<strong>どう活用</strong>され、<br>どのような<strong>仕組み</strong>で動作し、どんな<strong>利点・欠点</strong>があるか解説していきたいと思います。</p>
 <span id="more"></span>
+
 <hr>
-<h1 tabindex="-1"><span id="目次">目次</span></h1>
-<div class="toc">
+<h1><span id="目次">目次</span></h1><div class="toc">
+
 <!-- toc -->
+
 <ul>
-<li><a href="#ja3ja4%E3%81%A3%E3%81%A6%E4%BD%95">JA3/JA4って何？</a></li>
-<li><a href="#ja3ja4%E3%81%AE%E6%B4%BB%E7%94%A8%E4%BA%8B%E4%BE%8B">JA3/JA4の活用事例</a>
-<ul>
+<li><a href="#ja3ja4%E3%81%A3%E3%81%A6%E4%BD%95">JA3&#x2F;JA4って何？</a></li>
+<li><a href="#ja3ja4%E3%81%AE%E6%B4%BB%E7%94%A8%E4%BA%8B%E4%BE%8B">JA3&#x2F;JA4の活用事例</a><ul>
 <li><a href="#%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3">セキュリティ</a></li>
 <li><a href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF">ネットワーク</a></li>
 </ul>
 </li>
-<li><a href="#ja3%E3%81%AE%E5%8B%95%E4%BD%9C%E5%8E%9F%E7%90%86">JA3の動作原理</a>
-<ul>
+<li><a href="#ja3%E3%81%AE%E5%8B%95%E4%BD%9C%E5%8E%9F%E7%90%86">JA3の動作原理</a><ul>
 <li><a href="#tls%E3%83%8F%E3%83%B3%E3%83%89%E3%82%B7%E3%82%A7%E3%82%A4%E3%82%AF%E3%81%AE%E5%8F%8E%E9%9B%86">TLSハンドシェイクの収集</a></li>
 <li><a href="#ja3%E6%96%87%E5%AD%97%E5%88%97%E3%81%AE%E6%8A%BD%E5%87%BA">JA3文字列の抽出</a></li>
 <li><a href="#%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5%E5%8C%96">ハッシュ化</a></li>
 </ul>
 </li>
-<li><a href="#ja3ja4%E3%81%AA%E3%81%A9tls%E6%8C%87%E7%B4%8B%E3%81%AE%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88%E3%83%87%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88">JA3/JA4などTLS指紋のメリット・デメリット</a>
-<ul>
+<li><a href="#ja3ja4%E3%81%AA%E3%81%A9tls%E6%8C%87%E7%B4%8B%E3%81%AE%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88%E3%83%87%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88">JA3&#x2F;JA4などTLS指紋のメリット・デメリット</a><ul>
 <li><a href="#%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88">メリット</a></li>
-<li><a href="#%E3%83%87%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88">デメリット</a>
-<ul>
+<li><a href="#%E3%83%87%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88">デメリット</a><ul>
 <li><a href="#%E5%88%A4%E5%AE%9A%E3%81%8C%E5%AE%8C%E7%92%A7%E3%81%A7%E3%81%AA%E3%81%84">判定が完璧でない</a></li>
 <li><a href="#%E6%AF%94%E8%BC%83%E3%81%8C%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84">比較ができない</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#%E3%81%BE%E3%81%A8%E3%82%81">まとめ</a>
-<ul>
-<li><a href="#ja3ja4%E3%81%A8%E3%81%AF">JA3/JA4とは</a></li>
+<li><a href="#%E3%81%BE%E3%81%A8%E3%82%81">まとめ</a><ul>
+<li><a href="#ja3ja4%E3%81%A8%E3%81%AF">JA3&#x2F;JA4とは</a></li>
 <li><a href="#%E6%B4%BB%E7%94%A8%E3%81%AE%E5%BA%83%E3%81%8C%E3%82%8A">活用の広がり</a></li>
 <li><a href="#%E5%8B%95%E4%BD%9C%E3%81%AE%E4%BB%95%E7%B5%84%E3%81%BF">動作の仕組み</a></li>
 <li><a href="#%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88-1">メリット</a></li>
@@ -86,49 +79,39 @@
 <li><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">参考文献</a></li>
 </ul>
 <!-- tocstop -->
+
 </div>
+
 <hr>
-<h1 tabindex="-1"><span id="ja3ja4って何">JA3/JA4って何？</span></h1>
-<p>JA3やJA4といった<strong>TLS指紋</strong>の技術を端的に表すと、このようになります。</p>
+<h1><span id="ja3x2fja4って何">JA3&#x2F;JA4って何？</span></h1><p>JA3やJA4といった<strong>TLS指紋</strong>の技術を端的に表すと、このようになります。</p>
 <blockquote>
-<p>TLS暗号化された通信を<strong>復号せず</strong>に、<br>
-どのアプリケーションが通信の主体であるか見分ける技術</p>
+<p>TLS暗号化された通信を<strong>復号せず</strong>に、<br>どのアプリケーションが通信の主体であるか見分ける技術</p>
 </blockquote>
-<p>つまり、TLS指紋を使うと暗号化された通信に含まれるクレジットカード番号といった<strong>重要な情報を隠したまま</strong>、<br>
-どのような通信が行われているか<strong>概要を知ることができます</strong>。</p>
+<p>つまり、TLS指紋を使うと暗号化された通信に含まれるクレジットカード番号といった<strong>重要な情報を隠したまま</strong>、<br>どのような通信が行われているか<strong>概要を知ることができます</strong>。</p>
 <hr>
-<p>分かりやすいように手紙に例えて説明すると、<br>
-従来の平文(http)通信は<strong>葉書</strong>で、暗号通信(https)は<strong>封筒に入った手紙</strong>です。</p>
-<p><img src="../JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/laskdfj.png" alt></p>
-<p><strong>葉書</strong>(http)は誰でも中身を読むことが可能で、どんな手紙か判別できますが、<br>
-<strong>封筒</strong>(https)は中身を直接読むことができませんし、無理矢理封を破れば誰かが読んだことが分かってしまいます。</p>
-<p>しかし、<strong>封筒</strong>そのものを見てみると、企業ロゴが書かれていたり、「○○のお知らせ」という記載があったり、<br>
-中身そのものを知らなくても、ある程度中身が予想できます。</p>
-<p>このように<strong>手紙の中身の予想をデジタルの世界で行う</strong>のが、JA3/JA4などのTLS指紋です。</p>
+<p>分かりやすいように手紙に例えて説明すると、<br>従来の平文(http)通信は<strong>葉書</strong>で、暗号通信(https)は<strong>封筒に入った手紙</strong>です。</p>
+<p><img src="/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/laskdfj.png"></p>
+<p><strong>葉書</strong>(http)は誰でも中身を読むことが可能で、どんな手紙か判別できますが、<br><strong>封筒</strong>(https)は中身を直接読むことができませんし、無理矢理封を破れば誰かが読んだことが分かってしまいます。</p>
+<p>しかし、<strong>封筒</strong>そのものを見てみると、企業ロゴが書かれていたり、「○○のお知らせ」という記載があったり、<br>中身そのものを知らなくても、ある程度中身が予想できます。</p>
+<p>このように<strong>手紙の中身の予想をデジタルの世界で行う</strong>のが、JA3&#x2F;JA4などのTLS指紋です。</p>
 <hr>
-<p>技術的な所に話を戻すと、TLS指紋を使うことで「ある程度予想できる」のは、<br>
-<strong>どのアプリケーションが通信を行ったか</strong>ということです。</p>
-<p>結論として、TLS指紋を使うと<strong>使っているアプリケーションが分かる</strong>。<br>
-しかも、<strong>カード番号のような重要な情報は漏れない</strong>ということです。</p>
+<p>技術的な所に話を戻すと、TLS指紋を使うことで「ある程度予想できる」のは、<br><strong>どのアプリケーションが通信を行ったか</strong>ということです。</p>
+<p>結論として、TLS指紋を使うと<strong>使っているアプリケーションが分かる</strong>。<br>しかも、<strong>カード番号のような重要な情報は漏れない</strong>ということです。</p>
 <hr>
-<h1 tabindex="-1"><span id="ja3ja4の活用事例">JA3/JA4の活用事例</span></h1>
-<p><img src="../JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/asdjkf.png" alt></p>
-<p>JA3/JA4などのTLS指紋は、<strong>使っているアプリケーションが分かるが重要な情報は漏れない</strong>という性質を生かし、<br>
-様々なセキュリティやネットワークの現場で活用されています。</p>
+<h1><span id="ja3x2fja4の活用事例">JA3&#x2F;JA4の活用事例</span></h1><p><img src="/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/asdjkf.png"></p>
+<p>JA3&#x2F;JA4などのTLS指紋は、<strong>使っているアプリケーションが分かるが重要な情報は漏れない</strong>という性質を生かし、<br>様々なセキュリティやネットワークの現場で活用されています。</p>
 <hr>
-<h2 tabindex="-1"><span id="セキュリティ">セキュリティ</span></h2>
-<p>セキュリティの場面では、<strong>一般の利用者と攻撃者が使うアプリケーションの違い</strong>を見分けることで、<br>
-攻撃を防いだり、攻撃の証拠を調査したりといった目的で使われます。</p>
+<h2><span id="セキュリティ">セキュリティ</span></h2><p>セキュリティの場面では、<strong>一般の利用者と攻撃者が使うアプリケーションの違い</strong>を見分けることで、<br>攻撃を防いだり、攻撃の証拠を調査したりといった目的で使われます。</p>
 <hr>
 <p>例えば、2022年頃に流行したEmotetというマルウェアは以下のJA3指紋をもつ事が知られており、</p>
 <blockquote>
-<p>4d7a28d6f2263ed61de88ca66eb011e3</p>
+<p>4d7a28d6f2263ed61de88ca66eb011e3  </p>
 </blockquote>
 <p>このIoCを元に感染端末有無を調査したり、NGFWで通信を遮断したりといった対策が行われました。</p>
 <hr>
 <p>具体的なプロダクトを上げると、次のような活用事例があります。</p>
 <ul>
-<li>Suricata — JA3/JA4を用いたTLS通信の異常検知</li>
+<li>Suricata — JA3&#x2F;JA4を用いたTLS通信の異常検知</li>
 <li>Zeek — TLSハンドシェイクを記録しJA3で通信を識別</li>
 <li>Security Onion — JA3ログをSOC監視や脅威ハンティングに利用</li>
 <li>Splunk — JA3をログ分析し不審クライアントを特定</li>
@@ -138,40 +121,30 @@
 <li>VirusTotal — マルウェア通信のTLSフィンガープリント分析</li>
 </ul>
 <hr>
-<h2 tabindex="-1"><span id="ネットワーク">ネットワーク</span></h2>
-<p>ネットワークの場面ではBotやスクレイピングの識別や、<br>
-QoS優先制御のためのアプリケーション識別等に用いられ、<br>
-具体的には、次のような活用事例があります。</p>
+<h2><span id="ネットワーク">ネットワーク</span></h2><p>ネットワークの場面ではBotやスクレイピングの識別や、<br>QoS優先制御のためのアプリケーション識別等に用いられ、<br>具体的には、次のような活用事例があります。</p>
 <ul>
 <li>Cloudflare — TLSフィンガープリントでボットやスクレイピングを識別</li>
 <li>Akamai Technologies — TLS特徴を用いたボットトラフィック検出</li>
 <li>DataDome — JA3等を用いた自動アクセス検知</li>
 <li>PerimeterX — TLSハンドシェイク特徴でボット識別</li>
 <li>Kasada — TLSフィンガープリントでスクレイパー検知</li>
-<li>Amazon Web Services — WAF / FirewallでJA3ルールによる通信制御</li>
-<li>Microsoft Azure — Firewall/IDPSでTLSフィンガープリントを利用</li>
+<li>Amazon Web Services — WAF &#x2F; FirewallでJA3ルールによる通信制御</li>
+<li>Microsoft Azure — Firewall&#x2F;IDPSでTLSフィンガープリントを利用</li>
 <li>Google Cloud — クラウドネットワークでTLS特徴をトラフィック識別に利用</li>
 </ul>
 <hr>
-<h1 tabindex="-1"><span id="ja3の動作原理">JA3の動作原理</span></h1>
-<p>続いて、</p>
+<h1><span id="ja3の動作原理">JA3の動作原理</span></h1><p>続いて、</p>
 <ul>
 <li>JA3はどう生成されるのか</li>
-<li>JA3が何故効果的にはたらくのか<br>
-について解説します。</li>
+<li>JA3が何故効果的にはたらくのか<br>について解説します。</li>
 </ul>
 <hr>
-<h2 tabindex="-1"><span id="tlsハンドシェイクの収集">TLSハンドシェイクの収集</span></h2>
-<p><img src="../JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/image-2.png" alt></p>
-<p>前述した「手紙」の例えで使われた「封筒」に代わり、<br>
-JA3では<strong>TLSハンドシェイク</strong>を使ってアプリケーションを識別します。</p>
-<p>TLSハンドシェイクとは、通信開始時にやりとりされるメッセージのことで、<br>
-「どの暗号を使うのか」「宛先のサーバ名は何か」といった合意をとるためにやりとりされます。</p>
-<p>ここでやりとりされる情報は<strong>TLSパラメタ</strong>と呼ばれ、<br>
-<strong>暗号化されていない</strong>ことに加えて、アプリケーションごとに特徴もあります。</p>
+<h2><span id="tlsハンドシェイクの収集">TLSハンドシェイクの収集</span></h2><p><img src="/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/image-2.png"></p>
+<p>前述した「手紙」の例えで使われた「封筒」に代わり、<br>JA3では<strong>TLSハンドシェイク</strong>を使ってアプリケーションを識別します。</p>
+<p>TLSハンドシェイクとは、通信開始時にやりとりされるメッセージのことで、<br>「どの暗号を使うのか」「宛先のサーバ名は何か」といった合意をとるためにやりとりされます。</p>
+<p>ここでやりとりされる情報は<strong>TLSパラメタ</strong>と呼ばれ、<br><strong>暗号化されていない</strong>ことに加えて、アプリケーションごとに特徴もあります。</p>
 <hr>
-<h2 tabindex="-1"><span id="ja3文字列の抽出">JA3文字列の抽出</span></h2>
-<p><img src="../JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/f8e451dd-d00f-4f97-bcb4-57e5dceebf37.png" alt></p>
+<h2><span id="ja3文字列の抽出">JA3文字列の抽出</span></h2><p><img src="/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/f8e451dd-d00f-4f97-bcb4-57e5dceebf37.png"></p>
 <p>JA3では以下のTLSパラメタをJA3文字列に加工して利用しています。</p>
 <ul>
 <li>TLS Version</li>
@@ -181,33 +154,18 @@ JA3では<strong>TLSハンドシェイク</strong>を使ってアプリケーシ
 <li>EC Point Formats</li>
 </ul>
 <hr>
-<p>この「JA3文字列」はTLSパラメタを以下のような形式で区切り文字(カンマ)で連結して作成します。<br>
-<code>&lt;SSLVersion&gt;,&lt;Cipher&gt;,&lt;SSLExtension&gt;,&lt;EllipticCurve&gt;,&lt;EllipticCurvePointFormat&gt;</code></p>
-<p>パラメタの値が複数ある場合には、順序を保持したまま別の区切り文字(ハイフン)で結合され、<br>
-<code>47-53-5-10</code><br>
-といった文字列として出力します。</p>
-<p>このルールを元に実際にJA3文字列を作成すると<br>
-<code>771,47-53-5-10-49161-49162-49171-49172-50-56-19-4,0-10-11,23-24-25,0</code><br>
-というようになります。</p>
+<p>この「JA3文字列」はTLSパラメタを以下のような形式で区切り文字(カンマ)で連結して作成します。<br><code>&lt;SSLVersion&gt;,&lt;Cipher&gt;,&lt;SSLExtension&gt;,&lt;EllipticCurve&gt;,&lt;EllipticCurvePointFormat&gt;</code></p>
+<p>パラメタの値が複数ある場合には、順序を保持したまま別の区切り文字(ハイフン)で結合され、<br><code>47-53-5-10</code><br>といった文字列として出力します。</p>
+<p>このルールを元に実際にJA3文字列を作成すると<br><code>771,47-53-5-10-49161-49162-49171-49172-50-56-19-4,0-10-11,23-24-25,0</code><br>というようになります。</p>
 <hr>
-<p>ここでの抽出されている<code>771</code>などの数値はパラメタのIDを10進数で列挙するという仕様になっており、<br>
-例えば、<code>&lt;SSLVersion&gt;</code>の箇所にはTLS1.2を表す <code>0x0303</code>の10進数表現である<code>771</code>という文字列が入り、<br>
-<code>&lt;Cipher&gt;</code>の箇所にはCipher Suitesのリストに含まれる、暗号プロトコルのIDをそのまま列挙して、<br>
-<code>47-53-5-10-49161-49162-49171-49172-50-56-19-4</code>という形の文字列が入っています。</p>
+<p>ここでの抽出されている<code>771</code>などの数値はパラメタのIDを10進数で列挙するという仕様になっており、<br>例えば、<code>&lt;SSLVersion&gt;</code>の箇所にはTLS1.2を表す <code>0x0303</code>の10進数表現である<code>771</code>という文字列が入り、<br><code>&lt;Cipher&gt;</code>の箇所にはCipher Suitesのリストに含まれる、暗号プロトコルのIDをそのまま列挙して、<br><code>47-53-5-10-49161-49162-49171-49172-50-56-19-4</code>という形の文字列が入っています。</p>
 <hr>
-<h2 tabindex="-1"><span id="ハッシュ化">ハッシュ化</span></h2>
-<p><img src="../JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/image.png" alt></p>
-<p>最後にJA3文字列をMD5というアルゴリズムでハッシュ化し、<br>
-見覚えのある<strong>JA3フィンガープリント</strong>を生成します。</p>
+<h2><span id="ハッシュ化">ハッシュ化</span></h2><p><img src="/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/image.png"></p>
+<p>最後にJA3文字列をMD5というアルゴリズムでハッシュ化し、<br>見覚えのある<strong>JA3フィンガープリント</strong>を生成します。</p>
 <hr>
-<h1 tabindex="-1"><span id="ja3ja4などtls指紋のメリットデメリット">JA3/JA4などTLS指紋のメリット・デメリット</span></h1>
-<p>JA3/JA4といったTLS指紋の技術は、DDoS対策・Bot対策・優先制御など、<br>
-様々な使い道があり非常に便利ですが、注意すべき点もあります。</p>
-<p>本章では、メリット・デメリットを紹介し、<br>
-TLS指紋をどのように使ったらよいか、<br>
-また将来的なリスクについて綴っていこうと思います。</p>
-<h2 tabindex="-1"><span id="メリット">メリット</span></h2>
-<p><img src="../JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/asfd.png" alt></p>
+<h1><span id="ja3x2fja4などtls指紋のメリットデメリット">JA3&#x2F;JA4などTLS指紋のメリット・デメリット</span></h1><p>JA3&#x2F;JA4といったTLS指紋の技術は、DDoS対策・Bot対策・優先制御など、<br>様々な使い道があり非常に便利ですが、注意すべき点もあります。</p>
+<p>本章では、メリット・デメリットを紹介し、<br>TLS指紋をどのように使ったらよいか、<br>また将来的なリスクについて綴っていこうと思います。</p>
+<h2><span id="メリット">メリット</span></h2><p><img src="/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/asfd.png"></p>
 <p>TLS指紋のメリットはTLS指紋はペイロードを扱わず、高速である点です。</p>
 <p>そのため以下のような大規模・リアルタイムが求められる状況で活用できます。</p>
 <ul>
@@ -221,70 +179,51 @@ TLS指紋をどのように使ったらよいか、<br>
 <li>TLSの終端より外側のネットワークでの通信制御</li>
 <li>WAFやTLSインスペクションが使えない環境でのC2検知</li>
 </ul>
-<p>加えて、プライバシーリスクやセキュリティ装置自体の<br>
-侵害リスクを減らすことにも役立ちます。</p>
+<p>加えて、プライバシーリスクやセキュリティ装置自体の<br>侵害リスクを減らすことにも役立ちます。</p>
 <hr>
-<h2 tabindex="-1"><span id="デメリット">デメリット</span></h2>
-<p>TLS指紋における代表的なデメリットは、</p>
+<h2><span id="デメリット">デメリット</span></h2><p>TLS指紋における代表的なデメリットは、</p>
 <ul>
 <li>判定が完璧でない点</li>
 <li>比較ができない点</li>
 </ul>
 <p>の2点です。</p>
 <hr>
-<h3 tabindex="-1"><span id="判定が完璧でない">判定が完璧でない</span></h3>
-<p>「判定が完璧でない」というのは、</p>
+<h3><span id="判定が完璧でない">判定が完璧でない</span></h3><p>「判定が完璧でない」というのは、</p>
 <ul>
 <li><strong>同じアプリケーションでも違う指紋が出てくる</strong></li>
 <li><strong>複数のアプリケーションで指紋が重複する</strong></li>
 </ul>
 <p>という事象が発生してしまうという意味です。</p>
-<p>TLS指紋が<strong>パラメタを抽出してハッシュ化する</strong>という作りをしている以上、<br>
-防ぎようがなく、明確なデメリットといえます。</p>
+<p>TLS指紋が<strong>パラメタを抽出してハッシュ化する</strong>という作りをしている以上、<br>防ぎようがなく、明確なデメリットといえます。</p>
 <hr>
-<p>加えて、著名なソフトウェアと全く同じ指紋になるようにパラメタを調整する<br>
-<strong>欺瞞攻撃</strong>に対しては全く耐性がないため、APTなどの状況下では突破される恐れがあります。<br>
-※実際にTLS指紋への欺瞞を行うマルウェアなどは知る限りでは確認されていません</p>
-<p><img src="../JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/aslk;dfj.png" alt></p>
+<p>加えて、著名なソフトウェアと全く同じ指紋になるようにパラメタを調整する<br><strong>欺瞞攻撃</strong>に対しては全く耐性がないため、APTなどの状況下では突破される恐れがあります。<br>※実際にTLS指紋への欺瞞を行うマルウェアなどは知る限りでは確認されていません</p>
+<p><img src="/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/aslk;dfj.png"></p>
 <hr>
-<h3 tabindex="-1"><span id="比較ができない">比較ができない</span></h3>
-<p>TLS指紋はハッシュ関数を用いており、</p>
+<h3><span id="比較ができない">比較ができない</span></h3><p>TLS指紋はハッシュ関数を用いており、</p>
 <ul>
 <li><strong>指紋同士が似ているか</strong></li>
-<li><strong>元々どんな情報を持っていたか</strong><br>
-といった事を調べることはできません。</li>
+<li><strong>元々どんな情報を持っていたか</strong><br>といった事を調べることはできません。</li>
 </ul>
-<p><strong>全く同じか、そうでないか</strong>以外の情報を持たない為、<br>
-TLS指紋でマルウェアの亜種を見つけたりといったことはできません。</p>
+<p><strong>全く同じか、そうでないか</strong>以外の情報を持たない為、<br>TLS指紋でマルウェアの亜種を見つけたりといったことはできません。</p>
 <hr>
-<p>統計的な性質も失われ、変化量の増大を引き起こすため、<br>
-<font color="red">機械学習の入力として使用してはいけない</font>という点にも注意が必要です。</p>
-<p><img src="../JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/asefasd.png" alt></p>
-<p>TLS指紋をはじめとしたハッシュ値は離散的でカテゴリ変数としても扱えないため、<br>
-<strong>機械学習モデルの頑強性を大きく損ないます</strong></p>
-<h1 tabindex="-1"><span id="まとめ">まとめ</span></h1>
-<p>本記事では、JA3/JA4などのTLS指紋を通して、以下のポイントをご紹介しました。</p>
-<h2 tabindex="-1"><span id="ja3ja4とは">JA3/JA4とは</span></h2>
-<p>TLS指紋は、<strong>暗号化された通信を復号せず</strong>に、やり取りされるTLSパラメタを抽出することで、どのアプリケーションが通信を行っているかを特定する技術です。</p>
-<h2 tabindex="-1"><span id="活用の広がり">活用の広がり</span></h2>
-<p>セキュリティ（マルウェア検知）からネットワーク領域（Bot検知、QoS制御）まで、様々なベンダーが実装し、実運用で活用されています。</p>
-<h2 tabindex="-1"><span id="動作の仕組み">動作の仕組み</span></h2>
-<p>JA3指紋は、TLSハンドシェイク時に交換されるパラメタ（TLSバージョン、暗号スイート、拡張機能など）を組み合わせて文字列化したのち、MD5でハッシュ化することで生成されます。</p>
-<h2 tabindex="-1"><span id="メリット">メリット</span></h2>
-<ul>
+<p>統計的な性質も失われ、変化量の増大を引き起こすため、<br><font color="red">機械学習の入力として使用してはいけない</font>という点にも注意が必要です。</p>
+<p><img src="/2026/03/10/JA3-JA4%E3%81%A8%E3%81%AFDDoS%E5%AF%BE%E7%AD%96%E3%82%84%E3%83%9E%E3%83%AB%E3%82%A6%E3%82%A7%E3%82%A2%E6%A4%9C%E7%9F%A5%E3%81%AB%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8BTLS%E6%8C%87%E7%B4%8B%E3%81%AE%E8%A7%A3%E8%AA%AC/asefasd.png"></p>
+<p>TLS指紋をはじめとしたハッシュ値は離散的でカテゴリ変数としても扱えないため、<br><strong>機械学習モデルの頑強性を大きく損ないます</strong></p>
+<h1><span id="まとめ">まとめ</span></h1><p>本記事では、JA3&#x2F;JA4などのTLS指紋を通して、以下のポイントをご紹介しました。</p>
+<h2><span id="ja3x2fja4とは">JA3&#x2F;JA4とは</span></h2><p>TLS指紋は、<strong>暗号化された通信を復号せず</strong>に、やり取りされるTLSパラメタを抽出することで、どのアプリケーションが通信を行っているかを特定する技術です。</p>
+<h2><span id="活用の広がり">活用の広がり</span></h2><p>セキュリティ（マルウェア検知）からネットワーク領域（Bot検知、QoS制御）まで、様々なベンダーが実装し、実運用で活用されています。</p>
+<h2><span id="動作の仕組み">動作の仕組み</span></h2><p>JA3指紋は、TLSハンドシェイク時に交換されるパラメタ（TLSバージョン、暗号スイート、拡張機能など）を組み合わせて文字列化したのち、MD5でハッシュ化することで生成されます。</p>
+<h2><span id="メリット">メリット</span></h2><ul>
 <li><strong>高速処理</strong>：ペイロードを扱わないため、大規模なDDoS攻撃対策やリアルタイム処理に適している</li>
 <li><strong>プライバシーとセキュリティ</strong>：TLSを復号しないため、重要な情報を保護しながら通信の特徴を把握できる</li>
 </ul>
-<h2 tabindex="-1"><span id="デメリット">デメリット</span></h2>
-<ul>
+<h2><span id="デメリット">デメリット</span></h2><ul>
 <li><strong>判定の不完全性</strong>：同じアプリケーションでも異なる指紋が出たり、複数のアプリケーションで指紋が重複することがある</li>
 <li><strong>欺瞞への無防備</strong>：パラメタを調整されると容易に欺かれる可能性がある</li>
 <li><strong>比較・分析の限界</strong>：ハッシュ値のため、指紋同士の相似性を判定できず、機械学習の入力としても使用できない</li>
 </ul>
-<h2 tabindex="-1"><span id="最後に">最後に</span></h2>
-<p>JA3/JA4は強力な技術ですが、完璧ではありません。運用では、複数のシグネチャやヒューリスティクスと組み合わせ、<strong>段階的な防御層</strong>を構築することが重要です。</p>
-<h1 tabindex="-1"><span id="参考文献">参考文献</span></h1>
-<p><a target="_blank" rel="noopener" href="https://github.com/salesforce/ja3">GitHub - salesforce/ja3: JA3 is a standard for creating SSL client fingerprints in an easy to produce and shareable way. · GitHub (Accessed:Wed Mar 11 2026)</a></p>
+<h2><span id="最後に">最後に</span></h2><p>JA3&#x2F;JA4は強力な技術ですが、完璧ではありません。運用では、複数のシグネチャやヒューリスティクスと組み合わせ、<strong>段階的な防御層</strong>を構築することが重要です。</p>
+<h1><span id="参考文献">参考文献</span></h1><p><a target="_blank" rel="noopener" href="https://github.com/salesforce/ja3">GitHub - salesforce&#x2F;ja3: JA3 is a standard for creating SSL client fingerprints in an easy to produce and shareable way. · GitHub (Accessed:Wed Mar 11 2026)</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.foxio.io/ja4+-network-fingerprinting">JA4+ Network Fingerprinting • FoxIO Blog (Accessed:Wed Mar 11 2026)</a></p>
 <p><a target="_blank" rel="noopener" href="https://engineering.salesforce.com/tls-fingerprinting-with-ja3-and-ja3s-247362855967/">TLS Fingerprinting with JA3 and JA3S - Salesforce Engineering Blog (Accessed:Wed Mar 11 2026)</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml">Transport Layer Security (TLS) Parameters (Accessed:Wed Mar 11 2026)</a></p>
