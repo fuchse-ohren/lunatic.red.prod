@@ -494,9 +494,9 @@
     <category term="セキュリティ" scheme="https://lunatic.red/categories/%E3%82%B5%E3%83%BC%E3%83%90/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/"/>
     
     
-    <category term="nginx" scheme="https://lunatic.red/tags/nginx/"/>
-    
     <category term="セキュリティ" scheme="https://lunatic.red/tags/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/"/>
+    
+    <category term="nginx" scheme="https://lunatic.red/tags/nginx/"/>
     
     <category term="OpenSSL" scheme="https://lunatic.red/tags/OpenSSL/"/>
     
@@ -536,8 +536,6 @@
     
     <category term="広告ブロック" scheme="https://lunatic.red/tags/%E5%BA%83%E5%91%8A%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF/"/>
     
-    <category term="RHEL" scheme="https://lunatic.red/tags/RHEL/"/>
-    
     <category term="DNS" scheme="https://lunatic.red/tags/DNS/"/>
     
     <category term="DoT" scheme="https://lunatic.red/tags/DoT/"/>
@@ -545,6 +543,8 @@
     <category term="Android" scheme="https://lunatic.red/tags/Android/"/>
     
     <category term="セキュリティ" scheme="https://lunatic.red/tags/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/"/>
+    
+    <category term="RHEL" scheme="https://lunatic.red/tags/RHEL/"/>
     
     <category term="Linux" scheme="https://lunatic.red/tags/Linux/"/>
     
@@ -575,13 +575,13 @@
     
     <category term="広告ブロック" scheme="https://lunatic.red/tags/%E5%BA%83%E5%91%8A%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF/"/>
     
+    <category term="RHEL" scheme="https://lunatic.red/tags/RHEL/"/>
+    
     <category term="Podman" scheme="https://lunatic.red/tags/Podman/"/>
     
     <category term="Invidious" scheme="https://lunatic.red/tags/Invidious/"/>
     
     <category term="YouTube" scheme="https://lunatic.red/tags/YouTube/"/>
-    
-    <category term="RHEL" scheme="https://lunatic.red/tags/RHEL/"/>
     
     <category term="PostgreSQL" scheme="https://lunatic.red/tags/PostgreSQL/"/>
     
