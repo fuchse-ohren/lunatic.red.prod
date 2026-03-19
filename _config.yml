@@ -1,3 +1,4 @@
 include: [".well-known"]
+url: "https://lunatic.red"
 plugins:
   - jekyll-sitemap
