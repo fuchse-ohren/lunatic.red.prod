@@ -1,0 +1,543 @@
+<!--
+Generator: Gemini 3.1 Pro
+Prompt:
+Webブラウザから利用できる簡易的な画像編集ソフトを作成してください。
+必要な要件は次の通りです
+ - 推奨ブラウザはFirefox
+ - サーバ側での処理が不要で、html,css,jsで構成
+ - Ctrl + Vでクリップボードの画像を貼り付け、キャンバス領域にドラッグアンドドロップ、ファイルを開く方法で元画像を入力
+ - 画像に重ねて矩形を描写する機能を備える(1キーで切り替え、ドラッグ中にプレビュー表示あり)
+ - 画像に重ねて直線を描写する機能を備える(2キーで切り替え、ドラッグ中にプレビュー表示あり)
+ - 画像に重ねて直線の矢印を描写する機能を備える(3キーで切り替え、ドラッグ中にプレビュー表示あり)
+   - Shiftを押すと、水平もしくは垂直方向に線が引ける
+ - 描写した順に「①」「②」といった傍記を行う機能を備える。傍記は画面からはみ出さない描写オブジェクトと重複しない、適切な位置に自動的に配置される。
+   - どの描写種別(矩形、直線)を傍記描写の対象とするか個別に選択できる
+   - 傍記表示のフォント設定機能を備える(ブラウザで利用可能なフォントファミリを利用可能。デフォルトはメイリオ)
+   - 傍記表示の描写領域のサイズを設定できる。
+ - 操作履歴を最大10件記録し、進む、戻る操作ができる
+ - 描写色・背景色選択できる。背景は傍記にのみ適用される
+ - Ctrl+Sで画像を保存(ダウンロード)、Ctrl + Cでクリップボーﾄﾞにコピーできる
+-->
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <title>手順書画像作成君</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                background-color: #f0f0f0;
+            }
+            #toolbar {
+                background: #333;
+                color: white;
+                padding: 10px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                align-items: center;
+                font-size: 14px;
+            }
+            .tool-group {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                background: #444;
+                padding: 5px 10px;
+                border-radius: 4px;
+            }
+            button,
+            select,
+            input[type="number"],
+            input[type="color"] {
+                background: #555;
+                color: white;
+                border: 1px solid #777;
+                padding: 5px;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+            button:hover {
+                background: #666;
+            }
+            button:disabled {
+                background: #444;
+                color: #888;
+                cursor: not-allowed;
+            }
+            #canvas-container {
+                flex: 1;
+                overflow: auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+            canvas {
+                background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGHzTChQZ8UQ8NqQAOR/xowjBqA0sLAwAA7pBwQ1H1PNAAAAABJRU5ErkJggg==");
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                cursor: crosshair;
+            }
+            .active-tool {
+                color: #4caf50;
+                font-weight: bold;
+            }
+            .hint {
+                font-size: 12px;
+                color: #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="toolbar">
+            <div class="tool-group">
+                <button id="btn-open">開く</button>
+                <button id="btn-save" title="Ctrl+S">保存</button>
+                <button id="btn-copy" title="Ctrl+C">コピー</button>
+                <input type="file" id="file-input" style="display: none" accept="image/*" />
+            </div>
+
+            <div class="tool-group">
+                <span id="tool-1" class="active-tool">1:矩形</span>
+                <span id="tool-2">2:直線</span>
+                <span id="tool-3">3:矢印</span>
+            </div>
+
+            <div class="tool-group">
+                <label>色: <input type="color" id="color-fg" value="#ff0000" /></label>
+                <label>背景(傍記): <input type="color" id="color-bg" value="#ffffff" /></label>
+            </div>
+
+            <div class="tool-group">
+                <span>傍記対象:</span>
+                <label><input type="checkbox" id="annot-rect" checked /> 矩形</label>
+                <label><input type="checkbox" id="annot-line" checked /> 直線</label>
+                <label><input type="checkbox" id="annot-arrow" /> 矢印</label>
+            </div>
+
+            <div class="tool-group">
+                <label
+                    >フォント:
+                    <select id="font-family">
+                        <option value="'Meiryo', sans-serif">メイリオ</option>
+                        <option value="'MS PGothic', sans-serif">MS Pゴシック</option>
+                        <option value="BIZ UDGothic, sans-serif">Biz UDゴシック</option>
+                        <option value="'Yu Gothic', sans-serif">游ゴシック</option>
+                        <option value="'UDEV Gothic','UDEV Gothic','UDEV Gothic HSJPDOC','UDEV Gothic NF','UDEV Gothic NFLG', sans-serif">UDEV Gothic</option>
+                    </select>
+                </label>
+                <label>サイズ: <input type="number" id="annot-size" value="18" min="8" max="50" style="width: 50px" /></label>
+            </div>
+
+            <div class="tool-group">
+                <button id="btn-undo">元に戻す</button>
+                <button id="btn-redo">やり直し</button>
+            </div>
+
+            <span class="hint">Shift: 水平/垂直 | 傍記はドラッグで移動可</span>
+        </div>
+
+        <div id="canvas-container">
+            <canvas id="canvas" width="600" height="400"></canvas>
+        </div>
+
+        <script>
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+
+            // State
+            let baseImage = null;
+            let tool = "rect"; // rect, line, arrow
+            let isDrawing = false;
+            let startX = 0,
+                startY = 0,
+                endX = 0,
+                endY = 0;
+
+            // Annotation Dragging State
+            let isDraggingAnnot = false;
+            let draggingAnnotIndex = -1;
+            let tempShapes = []; // ドラッグ中の状態を保持する一時配列
+
+            // History
+            let history = [[]]; // Array of shapes arrays
+            let historyIndex = 0;
+            const MAX_HISTORY = 10;
+
+            // UI Elements
+            const elements = {
+                fgColor: document.getElementById("color-fg"),
+                bgColor: document.getElementById("color-bg"),
+                annotRect: document.getElementById("annot-rect"),
+                annotLine: document.getElementById("annot-line"),
+                annotArrow: document.getElementById("annot-arrow"),
+                fontFamily: document.getElementById("font-family"),
+                annotSize: document.getElementById("annot-size"),
+                btnUndo: document.getElementById("btn-undo"),
+                btnRedo: document.getElementById("btn-redo"),
+            };
+
+            const circledNumbers = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫", "⑬", "⑭", "⑮", "⑯", "⑰", "十八", "⑲", "⑳"];
+            function getCircledNumber(index) {
+                if (index < 20) return circledNumbers[index];
+                return `(${index + 1})`;
+            }
+
+            // --- Image Loading ---
+            function loadImage(src) {
+                const img = new Image();
+                img.onload = () => {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    baseImage = img;
+                    history = [[]];
+                    historyIndex = 0;
+                    updateButtons();
+                    render();
+                };
+                img.src = src;
+            }
+
+            // --- History Management ---
+            function saveState(shapes) {
+                // オブジェクトのディープコピーを作成して履歴に保存
+                const shapesCopy = JSON.parse(JSON.stringify(shapes));
+                history = history.slice(0, historyIndex + 1);
+                history.push(shapesCopy);
+                if (history.length > MAX_HISTORY + 1) {
+                    history.shift();
+                } else {
+                    historyIndex++;
+                }
+                updateButtons();
+            }
+
+            function undo() {
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    render();
+                    updateButtons();
+                }
+            }
+
+            function redo() {
+                if (historyIndex < history.length - 1) {
+                    historyIndex++;
+                    render();
+                    updateButtons();
+                }
+            }
+
+            function updateButtons() {
+                elements.btnUndo.disabled = historyIndex === 0;
+                elements.btnRedo.disabled = historyIndex === history.length - 1;
+            }
+
+            // --- Annotation Positioning Logic ---
+            function getInitialAnnotPos(shape) {
+                const size = parseInt(shape.annotSize);
+                let minX = Math.min(shape.startX, shape.endX);
+                let minY = Math.min(shape.startY, shape.endY);
+                let maxX = Math.max(shape.startX, shape.endX);
+                let maxY = Math.max(shape.startY, shape.endY);
+
+                const offset = size + 5;
+                const candidates = [
+                    { x: minX - offset, y: minY - offset },
+                    { x: maxX + offset, y: minY - offset },
+                    { x: minX - offset, y: maxY + offset },
+                    { x: maxX + offset, y: maxY + offset },
+                    { x: minX + (maxX - minX) / 2, y: minY - offset },
+                ];
+
+                let finalX = candidates[0].x;
+                let finalY = candidates[0].y;
+
+                for (let c of candidates) {
+                    if (c.x - size >= 0 && c.y - size >= 0 && c.x + size <= canvas.width && c.y + size <= canvas.height) {
+                        finalX = c.x;
+                        finalY = c.y;
+                        break;
+                    }
+                }
+                return { x: finalX, y: finalY };
+            }
+
+            // --- Drawing Engine ---
+            function render(customShapes = null) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                if (baseImage) ctx.drawImage(baseImage, 0, 0);
+
+                const shapes = customShapes || history[historyIndex];
+                let annotCount = 0;
+
+                shapes.forEach((shape) => {
+                    drawShape(shape);
+                    if (shape.needsAnnot) {
+                        drawAnnotation(shape, annotCount);
+                        annotCount++;
+                    }
+                });
+
+                // プレビュー表示
+                if (isDrawing) {
+                    const previewShape = {
+                        type: tool,
+                        startX,
+                        startY,
+                        endX,
+                        endY,
+                        color: elements.fgColor.value,
+                    };
+                    drawShape(previewShape);
+                }
+            }
+
+            function drawShape(shape) {
+                ctx.strokeStyle = shape.color;
+                ctx.lineWidth = 3;
+                ctx.lineJoin = "round";
+                ctx.lineCap = "round";
+
+                ctx.beginPath();
+                if (shape.type === "rect") {
+                    ctx.rect(shape.startX, shape.startY, shape.endX - shape.startX, shape.endY - shape.startY);
+                    ctx.stroke();
+                } else if (shape.type === "line" || shape.type === "arrow") {
+                    ctx.moveTo(shape.startX, shape.startY);
+                    ctx.lineTo(shape.endX, shape.endY);
+                    ctx.stroke();
+
+                    if (shape.type === "arrow") {
+                        const angle = Math.atan2(shape.endY - shape.startY, shape.endX - shape.startX);
+                        const headlen = 15;
+                        ctx.beginPath();
+                        ctx.moveTo(shape.endX, shape.endY);
+                        ctx.lineTo(shape.endX - headlen * Math.cos(angle - Math.PI / 6), shape.endY - headlen * Math.sin(angle - Math.PI / 6));
+                        ctx.moveTo(shape.endX, shape.endY);
+                        ctx.lineTo(shape.endX - headlen * Math.cos(angle + Math.PI / 6), shape.endY - headlen * Math.sin(angle + Math.PI / 6));
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            function drawAnnotation(shape, count) {
+                if (shape.annotX === undefined || shape.annotY === undefined) return;
+
+                const text = getCircledNumber(count);
+                const size = parseInt(shape.annotSize);
+
+                ctx.beginPath();
+                ctx.arc(shape.annotX, shape.annotY, size, 0, Math.PI * 2);
+                ctx.fillStyle = shape.bgColor;
+                ctx.fill();
+
+                ctx.font = `bold ${size * 1.5}px ${shape.font}`;
+                ctx.fillStyle = shape.color;
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(text, shape.annotX, shape.annotY);
+            }
+
+            // --- Mouse Events ---
+            canvas.addEventListener("mousedown", (e) => {
+                if (e.button !== 0) return;
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+
+                const currentShapes = history[historyIndex];
+
+                // 傍記のクリック判定（後ろからループして上に描画されているものを優先）
+                for (let i = currentShapes.length - 1; i >= 0; i--) {
+                    const shape = currentShapes[i];
+                    if (shape.needsAnnot && shape.annotX !== undefined && shape.annotY !== undefined) {
+                        const dist = Math.hypot(mouseX - shape.annotX, mouseY - shape.annotY);
+                        if (dist <= parseInt(shape.annotSize)) {
+                            isDraggingAnnot = true;
+                            draggingAnnotIndex = i;
+                            // ドラッグ中の一時状態をコピー
+                            tempShapes = JSON.parse(JSON.stringify(currentShapes));
+                            return; // 描画処理には移行しない
+                        }
+                    }
+                }
+
+                // 傍記ヒットしていなければ描画開始
+                startX = mouseX;
+                startY = mouseY;
+                endX = startX;
+                endY = startY;
+                isDrawing = true;
+            });
+
+            canvas.addEventListener("mousemove", (e) => {
+                const rect = canvas.getBoundingClientRect();
+                let curX = e.clientX - rect.left;
+                let curY = e.clientY - rect.top;
+
+                // 傍記のドラッグ処理
+                if (isDraggingAnnot) {
+                    tempShapes[draggingAnnotIndex].annotX = curX;
+                    tempShapes[draggingAnnotIndex].annotY = curY;
+                    render(tempShapes);
+                    return;
+                }
+
+                // 通常の描画処理
+                if (isDrawing) {
+                    if (e.shiftKey && (tool === "line" || tool === "arrow")) {
+                        const dx = Math.abs(curX - startX);
+                        const dy = Math.abs(curY - startY);
+                        if (dx > dy) curY = startY;
+                        else curX = startX;
+                    }
+                    endX = curX;
+                    endY = curY;
+                    render();
+                }
+            });
+
+            canvas.addEventListener("mouseup", (e) => {
+                // 傍記のドラッグ終了
+                if (isDraggingAnnot) {
+                    isDraggingAnnot = false;
+                    saveState(tempShapes);
+                    render();
+                    return;
+                }
+
+                // 通常の描画終了
+                if (!isDrawing) return;
+                isDrawing = false;
+
+                if (Math.abs(endX - startX) < 5 && Math.abs(endY - startY) < 5) {
+                    render();
+                    return; // 小さすぎる操作は無視
+                }
+
+                let needsAnnot = false;
+                if (tool === "rect" && elements.annotRect.checked) needsAnnot = true;
+                if (tool === "line" && elements.annotLine.checked) needsAnnot = true;
+                if (tool === "arrow" && elements.annotArrow.checked) needsAnnot = true;
+
+                const newShape = {
+                    type: tool,
+                    startX,
+                    startY,
+                    endX,
+                    endY,
+                    color: elements.fgColor.value,
+                    bgColor: elements.bgColor.value,
+                    needsAnnot: needsAnnot,
+                    annotSize: elements.annotSize.value,
+                    font: elements.fontFamily.value,
+                };
+
+                // 傍記の初期位置を決定
+                if (needsAnnot) {
+                    const pos = getInitialAnnotPos(newShape);
+                    newShape.annotX = pos.x;
+                    newShape.annotY = pos.y;
+                }
+
+                const currentShapes = [...history[historyIndex]];
+                currentShapes.push(newShape);
+                saveState(currentShapes);
+                render();
+            });
+
+            // --- Keyboard & Utility ---
+            window.addEventListener("keydown", (e) => {
+                if (!e.ctrlKey && !e.altKey && !e.metaKey) {
+                    if (e.key === "1") setTool("rect");
+                    if (e.key === "2") setTool("line");
+                    if (e.key === "3") setTool("arrow");
+                }
+                if (e.ctrlKey || e.metaKey) {
+                    if (e.key === "s") {
+                        e.preventDefault();
+                        saveImage();
+                    }
+                    if (e.key === "c") {
+                        e.preventDefault();
+                        copyImage();
+                    }
+                    if (e.key === "z") {
+                        e.preventDefault();
+                        undo();
+                    }
+                    if (e.key === "y") {
+                        e.preventDefault();
+                        redo();
+                    }
+                }
+            });
+
+            function setTool(newTool) {
+                tool = newTool;
+                document.querySelectorAll('[id^="tool-"]').forEach((el) => (el.className = ""));
+                let idx = tool === "rect" ? 1 : tool === "line" ? 2 : 3;
+                document.getElementById("tool-" + idx).className = "active-tool";
+            }
+
+            // 貼り付け, D&D, ファイル読み込み
+            window.addEventListener("paste", (e) => {
+                const items = e.clipboardData.items;
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].type.indexOf("image") !== -1) {
+                        const url = URL.createObjectURL(items[i].getAsFile());
+                        loadImage(url);
+                        e.preventDefault();
+                        break;
+                    }
+                }
+            });
+
+            window.addEventListener("dragover", (e) => e.preventDefault());
+            window.addEventListener("drop", (e) => {
+                e.preventDefault();
+                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                    const file = e.dataTransfer.files[0];
+                    if (file.type.startsWith("image/")) {
+                        loadImage(URL.createObjectURL(file));
+                    }
+                }
+            });
+
+            document.getElementById("btn-open").addEventListener("click", () => document.getElementById("file-input").click());
+            document.getElementById("file-input").addEventListener("change", (e) => {
+                if (e.target.files && e.target.files[0]) loadImage(URL.createObjectURL(e.target.files[0]));
+            });
+
+            function saveImage() {
+                const link = document.createElement("a");
+                link.download = "edited_image.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            }
+
+            async function copyImage() {
+                canvas.toBlob(async (blob) => {
+                    try {
+                        await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+                        alert("クリップボードにコピーしました");
+                    } catch (err) {
+                        alert("コピーに失敗しました。");
+                    }
+                });
+            }
+
+            document.getElementById("btn-save").addEventListener("click", saveImage);
+            document.getElementById("btn-copy").addEventListener("click", copyImage);
+            elements.btnUndo.addEventListener("click", undo);
+            elements.btnRedo.addEventListener("click", redo);
+
+            updateButtons();
+        </script>
+    </body>
+</html>
