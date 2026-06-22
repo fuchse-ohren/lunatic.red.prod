@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <title>手順書画像作成君</title>
+        <link rel="stylesheet" href="./index.css" type="text/css" />
+    </head>
+    <body>
+        <div id="helpModel">
+            <h1>手順書画像作成君 - 使用方法</h1>
+            <ul>
+                <li>画像をファイルメニューから開くか、<code>Ctrl + V</code> で貼り付けてください。</li>
+                <li>キーボードの数字キーで描画ツールを選択し、キャンバス上でドラッグして描画します。</li>
+                <ol>
+                    <li>矩形: 矩形を描写します</li>
+                    <li>直線: 直線を描写します</li>
+                    <li>矢印: 矢印を描写します</li>
+                    <li>ぼかし: 選択範囲にぼかし効果を適用します</li>
+                </ol>
+                <li>Shiftキーを押しながら直線や矢印を描画すると、水平もしくは垂直方向に移動が制限されます。</li>
+                <li>傍記対象にチェックマークをつけると描写した際に「①②」のような番号を自動的に付与します。</li>
+                <li>傍記の位置はドラッグして移動できます。</li>
+                <li>フォント設定では傍記表示のフォントや大きさを調整できます</li>
+                <li><code>Ctrl + Z</code> で戻る、<code>Ctrl + Y</code>でやり直し機能が使用できます。</li>
+                <li>完成した画像は <code>Ctrl + S</code>で保存、<code>Ctrl + C</code> でクリップボードにコピーできます。</li>
+            </ul>
+            <button OnClick="document.getElementById('helpModel').style.display = 'none';">閉じる</button>
+        </div>
+
+        <div id="version">ver.20260622</div>
+
+        <div id="toolbar">
+            <!-- メニューバー -->
+            <ul class="dads-horizontal-menu">
+                <!-- ファイル -->
+                <li class="dads-horizontal-menu__item">
+                    <dads-menu-list-box class="dads-menu-list-box">
+                        <button id="file-menu-opener" class="dads-menu-list-box__opener" type="button" aria-controls="file-menu-popup" aria-haspopup="menu" aria-expanded="false" data-size="md" data-style="text" data-text-weight="bold" data-js-opener>
+                            ファイル
+                            <svg class="dads-menu-list-box__opener-arrow" width="16" height="16" viewBox="0 0 24 24" fill="currentcolor" aria-hidden="true">
+                                <path d="m20.5 6.6-8 8-8-8L3.1 8l9.4 9.4L21.9 8l-1.4-1.4Z" />
+                            </svg>
+                        </button>
+                        <div class="dads-menu-list-box__popup" data-js-popup hidden>
+                            <ul id="file-menu-popup" class="dads-menu-list" role="menu" aria-labelledby="menu-opener">
+                                <li role="presentation">
+                                    <button class="dads-menu-list__item" type="button" data-type="box" data-size="regular" role="menuitem" id="btn-open">
+                                        <input type="file" id="file-input" style="display: none" accept="image/*" />
+                                        <span class="dads-menu-list__label"> 開く </span>
+                                    </button>
+                                </li>
+                                <li role="presentation">
+                                    <button class="dads-menu-list__item" type="button" data-type="box" data-size="regular" role="menuitem" id="btn-save">
+                                        <span class="dads-menu-list__label"> 保存 </span>
+                                    </button>
+                                </li>
+                                <li role="presentation">
+                                    <button class="dads-menu-list__item" type="button" data-type="box" data-size="regular" role="menuitem" id="btn-copy">
+                                        <span class="dads-menu-list__label"> クリップボードにコピー </span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </dads-menu-list-box>
+                </li>
+                <!-- ツール -->
+                <li class="dads-horizontal-menu__item">
+                    <span class="dads-menu-list-box__opener" data-size="md" id="tool-selected"> 描写: 矩形 </span>
+                </li>
+                <!-- 傍記 -->
+                <li class="dads-horizontal-menu__item">
+                    <dads-menu-list-box class="dads-menu-list-box">
+                        <button id="label-menu-opener" class="dads-menu-list-box__opener" type="button" aria-controls="label-menu-popup" aria-haspopup="menu" aria-expanded="false" data-size="md" data-style="text" data-text-weight="bold" data-js-opener>
+                            傍記対象
+                            <svg class="dads-menu-list-box__opener-arrow" width="16" height="16" viewBox="0 0 24 24" fill="currentcolor" aria-hidden="true">
+                                <path d="m20.5 6.6-8 8-8-8L3.1 8l9.4 9.4L21.9 8l-1.4-1.4Z" />
+                            </svg>
+                        </button>
+                        <div class="dads-menu-list-box__popup" data-js-popup hidden>
+                            <ul id="label-menu-popup" class="dads-menu-list" role="menu" aria-labelledby="menu-opener">
+                                <label><input type="checkbox" id="annot-blur" hidden /></label>
+                                <li role="presentation">
+                                    <div lass="dads-menu-list__item" data-size="regular" style="margin: 0px 15px 0px 10px">
+                                        <label class="dads-checkbox" data-size="sm">
+                                            <span class="dads-checkbox__checkbox">
+                                                <input class="dads-checkbox__input" type="checkbox" id="annot-rect" checked />
+                                            </span>
+                                            <span class="dads-checkbox__label">矩形</span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li role="presentation">
+                                    <div lass="dads-menu-list__item" data-size="regular" style="margin: 0px 15px 0px 10px">
+                                        <label class="dads-checkbox" data-size="sm">
+                                            <span class="dads-checkbox__checkbox">
+                                                <input class="dads-checkbox__input" type="checkbox" id="annot-line" checked />
+                                            </span>
+                                            <span class="dads-checkbox__label">直線</span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li role="presentation">
+                                    <div lass="dads-menu-list__item" data-size="regular" style="margin: 0px 15px 0px 10px">
+                                        <label class="dads-checkbox" data-size="sm">
+                                            <span class="dads-checkbox__checkbox">
+                                                <input class="dads-checkbox__input" type="checkbox" id="annot-arrow" />
+                                            </span>
+                                            <span class="dads-checkbox__label">矢印</span>
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </dads-menu-list-box>
+                </li>
+                <!-- 色 -->
+                <li class="dads-horizontal-menu__item">
+                    <dads-menu-list-box class="dads-menu-list-box">
+                        <button id="draw-menu-opener" class="dads-menu-list-box__opener" type="button" aria-controls="draw-menu-popup" aria-haspopup="menu" aria-expanded="false" data-size="md" data-style="text" data-text-weight="bold" data-js-opener>
+                            色
+                            <svg class="dads-menu-list-box__opener-arrow" width="16" height="16" viewBox="0 0 24 24" fill="currentcolor" aria-hidden="true">
+                                <path d="m20.5 6.6-8 8-8-8L3.1 8l9.4 9.4L21.9 8l-1.4-1.4Z" />
+                            </svg>
+                        </button>
+                        <div class="dads-menu-list-box__popup" data-js-popup hidden>
+                            <ul id="draw-menu-popup" class="dads-menu-list" role="menu" aria-labelledby="menu-opener">
+                                <li role="presentation">
+                                    <label class="dads-menu-list__item" data-size="regular"> 文字色 : <input type="color" id="color-fg" value="#ff0000" /></label>
+                                </li>
+                                <li role="presentation">
+                                    <label class="dads-menu-list__item" data-size="regular"> 背景色 : <input type="color" id="color-bg" value="#fff" /></label>
+                                </li>
+                            </ul>
+                        </div>
+                    </dads-menu-list-box>
+                </li>
+                <!-- フォント -->
+                <li class="dads-horizontal-menu__item">
+                    <dads-menu-list-box class="dads-menu-list-box">
+                        <button id="font-menu-opener" class="dads-menu-list-box__opener" type="button" aria-controls="font-menu-popup" aria-haspopup="menu" aria-expanded="false" data-size="md" data-style="text" data-text-weight="bold" data-js-opener>
+                            フォント
+                            <svg class="dads-menu-list-box__opener-arrow" width="16" height="16" viewBox="0 0 24 24" fill="currentcolor" aria-hidden="true">
+                                <path d="m20.5 6.6-8 8-8-8L3.1 8l9.4 9.4L21.9 8l-1.4-1.4Z" />
+                            </svg>
+                        </button>
+                        <div class="dads-menu-list-box__popup" data-js-popup hidden>
+                            <ul id="font-menu-popup" class="dads-menu-list" role="menu" aria-labelledby="menu-opener">
+                                <li role="presentation">
+                                    <select id="font-family" class="dads-menu-list__item" data-size="regular">
+                                        <option value="'MS PGothic', sans-serif" selected>MS Pゴシック</option>
+                                        <option value="'Meiryo', sans-serif">メイリオ</option>
+                                        <option value="BIZ UDGothic, sans-serif">Biz UDゴシック</option>
+                                        <option value="'Yu Gothic', sans-serif">游ゴシック</option>
+                                        <option value="'UDEV Gothic', sans-serif">UDEV Gothic</option>
+                                    </select>
+                                </li>
+                                <li role="presentation">
+                                    <label class="dads-menu-list__item" data-size="regular">サイズ: <input class="dads-input-text__input" type="number" id="annot-size" value="18" min="8" max="50" data-size="sm" /></label>
+                                </li>
+                            </ul>
+                        </div>
+                    </dads-menu-list-box>
+                </li>
+                <!-- 戻す、やり直し -->
+                <li class="dads-horizontal-menu__item">
+                    <button class="dads-menu-list-box__opener" data-size="md" id="btn-undo">&lt; 戻る</button>
+                </li>
+                <li class="dads-horizontal-menu__item">
+                    <button class="dads-menu-list-box__opener" data-size="md" id="btn-redo">やり直し &gt;</button>
+                </li>
+                <!-- ヘルプ -->
+                <li class="dads-horizontal-menu__item" style="margin-left: auto">
+                    <button class="dads-menu-list-box__opener" data-size="md" OnClick="document.getElementById('helpModel').style.display = 'block';">使用方法</button>
+                </li>
+            </ul>
+        </div>
+
+        <div id="canvas-container">
+            <canvas id="canvas" width="576" height="384"></canvas>
+        </div>
+        <script src="./index.min.js"></script>
+        <script src="./style.min.js" type="module"></script>
+    </body>
+</html>

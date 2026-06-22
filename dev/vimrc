@@ -1,0 +1,57 @@
+"Vundle のインストール
+" $ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+" $ vim +PluginInstall +qall
+" vundleの設定
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'w0ng/vim-hybrid'
+Plugin 'tomlion/vim-solidity'
+call vundle#end()
+filetype plugin indent on
+
+"プラグイン設定
+let g:airline#extensions#tabline#enabled = 1
+nmap <C-a> <Plug>AirlineSelectPrevTab
+nmap <C-d> <Plug>AirlineSelectNextTab
+set ttimeoutlen=50
+set background=dark
+colorscheme hybrid
+
+" vimカスタマイズ設定
+set fenc=utf-8
+set nobackup
+set noswapfile
+set autoread
+set hidden
+set showcmd
+
+set number
+set cursorline
+set virtualedit=onemore
+set smartindent
+set showmatch
+set matchtime=1
+set matchpairs& matchpairs+=<:>
+hi MatchParen ctermfg=LightGreen ctermbg=blue
+set laststatus=2
+set wildmode=list:longest
+nnoremap j gj
+nnoremap k gk
+syntax enable
+
+set list listchars=tab:\▸\-
+set expandtab
+set tabstop=2
+set shiftwidth=2
+
+set ignorecase
+set smartcase
+set incsearch
+set wrapscan
+set hlsearch
+nmap <Esc><Esc> :nohlsearch<CR><Esc>
