@@ -1,0 +1,107 @@
+<!-- =============================================
+     KeybordStudio V1 - PCB Studio module UI
+     modules/pcb/pcb-ui.html
+     ============================================= -->
+
+<!-- Layout Section -->
+<h3 id="pcb-sec-layout" class="pcb-section-header" style="margin-top:0;" data-i18n="pcb_section_layout">レイアウト (Layout)</h3>
+<div class="control-group">
+    <label class="pcb-label" data-i18n="pcb_layout_preset">配列プリセット</label>
+    <select id="pcb-layout-preset"></select>
+</div>
+<div class="pcb-row">
+    <div class="control-group" style="flex:1;">
+        <label class="pcb-label" data-i18n="pcb_rows">行 (Rows)</label>
+        <input type="number" id="pcb-rows" min="1" max="20" step="1" value="5" />
+    </div>
+    <div class="control-group" style="flex:1;">
+        <label class="pcb-label" data-i18n="pcb_cols">列 (Cols)</label>
+        <input type="number" id="pcb-cols" min="1" max="30" step="1" value="15" />
+    </div>
+</div>
+<div class="control-group">
+    <button id="pcb-btn-generate" class="pcb-btn pcb-btn-primary" data-i18n="pcb_btn_generate">⚡ 自動配線実行 (Auto-route)</button>
+</div>
+
+<!-- Parts Section -->
+<h3 id="pcb-sec-parts" class="pcb-section-header" data-i18n="pcb_section_parts">部品 (Parts)</h3>
+<div class="control-group">
+    <label class="pcb-label" data-i18n="pcb_switch">スイッチ種類</label>
+    <select id="pcb-switch-type"></select>
+</div>
+<div class="control-group">
+    <label class="pcb-label" data-i18n="pcb_diode">ダイオード</label>
+    <select id="pcb-diode-type"></select>
+</div>
+<div class="control-group">
+    <label class="pcb-label" data-i18n="pcb_mcu">マイコン (MCU)</label>
+    <select id="pcb-mcu-type"></select>
+</div>
+<div class="control-group">
+    <label class="pcb-label" data-i18n="pcb_usb">USB コネクタ</label>
+    <select id="pcb-usb-type"></select>
+</div>
+<div class="control-group pcb-row" style="align-items:center;">
+    <label class="pcb-label" style="flex:1;">
+        <input type="checkbox" id="pcb-mount-enable" checked />
+        <span data-i18n="pcb_mount_holes">取付け穴</span>
+    </label>
+    <input type="number" id="pcb-mount-count" min="0" max="8" step="2" value="4" style="width:60px;" />
+</div>
+
+<!-- Board Section -->
+<h3 id="pcb-sec-board" class="pcb-section-header" data-i18n="pcb_section_board">基板 (Board)</h3>
+<div class="control-group">
+    <label class="pcb-label" data-i18n="pcb_color">基板色</label>
+    <div id="pcb-color-swatches" class="pcb-swatches"></div>
+</div>
+<div class="control-group">
+    <label class="pcb-label" data-i18n="pcb_thickness">基板厚 (Thickness)</label>
+    <select id="pcb-thickness-select"></select>
+</div>
+<div class="control-group">
+    <label class="pcb-label" data-i18n="pcb_corner_r">角丸 R (mm)</label>
+    <input type="number" id="pcb-corner" min="0" max="10" step="0.1" value="1.5" />
+</div>
+<div class="control-group">
+    <label class="pcb-label" data-i18n="pcb_board_name">基板名 (Board name)</label>
+    <input type="text" id="pcb-board-name" value="KeybordStudio_PCB" />
+</div>
+
+<!-- Layer toggles for 3D preview -->
+<div class="control-group">
+    <label class="pcb-label" data-i18n="pcb_layers_visible">3D プレビュー表示</label>
+    <div class="pcb-layer-toggles">
+        <label><input type="checkbox" id="pcb-show-traces" checked /> Traces</label>
+        <label><input type="checkbox" id="pcb-show-pads" checked /> Pads</label>
+        <label><input type="checkbox" id="pcb-show-silk" checked /> Silk</label>
+        <label><input type="checkbox" id="pcb-show-comp" checked /> Components</label>
+        <label><input type="checkbox" id="pcb-show-holes" checked /> Holes</label>
+    </div>
+</div>
+
+<!-- DRC Section -->
+<h3 id="pcb-sec-drc" class="pcb-section-header" data-i18n="pcb_section_drc">DRC</h3>
+<div class="control-group">
+    <label class="pcb-label" data-i18n="pcb_vendor">PCB 業者 (Vendor)</label>
+    <select id="pcb-vendor"></select>
+</div>
+<div class="control-group">
+    <button id="pcb-btn-drc" class="pcb-btn" data-i18n="pcb_btn_drc">DRC 実行 (Run)</button>
+</div>
+<div id="pcb-drc-result" class="pcb-drc-block"></div>
+
+<!-- Stats Section -->
+<h3 id="pcb-sec-stats" class="pcb-section-header" data-i18n="pcb_section_stats">統計 (Stats)</h3>
+<div id="pcb-stats" class="pcb-stats-block"></div>
+
+<!-- Export Section -->
+<h3 id="pcb-sec-export" class="pcb-section-header" data-i18n="pcb_section_export">出力 (Export)</h3>
+<div class="control-group">
+    <button id="pcb-btn-export" class="pcb-btn pcb-btn-primary" data-i18n="pcb_btn_export">📦 発注 ZIP をダウンロード</button>
+</div>
+<div class="control-group pcb-row">
+    <button id="pcb-btn-gerber-only" class="pcb-btn" style="flex:1;" data-i18n="pcb_btn_gerber">Gerber のみ</button>
+    <button id="pcb-btn-bom-only"   class="pcb-btn" style="flex:1;" data-i18n="pcb_btn_bom">BOM/CPL のみ</button>
+</div>
+<p class="pcb-help">JLCPCB / PCBWay / Elecrow にそのままアップロード可能。</p>

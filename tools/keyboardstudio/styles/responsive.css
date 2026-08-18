@@ -1,0 +1,909 @@
+/* ========================================
+   レスポンシブ対応 - メディアクエリ
+   ======================================== */
+
+/* CSS変数でサイドバー幅を管理 */
+:root {
+    --sidebar-width: 400px;
+}
+
+/* 1400px以下: やや狭いモニター */
+@media screen and (max-width: 1400px) {
+    :root {
+        --sidebar-width: 360px;
+    }
+
+    #ui-panel {
+        width: var(--sidebar-width);
+    }
+
+    #canvas-container {
+        left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+    }
+
+    #btn-toggle-ui {
+        left: var(--sidebar-width);
+    }
+
+    /* 横位置はそのまま、縦だけHUDの下にずらす */
+    #history-controls {
+        left: calc(var(--sidebar-width) + 50px);
+        top: 105px;
+    }
+
+    #body-display-controls {
+        left: 50px;
+        top: 150px;
+    }
+
+    #gumball-target-controls {
+        left: 50px;
+    }
+
+    #mode-controls {
+        left: 50px;
+    }
+
+    #preset-float-panel {
+        left: calc(var(--sidebar-width) + 50px);
+        top: 215px;
+    }
+
+    #gallery-strip {
+        left: calc(var(--sidebar-width) + 15px);
+    }
+
+    #top-right-panel {
+        width: 240px;
+    }
+
+    #hud {
+        margin-left: calc((var(--sidebar-width) - 325px) / 2);
+    }
+}
+
+/* 1200px以下: 小さめのモニター */
+@media screen and (max-width: 1200px) {
+    :root {
+        --sidebar-width: 320px;
+    }
+
+    #ui-panel {
+        width: var(--sidebar-width);
+    }
+
+    #canvas-container {
+        left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+    }
+
+    #btn-toggle-ui {
+        left: var(--sidebar-width);
+    }
+
+    /* 横位置はそのまま、縦だけHUDの下にずらす */
+    #history-controls {
+        left: calc(var(--sidebar-width) + 50px);
+        top: 100px;
+    }
+
+    #gumball-target-controls {
+        left: 50px;
+    }
+
+    #body-display-controls {
+        left: 50px;
+        top: 145px;
+    }
+
+    #mode-controls {
+        left: 50px;
+    }
+
+    #preset-float-panel {
+        left: calc(var(--sidebar-width) + 50px);
+        top: 180px;
+    }
+
+    #gallery-strip {
+        left: calc(var(--sidebar-width) + 15px);
+        height: 90px;
+    }
+
+    #top-right-panel {
+        width: 220px;
+        font-size: 0.85rem;
+    }
+
+    #hud {
+        padding: 6px 10px;
+        gap: 5px;
+        margin-left: calc((var(--sidebar-width) - 305px) / 2);
+        max-width: calc(100vw - var(--sidebar-width) - 310px);
+    }
+
+    .hud-btn {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    .hud-btn svg {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .gallery-item {
+        width: 70px;
+        height: 70px;
+    }
+
+    .export-popup {
+        min-width: min(400px, 90vw) !important;
+        max-width: min(550px, 95vw) !important;
+    }
+
+    .ams-popup {
+        min-width: min(600px, 95vw) !important;
+        max-width: min(750px, 95vw) !important;
+    }
+
+    .csk-dialog {
+        width: 90vw;
+        max-width: 1000px;
+    }
+
+    .csk-left {
+        width: 150px;
+        min-width: 150px;
+    }
+
+    .control-group label {
+        font-size: 0.78rem;
+    }
+
+    h3 {
+        font-size: 0.95rem;
+    }
+
+    #batch-color-btn,
+    #batch-export-btn {
+        width: 55px !important;
+    }
+}
+
+/* 1024px以下: 小さいモニター（ノートPC等） */
+@media screen and (max-width: 1024px) {
+    :root {
+        --sidebar-width: 280px;
+    }
+
+    #ui-panel {
+        width: var(--sidebar-width);
+    }
+
+    #canvas-container {
+        left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+    }
+
+    #btn-toggle-ui {
+        left: var(--sidebar-width);
+    }
+
+    /* 横位置はそのまま、縦だけHUDの下にずらす */
+    #history-controls {
+        left: calc(var(--sidebar-width) + 50px);
+        top: 80px;
+    }
+
+    #gumball-target-controls {
+        left: 50px;
+        width: 100px;
+    }
+
+    #mode-controls {
+        left: 50px;
+        width: 120px;
+    }
+
+    #body-display-controls {
+        left: 50px;
+        top: 122px;
+        width: 100px;
+    }
+
+    #preset-float-panel {
+        left: calc(var(--sidebar-width) + 50px);
+        top: 155px;
+    }
+
+    #gallery-strip {
+        left: calc(var(--sidebar-width) + 50px);
+        height: 80px;
+        right: 10px;
+    }
+
+    #top-right-panel {
+        width: 200px;
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+
+    .cost-row {
+        font-size: 0.75rem;
+    }
+
+    .fil-control label {
+        font-size: 0.7rem;
+    }
+
+    .fil-control select {
+        font-size: 0.75rem;
+        padding: 4px;
+    }
+
+    #hud {
+        padding: 4px 8px;
+        gap: 4px;
+        top: 10px;
+        margin-left: calc((var(--sidebar-width) - 245px) / 2);
+        max-width: calc(100vw - var(--sidebar-width) - 250px);
+    }
+
+    .hud-btn {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    .hud-btn svg {
+        width: 15px !important;
+        height: 15px !important;
+    }
+
+    #hud-bridge-status .hbs-label {
+        display: none;
+    }
+
+    .gallery-item {
+        width: 60px;
+        height: 60px;
+    }
+
+    #batch-color-btn,
+    #batch-export-btn {
+        width: 50px !important;
+    }
+
+    #batch-color-btn span,
+    #batch-export-btn span {
+        font-size: 0.5rem !important;
+    }
+
+    #batch-color-btn svg,
+    #batch-export-btn svg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    .export-popup {
+        min-width: min(350px, 90vw) !important;
+        max-width: min(500px, 95vw) !important;
+        padding: 15px;
+    }
+
+    .export-popup-title {
+        font-size: 1rem;
+    }
+
+    .export-popup-preview {
+        height: 150px;
+    }
+
+    .ams-popup {
+        min-width: min(500px, 95vw) !important;
+        max-width: min(650px, 95vw) !important;
+    }
+
+    .ams-palette-section {
+        width: 160px;
+    }
+
+    .ams-slot {
+        width: 50px;
+        height: 60px;
+    }
+
+    .ams-slot-color {
+        width: 32px;
+        height: 32px;
+    }
+
+    .csk-dialog {
+        width: 95vw;
+        height: 85vh;
+        padding: 12px;
+    }
+
+    .csk-left {
+        width: 130px;
+        min-width: 130px;
+    }
+
+    .csk-gallery-tile {
+        width: 55px;
+        height: 55px;
+    }
+
+    .csk-slot {
+        width: 50px;
+        height: 50px;
+    }
+
+    .control-group {
+        margin-bottom: 10px;
+    }
+
+    .control-group label {
+        font-size: 0.75rem;
+    }
+
+    input[type="range"] {
+        margin: 2px 0;
+    }
+
+    h3 {
+        font-size: 0.9rem;
+        padding: 8px 0;
+        margin-bottom: 8px;
+    }
+
+    /* Smaller toggle on tablet/laptop — only --knob-w/--knob-h changes;
+       handle size + travel distance auto-recalculate from base.css. */
+    .toggle-knob {
+        --knob-w: 30px;
+        --knob-h: 15px;
+    }
+
+    #view-cube-container {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    .cube-face span {
+        font-size: 0.55rem;
+    }
+
+    .hist-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 1rem;
+    }
+
+    button {
+        padding: 8px;
+        font-size: 0.75rem;
+    }
+
+    .btn-square {
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+    }
+
+    select,
+    input[type="text"],
+    textarea {
+        padding: 5px;
+        font-size: 0.8rem;
+    }
+
+    #app-logo {
+        height: 35px;
+    }
+
+    .social-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    /* Cap the language select width so wiki + github stay on the same row. */
+    #language-select {
+        max-width: 84px;
+    }
+
+    /* ポップアップ内のグリッド調整 */
+    .export-popup-info {
+        grid-template-columns: 1fr !important;
+        gap: 5px !important;
+    }
+
+    .ams-content {
+        gap: 10px;
+    }
+}
+
+/* 900px以下: 非常に小さいモニター */
+@media screen and (max-width: 900px) {
+    :root {
+        --sidebar-width: 260px;
+    }
+
+    #ui-panel {
+        width: var(--sidebar-width);
+    }
+
+    #canvas-container {
+        left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+    }
+
+    #btn-toggle-ui {
+        left: var(--sidebar-width);
+    }
+
+    /* 横位置はそのまま、縦だけHUDの下にずらす */
+    #history-controls {
+        left: calc(var(--sidebar-width) + 50px);
+        top: 75px;
+    }
+
+    #gumball-target-controls {
+        left: 50px;
+    }
+
+    #mode-controls {
+        left: 50px;
+        width: 120px;
+    }
+
+    #preset-float-panel {
+        left: calc(var(--sidebar-width) + 50px);
+        top: 145px;
+    }
+
+    #body-display-controls {
+        left: 50px;
+        top: 115px;
+    }
+
+    #gallery-strip {
+        left: calc(var(--sidebar-width) + 50px);
+        height: 70px;
+    }
+
+    #top-right-panel {
+        width: 180px;
+        padding: 8px;
+    }
+
+    /* Even tighter header so wiki/github/language fit comfortably on a 260px sidebar. */
+    #app-logo {
+        height: 30px;
+    }
+    h2 {
+        font-size: 0.95rem;
+    }
+    .social-icon {
+        width: 20px;
+        height: 20px;
+    }
+    #language-select {
+        max-width: 78px;
+        font-size: 0.7rem;
+        padding: 2px 3px;
+    }
+    .header-actions {
+        gap: 3px;
+    }
+
+    #hud {
+        padding: 3px 6px;
+        gap: 3px;
+        top: 10px;
+        margin-left: calc((var(--sidebar-width) - 220px) / 2);
+        max-width: calc(100vw - var(--sidebar-width) - 225px);
+    }
+
+    .hud-btn {
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    .hud-btn svg {
+        width: 13px !important;
+        height: 13px !important;
+    }
+
+    .gallery-item {
+        width: 50px;
+        height: 50px;
+    }
+
+    #batch-color-btn,
+    #batch-export-btn {
+        width: 45px !important;
+    }
+
+    .export-popup {
+        min-width: min(300px, 90vw) !important;
+        max-width: min(450px, 95vw) !important;
+    }
+
+    .export-popup-preview {
+        height: 120px;
+    }
+
+    .ams-popup {
+        min-width: min(400px, 95vw) !important;
+        max-width: 95vw !important;
+        padding: 15px;
+    }
+
+    .ams-content {
+        flex-direction: column;
+    }
+
+    .ams-palette-section {
+        width: 100%;
+    }
+
+    .csk-dialog {
+        padding: 10px;
+    }
+
+    .csk-body {
+        flex-direction: column;
+    }
+
+    .csk-left {
+        width: 100%;
+        min-width: auto;
+        height: 120px;
+    }
+
+    .csk-gallery {
+        flex-direction: row;
+        flex-wrap: wrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        height: 100%;
+    }
+
+    .csk-gallery-tile {
+        width: 50px;
+        height: 50px;
+    }
+
+    h3 {
+        font-size: 0.85rem;
+    }
+
+    .control-group label {
+        font-size: 0.7rem;
+    }
+
+    #view-cube-container {
+        width: 80px !important;
+        height: 80px !important;
+        bottom: 15px !important;
+        right: 15px !important;
+    }
+
+    .cube-face span {
+        font-size: 0.5rem;
+    }
+
+    /* HUDセパレーター非表示 */
+    #hud>div[style*="width:1px"] {
+        display: none;
+    }
+
+    .hist-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+    }
+}
+
+/* 800px以下: タブレットサイズ */
+@media screen and (max-width: 800px) {
+    :root {
+        --sidebar-width: 240px;
+    }
+
+    #ui-panel {
+        width: var(--sidebar-width);
+    }
+
+    #canvas-container {
+        left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+    }
+
+    #btn-toggle-ui {
+        left: var(--sidebar-width);
+    }
+
+    /* 横位置はそのまま、縦だけHUDの下にずらす */
+    #history-controls {
+        left: calc(var(--sidebar-width) + 50px);
+        top: 70px;
+    }
+
+    #gumball-target-controls {
+        left: 50px;
+        width: 90px;
+    }
+
+    #mode-controls {
+        left: 50px;
+        width: 110px;
+    }
+
+    #preset-float-panel {
+        display: none;
+    }
+
+    #gallery-strip {
+        left: calc(var(--sidebar-width) + 5px);
+        height: 60px;
+        right: 5px;
+    }
+
+    #body-display-controls {
+        left: 50px;
+        top: 141px;
+        width: 90px;
+    }
+
+    #top-right-panel {
+        width: 160px;
+        padding: 6px;
+        font-size: 0.75rem;
+    }
+
+    #hud {
+        padding: 3px 5px;
+        gap: 2px;
+        top: 8px;
+        margin-left: calc((var(--sidebar-width) - 195px) / 2);
+        max-width: calc(100vw - var(--sidebar-width) - 200px);
+    }
+
+    .hud-btn {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .hud-btn svg {
+        width: 11px !important;
+        height: 11px !important;
+    }
+
+    .gallery-item {
+        width: 45px;
+        height: 45px;
+    }
+
+    #batch-color-btn,
+    #batch-export-btn {
+        width: 40px !important;
+    }
+
+    #batch-color-btn span,
+    #batch-export-btn span {
+        display: none !important;
+    }
+
+    .export-popup {
+        padding: 12px !important;
+    }
+
+    .export-popup-preview {
+        height: 100px;
+    }
+
+    .ams-popup {
+        padding: 12px !important;
+    }
+
+    .ams-slot {
+        width: 45px;
+        height: 55px;
+    }
+
+    .ams-slot-color {
+        width: 28px;
+        height: 28px;
+    }
+
+    #view-cube-container {
+        width: 70px !important;
+        height: 70px !important;
+    }
+
+    .cube-face span {
+        font-size: 0.45rem;
+    }
+
+    .hist-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.85rem;
+    }
+
+    .nav-row {
+        padding: 6px 8px !important;
+    }
+}
+
+/* 高さが小さい場合の対応 */
+@media screen and (max-height: 800px) {
+    #top-right-panel {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    #gallery-strip {
+        height: 70px !important;
+    }
+
+    .gallery-item {
+        width: 55px !important;
+        height: 55px !important;
+    }
+
+    .export-popup {
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+
+    .export-popup-preview {
+        height: 130px;
+    }
+
+    .ams-popup {
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+
+    .csk-dialog {
+        height: 85vh;
+    }
+
+    #view-cube-container {
+        width: 90px !important;
+        height: 90px !important;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    #top-right-panel {
+        max-height: 160px;
+    }
+
+    #gallery-strip {
+        height: 60px !important;
+    }
+
+    .gallery-item {
+        width: 45px !important;
+        height: 45px !important;
+    }
+
+    .export-popup-preview {
+        height: 100px;
+    }
+
+    .csk-dialog {
+        height: 90vh;
+    }
+
+    #view-cube-container {
+        width: 70px !important;
+        height: 70px !important;
+    }
+
+    .cube-face span {
+        font-size: 0.45rem;
+    }
+
+    #hud {
+        top: 5px !important;
+        padding: 3px 6px !important;
+        gap: 3px !important;
+    }
+
+    /* 履歴ボタンと表示切替をHUDの下に */
+    #history-controls {
+        top: 55px !important;
+    }
+
+
+
+    #gumball-target-controls {
+        left: 50px !important;
+    }
+
+    #mode-controls {
+        left: 50px !important;
+    }
+
+    #preset-float-panel {
+        top: 172px !important;
+    }
+}
+
+#body-display-controls {
+    top: 144px !important;
+}
+
+@media screen and (max-height: 600px) {
+    #top-right-panel {
+        max-height: 120px;
+    }
+
+    #gallery-strip {
+        height: 50px !important;
+    }
+
+    .gallery-item {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    #batch-color-btn,
+    #batch-export-btn {
+        width: 35px !important;
+    }
+
+    .export-popup-preview {
+        height: 80px;
+    }
+
+    #view-cube-container {
+        width: 60px !important;
+        height: 60px !important;
+    }
+}
+
+/* UI閉じた時の調整 */
+body.ui-closed #canvas-container,
+body.ui-closed #layout-canvas-container {
+    left: 0 !important;
+    width: 100% !important;
+}
+
+body.ui-closed #history-controls {
+    left: 50px !important;
+    top: 85px !important;
+}
+
+
+
+body.ui-closed #body-display-controls {
+    left: 50px !important;
+    top: 164px !important;
+}
+
+body.ui-closed #gumball-target-controls {
+    left: 50px !important;
+}
+
+body.ui-closed #mode-controls {
+    left: 50px !important;
+}
+
+body.ui-closed #preset-float-panel {
+    left: 50px !important;
+    top: 195px !important;
+}
+
+body.ui-closed #gallery-strip {
+    left: 15px !important;
+}
+
+body.ui-closed #hud {
+    margin-left: calc(-345px / 2) !important;
+}

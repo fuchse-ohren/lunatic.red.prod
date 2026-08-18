@@ -1,0 +1,899 @@
+/* ========================================== */
+/* ========================================== */
+/* V68: HUD Bridge ステータス & モバイル生成モード */
+/* ========================================== */
+#hud-bridge-status {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.55rem;
+    color: #666;
+    padding: 0 2px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+#hud-bridge-status .hbs-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #555;
+    flex-shrink: 0;
+    transition: background 0.3s;
+}
+
+#hud-bridge-status.connected .hbs-dot {
+    background: #4caf50;
+    box-shadow: 0 0 5px #4caf50;
+}
+
+#hud-bridge-status.connected {
+    color: #8bc34a;
+    cursor: default;
+}
+
+/* Bridge接続時のエクスポートボタン緑化 */
+#hud-export-wrapper.bridge-active .hud-btn svg path,
+#hud-export-wrapper.bridge-active .hud-btn svg rect {
+    fill: #4caf50 !important;
+}
+
+#mobile-genmode-popup {
+    display: none;
+    position: fixed;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(25, 25, 25, 0.98);
+    border: 1px solid #ff9800;
+    border-radius: 10px;
+    padding: 14px 18px;
+    z-index: 310;
+    min-width: 220px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    transform: translateX(-50%) translateY(10px);
+}
+
+#mobile-genmode-popup.open {
+    display: block;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+#mobile-genmode-popup label {
+    display: block;
+    color: #ff9800;
+    font-size: 0.7rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+#mobile-genmode-popup select {
+    width: 100%;
+    background: #111;
+    border: 1px solid #ff9800;
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+#mobile-genmode-popup select:last-child {
+    margin-bottom: 0;
+}
+
+/* V67.1: スマートフォン専用レイアウト          */
+/* ========================================== */
+
+/* モバイルUI要素 - デフォルト非表示 */
+#mobile-top-bar,
+#mobile-bottom-nav,
+#mobile-search-box,
+#mobile-undoredo-popup,
+#mobile-genmode-popup {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+
+    /* --- 全体: 3Dプレビューがフルスクリーン --- */
+    body {
+        overflow: hidden;
+    }
+
+    #canvas-container {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 1;
+    }
+
+    /* --- 設定パネル: 下から半分スライドアップ --- */
+    #ui-panel {
+        position: fixed !important;
+        left: 0 !important;
+        bottom: 56px !important;
+        top: auto !important;
+        width: 100% !important;
+        height: calc(50vh) !important;
+        transform: translateY(100%) !important;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        border-right: none !important;
+        border-top: 2px solid var(--accent);
+        box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.7);
+        z-index: 500;
+    }
+
+    body.mobile-panel-open #ui-panel {
+        transform: translateY(0) !important;
+    }
+
+    #ui-scroll-area {
+        padding: 8px 12px 20px 12px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #ui-header-area {
+        padding: 6px 12px 4px 12px;
+    }
+
+    /* ナビゲーション */
+    #nav-bar {
+        padding: 4px;
+        gap: 2px;
+    }
+
+    .nav-row {
+        gap: 3px;
+    }
+
+    #section-select {
+        font-size: 0.78rem;
+    }
+
+    /* PC用の検索ボックスは非表示 */
+    .nav-row:nth-child(2) {
+        display: none !important;
+    }
+
+    /* コントロール調整 */
+    h3 {
+        font-size: 0.82rem;
+        margin-top: 8px;
+    }
+
+    .control-group {
+        margin-bottom: 4px;
+    }
+
+    .control-group label {
+        font-size: 0.7rem;
+    }
+
+    button {
+        padding: 6px;
+        font-size: 0.72rem;
+    }
+
+    select,
+    input[type="text"],
+    textarea {
+        font-size: 0.78rem;
+        padding: 4px;
+    }
+
+    /* Smallest toggle on mobile — auto-aligned via base.css custom properties. */
+    .toggle-knob {
+        --knob-w: 28px;
+        --knob-h: 14px;
+    }
+
+    /* --- PC用フローティングUI全非表示 --- */
+    #hud {
+        display: none !important;
+    }
+
+    #top-right-panel {
+        display: none !important;
+    }
+
+    #view-cube-wrapper {
+        display: none !important;
+    }
+
+    #btn-toggle-ui {
+        display: none !important;
+    }
+
+    #btn-help {
+        display: none !important;
+    }
+
+    #history-controls {
+        display: none !important;
+    }
+
+
+
+    #gumball-target-controls {
+        display: none !important;
+    }
+
+    #mode-controls {
+        display: none !important;
+    }
+
+    #preset-float-panel {
+        display: none !important;
+    }
+
+
+    /* --- ツールチップ・ヒント非表示 --- */
+    #body-display-controls {
+        display: none !important;
+    }
+
+    .hint-tooltip {
+        display: none !important;
+    }
+
+    /* --- ヒントトグル・簡単モードトグル行を非表示 --- */
+    #nav-bar .nav-row:nth-child(3) {
+        display: none !important;
+    }
+
+    /* --- 設定パネルヘッダー: ロゴ・名前・ソーシャル非表示 --- */
+    .header-row {
+        display: none !important;
+    }
+
+    /* ナビゲーションだけ残す */
+    #gallery-strip {
+        bottom: 56px !important;
+        left: 5px !important;
+        right: 5px !important;
+        height: 70px !important;
+        z-index: 400 !important;
+    }
+
+    .gallery-item {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    #batch-color-btn span,
+    #batch-export-btn span {
+        display: none !important;
+    }
+
+    #batch-color-btn,
+    #batch-export-btn {
+        width: 40px !important;
+    }
+
+    /* --- モバイルトップバー --- */
+    #mobile-top-bar {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 44px;
+        background: rgba(18, 18, 18, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+        z-index: 300;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+    }
+
+    .mobile-top-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .mobile-top-left .mobile-app-name {
+        color: var(--accent);
+        font-size: 0.85rem;
+        font-weight: bold;
+    }
+
+    .mobile-top-left .mobile-app-ver {
+        color: var(--text-muted);
+        font-size: 0.55rem;
+        opacity: 0.7;
+    }
+
+    .mobile-top-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .mobile-top-btn {
+        width: 32px;
+        height: 32px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+    }
+
+    .mobile-top-btn:active {
+        background: rgba(0, 229, 255, 0.15);
+    }
+
+    .mobile-top-btn svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    /* --- モバイル検索ボックス --- */
+    #mobile-search-box {
+        display: none;
+        position: fixed;
+        top: 44px;
+        left: 0;
+        right: 0;
+        background: rgba(18, 18, 18, 0.95);
+        padding: 8px 12px;
+        z-index: 290;
+        border-bottom: 1px solid #333;
+    }
+
+    #mobile-search-box.open {
+        display: block !important;
+    }
+
+    #mobile-search-input {
+        width: 100%;
+        box-sizing: border-box;
+        background: #222;
+        border: 1px solid var(--accent);
+        color: #fff;
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        border-radius: 6px;
+        outline: none;
+    }
+
+    #mobile-search-input::placeholder {
+        color: #666;
+    }
+
+    /* --- モバイルボトムナビ --- */
+    #mobile-bottom-nav {
+        display: flex !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 56px;
+        background: rgba(18, 18, 18, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(0, 229, 255, 0.3);
+        z-index: 600;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .mobile-nav-btn {
+        flex: 1;
+        height: 100%;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        color: #888;
+        transition: color 0.2s;
+        padding: 4px 0;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .mobile-nav-btn:active {
+        color: var(--accent);
+    }
+
+    .mobile-nav-btn.active {
+        color: var(--accent);
+    }
+
+    .mobile-nav-btn svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .mobile-nav-btn svg path,
+    .mobile-nav-btn svg rect,
+    .mobile-nav-btn svg text,
+    .mobile-nav-btn svg circle,
+    .mobile-nav-btn svg line,
+    .mobile-nav-btn svg polygon {
+        fill: currentColor;
+        stroke: none;
+    }
+
+    .mobile-nav-btn .nav-label {
+        font-size: 0.55rem;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+    /* パネル開いたときのオーバーレイ */
+    #mobile-panel-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 450;
+    }
+
+    body.mobile-panel-open #mobile-panel-overlay {
+        display: block;
+    }
+
+    /* --- ポップアップ系 --- */
+    .export-popup-overlay {
+        z-index: 10000 !important;
+    }
+
+    .export-popup {
+        min-width: 92vw !important;
+        max-width: 96vw !important;
+        padding: 12px !important;
+        max-height: 85vh;
+        overflow-y: auto;
+        border-radius: 12px !important;
+        border-width: 1px !important;
+    }
+
+    .export-popup-preview {
+        height: 120px;
+    }
+
+    .export-popup-header {
+        padding-bottom: 8px;
+        margin-bottom: 10px;
+    }
+
+    .export-popup-title {
+        font-size: 0.9rem;
+    }
+
+    .export-popup-format {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+
+    .export-popup-info {
+        grid-template-columns: 1fr !important;
+        gap: 6px !important;
+        margin-bottom: 10px;
+    }
+
+    .export-info-item {
+        padding: 6px 10px;
+    }
+
+    .export-info-label {
+        font-size: 0.68rem;
+    }
+
+    .export-info-value {
+        font-size: 0.78rem;
+    }
+
+    .export-popup-buttons {
+        gap: 8px;
+        margin-top: 10px;
+        padding-top: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .export-popup-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+        border-radius: 6px;
+        min-width: 80px;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    /* Mobile: split-wrap should not cut the button */
+    .export-split-wrap {
+        flex-shrink: 0;
+    }
+
+    .export-split-wrap .export-popup-btn.confirm {
+        border-radius: 6px !important;
+    }
+
+    .export-split-wrap .export-split-toggle {
+        display: none !important;
+    }
+
+    .export-split-dropdown {
+        display: none !important;
+    }
+
+    .export-format-option {
+        padding: 8px !important;
+    }
+
+    .export-format-option label {
+        font-size: 0.75rem !important;
+    }
+
+    /* AMS - フルスクリーンモバイル */
+    .ams-popup-overlay {
+        z-index: 10000 !important;
+    }
+
+    .ams-popup {
+        min-width: 96vw !important;
+        max-width: 98vw !important;
+        padding: 10px !important;
+        max-height: 90vh;
+        overflow-y: auto;
+        border-radius: 12px !important;
+    }
+
+    .ams-popup-header {
+        padding: 8px 0;
+    }
+
+    .ams-popup-title {
+        font-size: 1rem !important;
+    }
+
+    .ams-content {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    .ams-palette-section {
+        width: 100% !important;
+    }
+
+    .ams-palette-grid {
+        max-height: 120px;
+        overflow-y: auto;
+    }
+
+    .ams-slots-section {
+        flex-direction: column !important;
+    }
+
+    .ams-type-column {
+        width: 100% !important;
+    }
+
+    .ams-unit {
+        flex-direction: row !important;
+        flex-wrap: wrap;
+    }
+
+    .ams-slot {
+        width: 48px;
+        height: 58px;
+    }
+
+    .ams-slot-color {
+        width: 30px;
+        height: 30px;
+    }
+
+    .ams-popup-footer {
+        flex-wrap: wrap;
+        gap: 6px;
+        padding-top: 8px;
+        justify-content: center;
+    }
+
+    .ams-popup-footer .wiki-hint {
+        display: none;
+    }
+
+    .ams-popup-btn {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+    }
+
+    /* CSK - フルスクリーンモバイル */
+    .csk-dialog {
+        width: 98vw !important;
+        height: 90vh !important;
+        padding: 8px !important;
+        border-radius: 12px !important;
+    }
+
+    .csk-header {
+        padding: 6px 0 !important;
+    }
+
+    .csk-title {
+        font-size: 0.9rem !important;
+    }
+
+    .csk-body {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .csk-left {
+        width: 100% !important;
+        min-width: auto !important;
+        height: 80px !important;
+    }
+
+    .csk-gallery {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        gap: 6px !important;
+        padding: 4px !important;
+    }
+
+    .csk-gallery-tile {
+        width: 50px !important;
+        height: 50px !important;
+        flex-shrink: 0;
+    }
+
+    .csk-right {
+        overflow-y: auto;
+    }
+
+    .csk-grid-area {
+        max-height: 35vh;
+        overflow-y: auto;
+    }
+
+    .csk-props {
+        font-size: 0.72rem;
+    }
+
+    .csk-toolbar {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .csk-toolbar-btn {
+        font-size: 0.65rem !important;
+        padding: 3px 6px !important;
+    }
+
+    .csk-footer {
+        padding-top: 6px !important;
+        gap: 6px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .csk-footer .wiki-hint {
+        display: none;
+    }
+
+    /* --- モバイルでAMS/CSK非表示 --- */
+    #hud-ams {
+        display: none !important;
+    }
+
+    #btn-ams-settings,
+    #btn-ams-simple {
+        display: none !important;
+    }
+
+    #btn-custom-sprue-kit {
+        display: none !important;
+    }
+
+    #ams-confirm-overlay {
+        display: none !important;
+    }
+
+    /* 簡単モードのAMS設定・エクスポートボタン非表示 */
+    #btn-simple-ams-config {
+        display: none !important;
+    }
+
+    #btn-simple-export {
+        display: none !important;
+    }
+
+    .control-group:has(#btn-simple-export) {
+        display: none !important;
+    }
+
+    /* --- セクション非表示 --- */
+    .mobile-hide {
+        display: none !important;
+    }
+
+    #btn-ams-config {
+        display: none !important;
+    }
+
+    .ams-select-empty {
+        display: none !important;
+    }
+
+    /* スクロール領域の下余白（ボトムナビに被らないように） */
+    #ui-scroll-area {
+        padding-bottom: 30px !important;
+    }
+
+    /* モバイルカラーパレット */
+    .ams-select-palette {
+        gap: 6px !important;
+    }
+
+    .ams-select-item {
+        min-width: 38px;
+    }
+
+    .ams-select-item-color {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    .ams-select-item-num {
+        font-size: 0.55rem !important;
+    }
+
+    .ams-select-item-material {
+        font-size: 0.5rem !important;
+    }
+
+    /* --- 戻る/進むポップアップ --- */
+    #mobile-undoredo-popup {
+        display: none;
+        position: fixed;
+        bottom: 56px;
+        left: 0;
+        background: rgba(20, 20, 25, 0.98);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-top: 1px solid rgba(0, 229, 255, 0.4);
+        border-right: 1px solid rgba(0, 229, 255, 0.2);
+        border-radius: 0 12px 0 0;
+        z-index: 550;
+        padding: 8px 6px;
+        flex-direction: row;
+        gap: 6px;
+        transform: translateY(100%);
+        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #mobile-undoredo-popup.open {
+        display: flex;
+        transform: translateY(0);
+    }
+
+    .mobile-ur-btn {
+        width: 48px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        color: #ccc;
+        font-size: 1.3rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.15s, border-color 0.15s;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .mobile-ur-btn:active:not(:disabled) {
+        background: rgba(0, 229, 255, 0.15);
+        border-color: rgba(0, 229, 255, 0.4);
+        color: var(--accent);
+    }
+
+    .mobile-ur-btn:disabled {
+        opacity: 0.3;
+        color: #555;
+    }
+
+    /* --- その他のポップアップ --- */
+    .shortcut-card {
+        max-width: 95vw !important;
+        padding: 12px !important;
+        max-height: 75vh;
+        overflow-y: auto;
+    }
+
+    .debug-panel {
+        max-width: 95vw !important;
+        padding: 10px !important;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    #dnd-overlay h1 {
+        font-size: 1.2rem !important;
+    }
+
+    .social-icon {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* 更に小さいスマホ（幅480px以下） */
+@media screen and (max-width: 480px) {
+    #mobile-top-bar {
+        height: 40px;
+        padding: 0 8px;
+    }
+
+    .mobile-top-btn {
+        width: 28px;
+        height: 28px;
+    }
+
+    .mobile-top-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .mobile-app-name {
+        font-size: 0.78rem !important;
+    }
+
+    #mobile-bottom-nav {
+        height: 50px;
+    }
+
+    .mobile-nav-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .mobile-nav-btn .nav-label {
+        font-size: 0.5rem;
+    }
+
+    #ui-panel {
+        height: 55vh !important;
+    }
+
+    #gallery-strip {
+        bottom: 50px !important;
+        height: 60px !important;
+    }
+
+    .gallery-item {
+        width: 40px !important;
+        height: 40px !important;
+    }
+}
