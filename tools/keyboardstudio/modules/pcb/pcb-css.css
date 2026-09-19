@@ -1,0 +1,164 @@
+/* =============================================
+   KeybordStudio V1 - PCB Studio module CSS
+   modules/pcb/pcb-css.css
+   ============================================= */
+
+/* Studio accent: PCB green-amber. */
+.pcb-section-header {
+    color: #ffb86c;
+    border-bottom: 1px solid rgba(255, 184, 108, 0.5);
+    padding: 6px 0;
+    font-size: 0.95rem;
+    margin: 14px 0 6px 0;
+}
+
+.pcb-label {
+    color: #ffd9a8;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.78rem;
+}
+
+.pcb-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+#module-pcb {
+    color: #eee;
+    padding: 8px 10px;
+    /* Let #ui-scroll-area (the sidebar's outer scroller) handle scrolling so
+       PCB Studio uses the same シアン色 scrollbar as the other studios. */
+}
+
+#module-pcb input[type="number"],
+#module-pcb input[type="text"],
+#module-pcb select {
+    width: 100%;
+    padding: 5px 8px;
+    background: #1c1c1c;
+    color: #eee;
+    border: 1px solid #444;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+#module-pcb input[type="number"]:focus,
+#module-pcb input[type="text"]:focus,
+#module-pcb select:focus {
+    outline: none;
+    border-color: #ffb86c;
+}
+
+#module-pcb .control-group {
+    margin-bottom: 8px;
+}
+
+/* Color swatches grid */
+.pcb-swatches {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+    margin-top: 4px;
+}
+.pcb-swatch {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: 2px solid #333;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.1s, border-color 0.15s;
+}
+.pcb-swatch:hover {
+    transform: scale(1.08);
+    border-color: #ffb86c;
+}
+.pcb-swatch.active {
+    border-color: #ffb86c;
+    box-shadow: 0 0 0 2px rgba(255, 184, 108, 0.45);
+}
+
+/* Layer visibility toggle row */
+.pcb-layer-toggles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px 12px;
+    font-size: 0.75rem;
+}
+.pcb-layer-toggles label {
+    color: #ddd;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Buttons */
+.pcb-btn {
+    padding: 7px 10px;
+    background: #2a2a2a;
+    color: #eee;
+    border: 1px solid #555;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    transition: all 0.15s;
+    width: 100%;
+}
+.pcb-btn:hover { border-color: #ffb86c; color: #ffb86c; }
+.pcb-btn-primary {
+    background: linear-gradient(135deg, #f97316, #fb923c);
+    color: #1a1a1a;
+    border-color: #f97316;
+    font-weight: bold;
+}
+.pcb-btn-primary:hover {
+    background: linear-gradient(135deg, #fb923c, #fbbf24);
+    color: #1a1a1a;
+}
+
+/* DRC */
+.pcb-drc-block {
+    margin-top: 6px;
+    background: #181818;
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 0.75rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+/* Match the sidebar's シアン色 scrollbar (#006064) used by #ui-scroll-area. */
+.pcb-drc-block::-webkit-scrollbar { width: 6px; }
+.pcb-drc-block::-webkit-scrollbar-thumb { background: #006064; border-radius: 3px; }
+
+.pcb-drc-head { margin-bottom: 4px; }
+.pcb-drc-list { margin: 4px 0 0 16px; padding: 0; }
+.pcb-drc-list li { line-height: 1.3; word-break: break-word; }
+.pcb-drc-errors li { color: #ff6b6b; }
+.pcb-drc-warnings li { color: #ffd166; }
+
+/* Stats */
+.pcb-stats-block {
+    background: #181818;
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 0.75rem;
+}
+.pcb-stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+    border-bottom: 1px dotted #333;
+}
+.pcb-stat-row:last-child { border-bottom: 0; }
+.pcb-stat-row span { color: #aaa; }
+.pcb-stat-row b   { color: #ffd9a8; font-weight: 600; }
+
+.pcb-help {
+    font-size: 0.7rem;
+    color: #888;
+    margin: 6px 0 0 0;
+    text-align: center;
+}

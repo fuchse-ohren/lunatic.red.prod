@@ -1,0 +1,217 @@
+/* ===========================================================
+ * Large-display & ultrawide responsive layer (V1.1)
+ * 既存の max-width 系メディアクエリはタブレット/小型ノート向け。
+ * 以下は FHD/4K/ウルトラワイドで「余白だらけ」「文字が小さすぎ」になる
+ * 問題を解消するための追加レイヤー。--sidebar-width / 文字スケール /
+ * キャンバス最大幅 を段階的に引き上げる。
+ * =========================================================== */
+
+/* Tablet — タッチ操作時のみ、ボタン最小サイズを確保 */
+@media (pointer: coarse) and (min-width: 768px) {
+    button, .custom-option, .layout-preset-btn, .mount-option {
+
+        min-height: 36px;
+    }
+}
+
+/* Full HD (1920px〜) */
+@media screen and (min-width: 1920px) {
+    :root {
+        --sidebar-width: 440px;
+    }
+    body {
+        font-size: 15px;
+    }
+}
+
+/* QHD / 4K入口 (2560px〜) */
+@media screen and (min-width: 2560px) {
+    :root {
+        --sidebar-width: 500px;
+    }
+    body {
+        font-size: 16px;
+    }
+    .layers-list, .layout-canvas-container {
+        font-size: 0.85rem;
+    }
+}
+
+/* True 4K (3840px〜) */
+@media screen and (min-width: 3840px) {
+    :root {
+        --sidebar-width: 560px;
+    }
+    body {
+        font-size: 18px;
+    }
+    #canvas-container,
+    #layout-canvas-container {
+        /* キャンバスが横方向にだけ伸びすぎるのを抑制し中央寄せ */
+        max-width: calc(100vw - var(--sidebar-width));
+    }
+}
+
+/* Ultrawide 21:9 (例: 3440x1440) — 横幅は広いが縦は控えめ
+ * 余白を作って中央寄せし、3D 操作の視野を引き締める */
+@media (min-aspect-ratio: 21/9) and (min-width: 3000px) {
+    #canvas-container,
+    #layout-canvas-container {
+        width: min(calc(100% - var(--sidebar-width)), 2400px);
+    }
+}
+
+/* Super Ultrawide 32:9 (例: 5120x1440 / 5760x1080) */
+@media (min-aspect-ratio: 32/9) {
+    :root {
+        --sidebar-width: 600px;
+    }
+    #canvas-container,
+    #layout-canvas-container {
+        width: min(calc(100% - var(--sidebar-width)), 2800px);
+    }
+}
+
+/* Phase 11: タブレット (≤1024px) で Layout レイヤーパネルをオーバーレイ化 */
+@media (max-width: 1024px) {
+    #layout-layers-panel {
+        top: 0 !important;
+        bottom: 0 !important;
+        right: 0 !important;
+        width: min(80vw, 320px) !important;
+        border-radius: 0 !important;
+        border-left: 1px solid var(--accent);
+        box-shadow: -8px 0 32px rgba(0, 0, 0, 0.6);
+        z-index: 50;
+    }
+    #layout-layers-panel.layers-open::before {
+        content: '';
+        position: fixed;
+        top: 0; left: 0;
+        width: calc(100vw - min(80vw, 320px));
+        height: 100%;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: -1;
+        backdrop-filter: blur(2px);
+    }
+}
+
+/* Desktop auto-fit safety layer. Mobile keeps its dedicated layout below 768px. */
+@media screen and (min-width: 769px) {
+    :root {
+        --sidebar-width: clamp(240px, 24vw, 560px);
+        --desktop-gutter: clamp(10px, 2vw, 50px);
+        --floating-left-local: var(--desktop-gutter);
+        --floating-left-viewport: calc(var(--sidebar-width) + var(--desktop-gutter));
+        --gallery-left: calc(var(--sidebar-width) + var(--desktop-gutter));
+        --hud-top: clamp(8px, 1.2vh, 18px);
+        --hud-max-width: calc(100vw - var(--sidebar-width) - 340px);
+        --view-bottom: 20px;
+    }
+
+    #ui-panel {
+        width: var(--sidebar-width) !important;
+    }
+
+    #canvas-container,
+    #layout-canvas-container {
+        left: var(--sidebar-width) !important;
+        right: 0 !important;
+        width: auto !important;
+        max-width: none !important;
+        min-width: 0;
+    }
+
+    body.ui-closed #canvas-container,
+    body.ui-closed #layout-canvas-container {
+        left: 0 !important;
+        right: 0 !important;
+        width: auto !important;
+    }
+
+    #btn-toggle-ui {
+        left: var(--sidebar-width) !important;
+    }
+
+    body.ui-closed #btn-toggle-ui {
+        left: 0 !important;
+    }
+
+    #hud {
+        top: var(--hud-top) !important;
+        margin-left: 0 !important;
+        max-width: var(--hud-max-width) !important;
+        box-sizing: border-box;
+        flex-wrap: wrap !important;
+        align-content: center;
+        row-gap: 4px !important;
+        overflow: visible;
+    }
+
+    .hud-btn {
+        flex: 0 0 auto;
+    }
+
+    #top-right-panel {
+        top: var(--hud-top) !important;
+        right: var(--desktop-gutter) !important;
+        width: clamp(160px, 16vw, 280px) !important;
+        max-width: calc(100vw - var(--sidebar-width) - var(--desktop-gutter) - var(--desktop-gutter)) !important;
+        max-height: calc(100vh - 120px);
+        box-sizing: border-box;
+        /* デフォルト: 詳細パネル閉じている時は overflow 不要 → スクロールバー出さない。
+           展開時 (.fil-expanded class が付いた時) のみ auto。 */
+        overflow-y: hidden;
+    }
+    #top-right-panel.fil-expanded {
+        overflow-y: auto;
+    }
+
+    #top-right-panel.stats-collapsed {
+        width: 36px !important;
+        max-width: 36px !important;
+        overflow: hidden;
+    }
+
+    #history-controls,
+    #preset-float-panel {
+        left: var(--floating-left-viewport) !important;
+    }
+
+    #mode-controls,
+    #body-display-controls,
+    #gumball-target-controls {
+        left: var(--floating-left-local) !important;
+        max-width: min(180px, calc(100% - var(--desktop-gutter) - var(--desktop-gutter)));
+        box-sizing: border-box;
+    }
+
+    #gallery-strip {
+        left: var(--gallery-left) !important;
+        right: var(--desktop-gutter) !important;
+        max-width: calc(100vw - var(--sidebar-width) - var(--desktop-gutter) - var(--desktop-gutter));
+        box-sizing: border-box;
+    }
+
+    body.ui-closed #gallery-strip {
+        left: var(--desktop-gutter) !important;
+        max-width: calc(100vw - var(--desktop-gutter) - var(--desktop-gutter));
+    }
+
+    #gallery-content {
+        padding-right: clamp(90px, 12vw, 130px) !important;
+    }
+
+    #view-cube-wrapper {
+        right: var(--desktop-gutter) !important;
+        bottom: var(--view-bottom) !important;
+    }
+
+    #btn-help {
+        bottom: calc(var(--view-bottom) + 5px) !important;
+    }
+
+    body.ui-closed #hud {
+        margin-left: 0 !important;
+    }
+}
