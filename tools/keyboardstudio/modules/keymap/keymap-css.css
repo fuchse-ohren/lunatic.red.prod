@@ -1,0 +1,376 @@
+/* =============================================
+   KeybordStudio V1 - Keymap Studio CSS
+   modules/keymap/keymap-css.css
+   ============================================= */
+
+/* Studio accent: Razer-style green */
+.km-studio {
+    --km-accent: #44d62c;
+    --km-accent2: #88e1ff;
+    color: #eee;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#module-keymap {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Canvas + overlay */
+.km-canvas-host {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    background: linear-gradient(180deg, #0a0a0a, #15151a);
+    border-bottom: 1px solid #2a2a2a;
+}
+.km-canvas-host canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.km-canvas-overlay {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    pointer-events: none;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+.km-canvas-overlay > * { pointer-events: auto; }
+
+/* Layer tabs */
+.km-layer-tabs {
+    display: flex;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 4px;
+    border-radius: 6px;
+    border: 1px solid #333;
+}
+.km-layer-tab {
+    background: transparent;
+    color: #aaa;
+    border: 1px solid transparent;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font: bold 0.75rem ui-monospace, monospace;
+    transition: all 0.12s;
+}
+.km-layer-tab:hover {
+    color: #fff;
+    border-color: #555;
+}
+.km-layer-tab.active {
+    background: var(--km-accent);
+    color: #0a0a0a;
+    border-color: var(--km-accent);
+}
+
+/* Selected key info pane */
+.km-key-info {
+    background: rgba(0, 0, 0, 0.55);
+    color: #ddd;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    max-width: 360px;
+    text-align: right;
+}
+.km-key-info b { color: var(--km-accent2); }
+.km-key-info i { color: #999; }
+
+/* Tabs */
+.km-tabs {
+    display: flex;
+    gap: 0;
+    background: #181818;
+    border-bottom: 1px solid #333;
+    flex: 0 0 auto;
+}
+.km-tab {
+    flex: 1;
+    background: transparent;
+    color: #888;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    padding: 10px 8px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    transition: all 0.12s;
+}
+.km-tab:hover { color: #fff; }
+.km-tab.active {
+    color: var(--km-accent);
+    border-bottom-color: var(--km-accent);
+}
+
+/* Panels */
+.km-tabpanels {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 12px;
+}
+.km-panel { display: none; }
+.km-panel.active { display: block; }
+.km-panel h4 {
+    color: var(--km-accent);
+    margin: 8px 0 6px 0;
+    font-size: 0.88rem;
+    border-bottom: 1px solid rgba(68, 214, 44, 0.4);
+    padding-bottom: 4px;
+}
+.km-hint {
+    color: #888;
+    font-size: 0.72rem;
+    margin: 2px 0 8px 0;
+}
+.km-label {
+    color: #cfe;
+    font-weight: bold;
+    font-size: 0.75rem;
+    display: block;
+    margin-bottom: 3px;
+}
+.km-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+#module-keymap input,
+#module-keymap select,
+#module-keymap textarea {
+    background: #1c1c1c;
+    color: #eee;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-size: 0.78rem;
+    width: 100%;
+}
+#module-keymap input[type="range"] { padding: 0; }
+#module-keymap input:focus,
+#module-keymap select:focus,
+#module-keymap textarea:focus {
+    outline: none;
+    border-color: var(--km-accent);
+}
+
+/* Buttons */
+.km-btn {
+    padding: 6px 10px;
+    background: #2a2a2a;
+    color: #eee;
+    border: 1px solid #555;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    transition: all 0.12s;
+}
+.km-btn:hover { border-color: var(--km-accent); color: var(--km-accent); }
+.km-btn-primary {
+    background: linear-gradient(135deg, #44d62c, #1e8a14);
+    color: #0a0a0a;
+    border-color: var(--km-accent);
+    font-weight: bold;
+}
+.km-btn-primary:hover {
+    background: linear-gradient(135deg, #5fff44, #2eb01b);
+    color: #0a0a0a;
+}
+.km-btn.recording {
+    background: #d62c2c;
+    color: #fff;
+    border-color: #d62c2c;
+    animation: km-blink 1s infinite;
+}
+@keyframes km-blink {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* Keycode picker */
+.km-search {
+    margin-bottom: 6px;
+}
+.km-kc-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+.km-kc-tab {
+    background: #1c1c1c;
+    color: #aaa;
+    border: 1px solid #444;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+}
+.km-kc-tab:hover { color: var(--km-accent2); }
+.km-kc-tab.active {
+    background: var(--km-accent);
+    color: #0a0a0a;
+    border-color: var(--km-accent);
+}
+.km-kc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+    gap: 4px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+.km-kc-item {
+    background: #181818;
+    color: #ddd;
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 6px 4px;
+    cursor: pointer;
+    font: 0.7rem ui-monospace, monospace;
+    text-align: center;
+    transition: all 0.1s;
+}
+.km-kc-item:hover {
+    border-color: var(--km-accent);
+    color: var(--km-accent);
+    transform: scale(1.04);
+}
+
+/* Macros */
+.km-macros-host {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 8px;
+}
+.km-macro-list {
+    background: #181818;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    overflow-y: auto;
+    max-height: 320px;
+}
+.km-macro-item {
+    width: 100%;
+    background: transparent;
+    color: #aaa;
+    border: 0;
+    border-bottom: 1px solid #2a2a2a;
+    padding: 6px 8px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.78rem;
+}
+.km-macro-item:hover { background: #222; color: #fff; }
+.km-macro-item.active { background: var(--km-accent); color: #0a0a0a; font-weight: bold; }
+.km-macro-detail .km-row { flex-wrap: wrap; }
+.km-macro-editor {
+    background: #131313;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    padding: 6px;
+    margin-top: 6px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+.km-macro-row {
+    display: flex;
+    gap: 8px;
+    padding: 4px 6px;
+    border-bottom: 1px dotted #2a2a2a;
+    font-size: 0.78rem;
+    align-items: center;
+}
+.km-macro-row:last-child { border-bottom: 0; }
+.km-macro-tag {
+    background: #2a2a2a;
+    color: var(--km-accent2);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    min-width: 48px;
+    text-align: center;
+}
+.km-macro-val { flex: 1; color: #ddd; }
+.km-macro-rm {
+    background: transparent;
+    color: #888;
+    border: 0;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+}
+.km-macro-rm:hover { color: #ff6b6b; }
+.km-empty { color: #666; font-style: italic; padding: 12px; text-align: center; }
+
+/* Lighting */
+.km-led-presets {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(28px, 1fr));
+    gap: 4px;
+}
+.km-led-preset {
+    aspect-ratio: 1 / 1;
+    border: 2px solid #333;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.1s, border-color 0.12s;
+    padding: 0;
+}
+.km-led-preset:hover {
+    transform: scale(1.1);
+    border-color: var(--km-accent);
+}
+
+/* Device */
+.km-device-status {
+    background: #181818;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 0.78rem;
+    margin-bottom: 6px;
+}
+.km-device-status.km-warn {
+    border-color: #d62c2c;
+    color: #ffaaaa;
+}
+.km-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #ddd;
+    font-size: 0.78rem;
+    cursor: pointer;
+}
+.km-checkbox input { width: auto; }
+
+/* Use the same シアン色 scrollbar as the rest of the studios (#ui-scroll-area).
+   Keymap Studio has its own internal scroll containers because the tab bar
+   is sticky, so we explicitly match the sidebar style here. */
+.km-tabpanels::-webkit-scrollbar,
+.km-kc-grid::-webkit-scrollbar,
+.km-macro-list::-webkit-scrollbar,
+.km-macro-editor::-webkit-scrollbar {
+    width: 6px;
+}
+.km-tabpanels::-webkit-scrollbar-thumb,
+.km-kc-grid::-webkit-scrollbar-thumb,
+.km-macro-list::-webkit-scrollbar-thumb,
+.km-macro-editor::-webkit-scrollbar-thumb {
+    background: #006064;
+    border-radius: 3px;
+}
