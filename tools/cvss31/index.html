@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>CVSS v3.1 基本スコア計算機</title>
+<style>
+/*
+ * デジタル庁デザインシステム HTML版サンプル由来のスタイルを同梱。
+ * 対象: src/global.css の必要なデザイントークンとフォーカススタイル、
+ * src/components/select/select.css、src/components/accordion/accordion.css
+ * Copyright (c) 2025 デジタル庁 / MIT License
+ * https://github.com/digital-go-jp/design-system-example-components-html
+ *
+ * MIT License
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+:root {
+  --color-primitive-blue-50: #e8f1fe;
+  --color-primitive-blue-100: #d9e6ff;
+  --color-primitive-blue-800: #0031d8;
+  --color-primitive-blue-900: #0017c1;
+  --color-primitive-blue-1000: #00118f;
+  --color-primitive-yellow-300: #ffd43d;
+  --color-primitive-red-800: #ec0000;
+  --color-primitive-red-1000: #a90000;
+  --color-neutral-white: #ffffff;
+  --color-neutral-black: #000000;
+  --color-neutral-solid-gray-50: #f2f2f2;
+  --color-neutral-solid-gray-100: #e6e6e6;
+  --color-neutral-solid-gray-300: #b3b3b3;
+  --color-neutral-solid-gray-420: #949494;
+  --color-neutral-solid-gray-600: #666666;
+  --color-neutral-solid-gray-800: #333333;
+  --color-neutral-solid-gray-900: #1a1a1a;
+  --color-semantic-error-1: var(--color-primitive-red-800);
+  --color-key-1000: var(--color-primitive-blue-1000);
+  --font-family-sans: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html {
+  scrollbar-gutter: stable;
+  font-family: var(--font-family-sans);
+  color: var(--color-neutral-solid-gray-900);
+  background: #f7f8fa;
+  font-size: 16px;
+}
+
+:focus-visible {
+  outline: calc(4 / 16 * 1rem) solid var(--color-neutral-black);
+  outline-offset: calc(2 / 16 * 1rem);
+  border-radius: calc(4 / 16 * 1rem);
+  box-shadow: 0 0 0 calc(2 / 16 * 1rem) var(--color-primitive-yellow-300);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-size: 1rem; line-height: 1.7; }
+button, select { font: inherit; }
+
+/* 画面固有のレイアウト */
+.wrap { width: min(100% - 32px, 1240px); margin-inline: auto; padding-block: 28px 48px; }
+header { margin-bottom: 24px; padding: 0 0 18px; border-bottom: 4px solid var(--color-primitive-blue-800); }
+h1 { margin: 0; font-size: clamp(1.45rem, 2.5vw, 2rem); line-height: 1.45; font-weight: 700; letter-spacing: .01em; }
+.layout { display: grid; align-items: start; gap: 24px; }
+.panel { min-width: 0; overflow: hidden; background: var(--color-neutral-white); border: 1px solid var(--color-neutral-solid-gray-300); border-top: 4px solid var(--color-primitive-blue-800); }
+.panel-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; padding: 18px 20px 14px; border-bottom: 1px solid var(--color-neutral-solid-gray-100); }
+.panel-head h2 { margin: 0; font-size: 1.25rem; line-height: 1.5; font-weight: 700; }
+.panel-head small { color: #4d4d4d; font-size: .875rem; }
+.preview { padding: 20px; }
+.canvas-frame { display: flex; justify-content: center; width: 100%; padding: 12px; background: var(--color-neutral-solid-gray-50); border: 1px solid var(--color-neutral-solid-gray-100); }
+#banner { display: block; max-width: 90%; height: auto;}
+.actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+.vectorbox { margin-top: 18px; border: 1px solid var(--color-neutral-solid-gray-300); background: #fff; }
+.vector-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; padding: 10px 12px; border-bottom: 1px solid var(--color-neutral-solid-gray-100); }
+.vector-top strong { font-size: .9375rem; }
+#scoreSummary { display: inline-block; padding: 2px 8px; border: 1px solid var(--color-neutral-solid-gray-300); background: var(--color-neutral-solid-gray-50); font-size: .875rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+#vectorText { margin: 0; padding: 12px; overflow-wrap: anywhere; font-family: var(--font-family-mono, ui-monospace, SFMono-Regular, Consolas, monospace); font-size: .875rem; line-height: 1.6; }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 24px; padding: 20px; }
+.field { min-width: 0; }
+.field > label { display: block; margin: 0 0 8px; font-weight: 700; line-height: 1.5; }
+.code { display: inline-block; margin-left: 4px; padding: 0 5px; border: 1px solid var(--color-neutral-solid-gray-300); background: var(--color-neutral-solid-gray-50); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .8em; font-weight: 700; }
+.field .dads-select__control { width: 100%; }
+.field .dads-select__select { width: 100%; }
+.field .dads-accordion { margin-top: 8px; }
+.dads-accordion__content p { margin: 0 0 10px; }
+.dads-accordion__content p:last-child { margin-bottom: 0; }
+.example { color: #404040; font-size: .9375rem; }
+
+/* デジタル庁デザインシステム: select.css */
+.dads-select {
+  display: block;
+  color: var(--color-neutral-solid-gray-800);
+  font-weight: normal;
+  font-size: calc(16 / 16 * 1rem);
+  line-height: 1.7;
+  font-family: var(--font-family-sans);
+  letter-spacing: 0.02em;
+}
+.dads-select__control { position: relative; display: block; width: fit-content; max-width: 100%; }
+.dads-select__select {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: baseline;
+  box-sizing: border-box;
+  border-radius: calc(8 / 16 * 1rem);
+  border: 1px solid var(--color-neutral-solid-gray-600);
+  background-color: var(--color-neutral-white);
+  padding-right: calc(40 / 16 * 1rem);
+  padding-left: calc(16 / 16 * 1rem);
+  color: inherit;
+  font: inherit;
+  line-height: 1;
+  letter-spacing: inherit;
+  appearance: none;
+}
+.dads-select__select[data-size="sm"] { height: calc(40 / 16 * 1rem); }
+.dads-select__select[data-size="md"] { height: calc(48 / 16 * 1rem); }
+.dads-select__select[data-size="lg"] { height: calc(56 / 16 * 1rem); }
+.dads-select__select:focus-visible {
+  outline: calc(4 / 16 * 1rem) solid var(--color-neutral-black);
+  outline-offset: calc(2 / 16 * 1rem);
+  box-shadow: 0 0 0 calc(2 / 16 * 1rem) var(--color-primitive-yellow-300);
+}
+@media (hover: hover) { .dads-select__select:hover { border-color: var(--color-neutral-black); } }
+.dads-select__select:is(:user-invalid, [aria-invalid="true"]) { border-color: var(--color-semantic-error-1); }
+@media (hover: hover) { .dads-select__select:is(:user-invalid, [aria-invalid="true"]):hover { border-color: var(--color-primitive-red-1000); } }
+.dads-select__select:is(:disabled, [aria-disabled="true"]),
+.dads-select__select:is(:disabled, [aria-disabled="true"]):hover {
+  border: 1px solid var(--color-neutral-solid-gray-300);
+  background-color: var(--color-neutral-solid-gray-50);
+  color: var(--color-neutral-solid-gray-420);
+}
+.dads-select__chevron {
+  pointer-events: none; position: absolute; top: 0; right: calc(16 / 16 * 1rem); bottom: 0;
+  margin-block: auto; width: calc(16 / 16 * 1rem); height: calc(16 / 16 * 1rem);
+}
+.dads-select__select:disabled + .dads-select__chevron { color: var(--color-neutral-solid-gray-420); }
+@media (forced-colors: active) {
+  .dads-select__select { color: ButtonText; border-color: ButtonText; }
+  .dads-select__select[aria-disabled="true"], .dads-select__select[aria-disabled="true"]:hover { border-color: GrayText; color: GrayText; }
+  .dads-select__chevron { color: ButtonText; }
+  .dads-select__select:disabled + .dads-select__chevron { color: GrayText; }
+}
+
+/* デジタル庁デザインシステム: accordion.css */
+.dads-accordion { --_icon-size: calc(20 / 16 * 1rem); border-bottom: 1px solid var(--color-neutral-solid-gray-420); }
+@media (min-width: 48rem) { .dads-accordion { --_icon-size: calc(32 / 16 * 1rem); } }
+.dads-accordion__summary {
+  position: relative; display: block;
+  padding: calc(8 / 16 * 1rem) calc(8 / 16 * 1rem) calc(8 / 16 * 1rem) calc(var(--_icon-size) + .75rem);
+  color: var(--color-neutral-solid-gray-800); font-weight: normal; font-size: calc(16 / 16 * 1rem);
+  line-height: 1.7; font-family: var(--font-family-sans); letter-spacing: .02em; cursor: pointer;
+}
+.dads-accordion__summary::marker { content: ""; }
+.dads-accordion__summary::-webkit-details-marker { display: none; }
+@media (min-width: 48rem) {
+  .dads-accordion__summary { padding: calc(16 / 16 * 1rem) calc(16 / 16 * 1rem) calc(16 / 16 * 1rem) calc(var(--_icon-size) + calc(20 / 16 * 1rem)); font-size: calc(18 / 16 * 1rem); line-height: 1.6; }
+}
+@media (hover: hover) { .dads-accordion__summary:hover:not(:focus-visible) { background-color: var(--color-neutral-solid-gray-50); } }
+.dads-accordion__summary:focus-visible {
+  outline: calc(4 / 16 * 1rem) solid var(--color-neutral-black); outline-offset: calc(2 / 16 * 1rem);
+  border-radius: calc(4 / 16 * 1rem); background-color: var(--color-primitive-yellow-300);
+  box-shadow: 0 0 0 calc(2 / 16 * 1rem) var(--color-primitive-yellow-300);
+}
+.dads-accordion__icon {
+  position: absolute; top: calc(8 / 16 * 1rem); left: calc(2 / 16 * 1rem);
+  margin-top: calc((1lh - var(--_icon-size)) / 2); display: inline-flex; align-items: center; justify-content: center;
+  box-sizing: border-box; width: var(--_icon-size); height: var(--_icon-size); border-radius: 50%;
+  border: 1px solid currentcolor; background-color: var(--color-neutral-white); color: var(--color-key-1000);
+}
+@media (min-width: 48rem) { .dads-accordion__icon { top: calc(14 / 16 * 1rem); left: calc(6 / 16 * 1rem); } }
+.dads-accordion[open] .dads-accordion__icon { transform: rotate(180deg); }
+@media (hover: hover) { .dads-accordion__summary:hover .dads-accordion__icon { outline: calc(2 / 16 * 1rem) solid currentcolor; } }
+.dads-accordion__icon-svg { margin-top: calc(2 / 16 * 1rem); width: calc(16 / 16 * 1rem); height: calc(16 / 16 * 1rem); pointer-events: none; }
+@media (min-width: 48rem) { .dads-accordion__icon-svg { width: auto; height: auto; } }
+.dads-accordion__summary :is(h1, h2, h3, h4, h5, h6) { margin: 0; font: inherit; }
+.dads-accordion__content { padding: calc(16 / 16 * 1rem) calc(8 / 16 * 1rem) calc(16 / 16 * 1rem) calc(var(--_icon-size) + .75rem); }
+@media (min-width: 48rem) { .dads-accordion__content { padding: calc(24 / 16 * 1rem) calc(16 / 16 * 1rem) calc(24 / 16 * 1rem) calc(var(--_icon-size) + 1.25rem); } }
+
+@media (max-width: 900px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 560px) {
+  .wrap { width: min(100% - 20px, 1240px); padding-top: 18px; }
+  .panel-head, .preview { padding-inline: 14px; }
+  .fields { grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 16px 14px; }
+  .canvas-frame { padding: 6px; }
+}
+@media (forced-colors: active) { .panel, .vectorbox, .canvas-frame { border: 1px solid CanvasText; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>CVSS v3.1 基本スコア計算機</h1>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel" aria-labelledby="previewTitle">
+      <div class="panel-head"><h2 id="previewTitle">バナー</h2></div>
+      <div class="preview">
+        <div class="canvas-frame"><canvas id="banner" width="850" height="140" role="img" aria-label="CVSS v3.1のスコア、深刻度、各メトリクスを示すバナー"></canvas></div>
+        <div class="actions"></div>
+        <div class="vectorbox">
+          <div class="vector-top"><strong>CVSSベクタ文字列</strong><span id="scoreSummary" aria-live="polite">9.8 · CRITICAL</span></div>
+          <p id="vectorText">CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="controlsTitle">
+      <div class="panel-head"><h2 id="controlsTitle">評価メトリクス</h2></div>
+      <div id="fields" class="fields">
+        <div class="field">
+          <label for="AV">攻撃元 <span class="code">AV</span></label>
+          <select id="AV"><option value="N">ネットワーク (N)</option><option value="A">隣接 (A)</option><option value="L">ローカル (L)</option><option value="P">物理 (P)</option></select>
+          <details><summary>説明・例</summary><p>攻撃者が脆弱なコンポーネントへ到達する経路を示す。</p><p class="example">例：公開Webサーバーならネットワーク、端末上での実行が必要ならローカル。</p></details>
+        </div>
+        <div class="field">
+          <label for="AC">成立条件（複雑さ） <span class="code">AC</span></label>
+          <select id="AC"><option value="L">低 (L)</option><option value="H">高 (H)</option></select>
+          <details><summary>説明・例</summary><p>攻撃者が制御できない追加条件が必要かを示す。</p><p class="example">例：通常の手順で再現できるなら低、特定の競合状態などが必要なら高。</p></details>
+        </div>
+        <div class="field">
+          <label for="PR">必要な権限 <span class="code">PR</span></label>
+          <select id="PR"><option value="N">不要 (N)</option><option value="L">低 (L)</option><option value="H">高 (H)</option></select>
+          <details><summary>説明・例</summary><p>攻撃開始前に、攻撃者が対象で持つ必要のある権限を示す。</p><p class="example">例：未認証で実行できるなら不要、一般ユーザーのログインが必要なら低、管理者権限が必要なら高。</p></details>
+        </div>
+        <div class="field">
+          <label for="UI">ユーザ操作 <span class="code">UI</span></label>
+          <select id="UI"><option value="N">不要 (N)</option><option value="R">必要 (R)</option></select>
+          <details><summary>説明・例</summary><p>攻撃成立に、攻撃者以外のユーザーによる操作が必要かを示す。</p><p class="example">例：第三者が細工されたリンクを開く必要があるなら必要。</p></details>
+        </div>
+        <div class="field">
+          <label for="S">スコープ <span class="code">S</span></label>
+          <select id="S"><option value="U">変更なし (U)</option><option value="C">変更あり (C)</option></select>
+          <details><summary>説明・例</summary><p>影響が脆弱なコンポーネントのセキュリティ権限範囲を越えるかを示す。</p><p class="example">例：同じアプリ内に影響が留まるなら変更なし、アプリの脆弱性から基盤OS側へ影響するなら変更あり。</p></details>
+        </div>
+        <div class="field">
+          <label for="C">機密性への影響 <span class="code">C</span></label>
+          <select id="C"><option value="H">高 (H)</option><option value="L">低 (L)</option><option value="N">なし (N)</option></select>
+          <details><summary>説明・例</summary><p>情報の機密性、つまり無許可の閲覧・漏えいへの影響を示す。</p><p class="example">例：広範な機密情報が漏えいするなら高、一部の情報のみなら低、漏えいがなければなし。</p></details>
+        </div>
+        <div class="field">
+          <label for="I">完全性への影響 <span class="code">I</span></label>
+          <select id="I"><option value="H">高 (H)</option><option value="L">低 (L)</option><option value="N">なし (N)</option></select>
+          <details><summary>説明・例</summary><p>情報の正確性・完全性、つまり無許可の変更への影響を示す。</p><p class="example">例：任意のデータを改ざんできるなら高、一部だけ変更できるなら低、変更できなければなし。</p></details>
+        </div>
+        <div class="field">
+          <label for="A">可用性への影響 <span class="code">A</span></label>
+          <select id="A"><option value="H">高 (H)</option><option value="L">低 (L)</option><option value="N">なし (N)</option></select>
+          <details><summary>説明・例</summary><p>システムやサービスを利用できる状態への影響を示す。</p><p class="example">例：サービス全体が停止するなら高、一部の機能や性能だけ低下するなら低。</p></details>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  const byId = (id) => document.getElementById(id);
+  const svgNS = 'http://www.w3.org/2000/svg';
+
+  function makeChevron(className, pathData, viewBox = '0 0 16 16') {
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('class', className);
+    svg.setAttribute('viewBox', viewBox);
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    const path = document.createElementNS(svgNS, 'path');
+    path.setAttribute('d', pathData);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', 'currentColor');
+    path.setAttribute('stroke-width', '1.5');
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('stroke-linejoin', 'round');
+    svg.append(path);
+    return svg;
+  }
+
+  // 既存のselect要素をデジタル庁サンプルのDOM構造へ拡張する。
+  document.querySelectorAll('.field select').forEach((select) => {
+    select.classList.add('dads-select__select');
+    select.dataset.size = 'md';
+    const control = document.createElement('span');
+    control.className = 'dads-select__control';
+    select.before(control);
+    control.append(select);
+    control.append(makeChevron('dads-select__chevron', 'M3 5.5 8 10.5 13 5.5'));
+  });
+
+  // details/summaryはネイティブの開閉動作とキーボード操作を維持する。
+  document.querySelectorAll('.field details').forEach((details) => {
+    details.classList.add('dads-accordion');
+    const summary = details.querySelector(':scope > summary');
+    if (!summary) return;
+    summary.classList.add('dads-accordion__summary');
+    const icon = document.createElement('span');
+    icon.className = 'dads-accordion__icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.append(makeChevron('dads-accordion__icon-svg', 'M3 5.5 8 10.5 13 5.5'));
+    summary.prepend(icon);
+
+    const content = document.createElement('div');
+    content.className = 'dads-accordion__content';
+    let node = summary.nextSibling;
+    while (node) {
+      const next = node.nextSibling;
+      content.append(node);
+      node = next;
+    }
+    details.append(content);
+  });
+
+  const canvas = document.getElementById('banner');
+  const ctx = canvas.getContext('2d');
+  const ids = ['AV','AC','PR','UI','S','C','I','A'];
+  const defaults = {AV:'N',AC:'L',PR:'N',UI:'N',S:'U',C:'H',I:'H',A:'H'};
+  const weights = {
+    AV:{N:.85,A:.62,L:.55,P:.20},
+    AC:{L:.77,H:.44},
+    PR:{N:.85,L:{U:.62,C:.68},H:{U:.27,C:.50}},
+    UI:{N:.85,R:.62},
+    C:{H:.56,L:.22,N:0}, I:{H:.56,L:.22,N:0}, A:{H:.56,L:.22,N:0}
+  };
+  const labels = {
+    AV:{title:'攻撃元区分',values:{N:'ネットワーク',A:'隣接',L:'ローカル',P:'物理'},desc:{N:'ネットワーク経由',A:'隣接ネットワーク',L:'ローカルアクセス',P:'物理アクセス'}},
+    AC:{title:'攻撃条件の複雑さ',values:{L:'低',H:'高'},desc:{L:'特殊条件は不要',H:'追加条件が必要'}},
+    PR:{title:'必要権限',values:{N:'不要',L:'低',H:'高'},desc:{N:'事前権限は不要',L:'低い権限が必要',H:'高い権限が必要'}},
+    UI:{title:'ユーザ操作',values:{N:'不要',R:'必要'},desc:{N:'操作は不要',R:'他ユーザーの操作が必要'}},
+    S:{title:'スコープ',values:{U:'変更なし',C:'変更あり'},desc:{U:'権限範囲内',C:'権限範囲を越える'}},
+    C:{title:'機密性への影響',values:{H:'高',L:'低',N:'なし'},desc:{H:'広範な情報漏えい',L:'限定的な情報漏えい',N:'影響なし'}},
+    I:{title:'完全性への影響',values:{H:'高',L:'低',N:'なし'},desc:{H:'広範な改ざん',L:'限定的な改ざん',N:'影響なし'}},
+    A:{title:'可用性への影響',values:{H:'高',L:'低',N:'なし'},desc:{H:'全面的な停止等',L:'部分的な停止等',N:'影響なし'}}
+  };
+  const $ = id => document.getElementById(id);
+  const colors = {fullscore:'#000000',critical:'#FF4500',high:'#E67E22',medium:'#F39C12',low:'#F4D03F',none:'#999999'};
+  let current = {};
+  function readMetrics(){const m={};ids.forEach(id=>m[id]=$(id).value);return m;}
+  function roundup(x){return Math.ceil((x-1e-10)*10)/10;}
+  function calculate(m){
+    const av=weights.AV[m.AV],ac=weights.AC[m.AC];
+    const pr=typeof weights.PR[m.PR]==='object'?weights.PR[m.PR][m.S]:weights.PR[m.PR];
+    const ui=weights.UI[m.UI],c=weights.C[m.C],i=weights.I[m.I],a=weights.A[m.A];
+    const iss=1-(1-c)*(1-i)*(1-a);
+    const impact=m.S==='U'?6.42*iss:7.52*(iss-.029)-3.25*Math.pow(iss-.02,15);
+    const exploitability=8.22*av*ac*pr*ui;
+    let score=impact<=0?0:(m.S==='U'?roundup(Math.min(impact+exploitability,10)):roundup(Math.min(1.08*(impact+exploitability),10)));
+    score=Math.max(0,Math.min(10,score));
+    const severity=score===0?'なし':score<4?'低':score<7?'中':score<9?'高':'緊急';
+    const severityEn=score===0?'NONE':score<4?'LOW':score<7?'MEDIUM':score<9?'HIGH':'CRITICAL';
+    const severityColor=colors[score===0?'none':score<4?'low':score<7?'medium':score<9?'high':score<10?'critical':'fullscore'];
+    const vector='CVSS:3.1/'+ids.map(k=>k+':'+m[k]).join('/');
+    return {score,severity,severityEn,severityColor,vector};
+  }
+  function line(x1,y1,x2,y2,color,width=2){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke();}
+  function drawIcon(kind,x,y,color){
+    ctx.save();ctx.translate(x,y);ctx.strokeStyle=color;ctx.fillStyle='none';ctx.lineWidth=2;ctx.lineCap='round';ctx.lineJoin='round';
+    if(kind==='AV'){
+      ctx.beginPath();ctx.arc(0,0,8,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.ellipse(0,0,3.6,8,0,0,Math.PI*2);ctx.stroke();line(-7.5,0,7.5,0,color,1.5);line(-6.5,-4.5,6.5,-4.5,color,1.3);line(-6.5,4.5,6.5,4.5,color,1.3);
+    }else if(kind==='AC'){
+      [-5,0,5].forEach((yy,j)=>{line(-8,yy,8,yy,color,1.7);ctx.beginPath();ctx.arc([2,-3,5][j],yy,2,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();});
+    }else if(kind==='PR'){
+      ctx.beginPath();ctx.arc(-3,-3,4,0,Math.PI*2);ctx.stroke();line(0,0,8,8,color,2.5);line(4,4,7,1,color,2);line(6,6,9,3,color,2);
+    }else if(kind==='UI'){
+      ctx.beginPath();ctx.moveTo(-6,-9);ctx.lineTo(-6,7);ctx.lineTo(-2,3);ctx.lineTo(2,9);ctx.lineTo(5,7);ctx.lineTo(1,1);ctx.lineTo(7,1);ctx.closePath();ctx.fillStyle=color;ctx.fill();
+    }else if(kind==='S'){
+      ctx.strokeRect(-8,-6,9,9);ctx.strokeRect(0,-1,9,9);line(-1,-2,3,-2,color,1.6);
+    }else if(kind==='C'){
+      ctx.beginPath();ctx.arc(0,0,5.5,Math.PI,Math.PI*2);ctx.lineTo(5.5,5);ctx.moveTo(-5.5,0);ctx.lineTo(-5.5,5);ctx.stroke();ctx.beginPath();ctx.rect(-7.5,4,15,10);ctx.stroke();ctx.beginPath();ctx.arc(0,8,1.5,0,Math.PI*2);ctx.moveTo(0,9.5);ctx.lineTo(0,11.5);ctx.stroke();
+    }else if(kind==='I'){
+      ctx.beginPath();ctx.moveTo(0,-9);ctx.lineTo(8,-5);ctx.lineTo(7,3);ctx.quadraticCurveTo(5,7,0,10);ctx.quadraticCurveTo(-5,7,-7,3);ctx.lineTo(-8,-5);ctx.closePath();ctx.stroke();line(-4,0,-1,3,color,2);line(-1,3,4,-3,color,2);
+    }else if(kind==='A'){
+      ctx.beginPath();ctx.moveTo(-9,1);ctx.lineTo(-5,1);ctx.lineTo(-2,-5);ctx.lineTo(2,7);ctx.lineTo(5,-2);ctx.lineTo(7,1);ctx.lineTo(9,1);ctx.stroke();
+    }
+    ctx.restore();
+  }
+  function drawBanner(m,r){
+    const W=canvas.width,H=canvas.height;
+    ctx.textBaseline="alphabetic";
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);
+
+    // Plain heading and score area.
+    ctx.fillStyle=r.severityColor;ctx.fillRect(0,0,6,H);
+
+    // Score column
+    ctx.fillStyle='#64748b';ctx.font='700 11px system-ui,-apple-system,"Segoe UI","Noto Sans JP",Meiryo,sans-serif';ctx.fillText('CVSS3.1 基本スコア',15,18);
+
+    //基本スコア値
+    if(r.score != 10){
+      ctx.fillStyle='#17283d';ctx.font='800 57px system-ui,-apple-system,"Segoe UI","Noto Sans JP",Meiryo,sans-serif';ctx.fillText(r.score.toFixed(1),15,70);
+    }else{
+      ctx.fillStyle='#17283d';ctx.font='800 57px system-ui,-apple-system,"Segoe UI","Noto Sans JP",Meiryo,sans-serif';ctx.fillText(r.score.toFixed(0),15,70);
+    }
+    ctx.fillStyle=r.severityColor;ctx.fillRect(15,80,83,3); // 基本スコアの下線
+    ctx.fillStyle=r.severityColor;ctx.font='800 20px system-ui,-apple-system,"Segoe UI","Noto Sans JP",Meiryo,sans-serif';ctx.fillText(r.severity,15,110);
+    ctx.fillStyle='#64748b';ctx.font='600 10px system-ui,-apple-system,"Segoe UI","Noto Sans JP",Meiryo,sans-serif';ctx.fillText(r.severityEn,15,125);
+    ctx.strokeStyle='#d8dee7';ctx.beginPath();ctx.moveTo(119,5);ctx.lineTo(119,135);ctx.stroke(); // 基本スコアとアイコン領域の間の縦線
+
+    // Two compact columns of four metric rows; no decorative cards.
+    const items=[{id:'AV'},{id:'S'},{id:'AC'},{id:'C'},{id:'PR'},{id:'I'},{id:'UI'},{id:'A'}];
+    const x0=140,cw=170,colGap=5,y0=20,rowH=41,rowGap=20;
+    items.forEach((item,index)=>{
+      const col=Math.floor(index/2),row=index%2,x=x0+col*(cw+colGap),y=y0+row*(rowH+rowGap),value=m[item.id],meta=labels[item.id];
+      if(row<3){ctx.strokeStyle='#e6eaf0';ctx.beginPath();ctx.moveTo(x,y+rowH);ctx.lineTo(x+cw-3,y+rowH);ctx.stroke();}
+      let icolor=["C","I","A"].includes(item.id)?value=="H"?colors["critical"]:value=="L"?colors["medium"]:"#777777":"#777777";
+      drawIcon(item.id,x+12,y+20,icolor);
+      ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillStyle='#627287';ctx.font='600 13px system-ui,-apple-system,"Segoe UI","Noto Sans JP",Meiryo,sans-serif';ctx.fillText(meta.title,x+27,y+11);
+      ctx.fillStyle='#17283d';ctx.font='750 19px system-ui,-apple-system,"Segoe UI","Noto Sans JP",Meiryo,sans-serif';ctx.fillText(meta.values[value],x+27,y+28);
+    });
+  }
+  function render(){
+    current=readMetrics();const result=calculate(current);drawBanner(current,result);
+    $('vectorText').textContent=result.vector;
+    $('scoreSummary').textContent=result.score.toFixed(1)+' · '+result.severityEn;
+    $('scoreSummary').style.color=result.severityColor;
+    canvas.setAttribute('aria-label',`CVSS v3.1 スコア ${result.score.toFixed(1)}、深刻度 ${result.severity}。攻撃元 ${labels.AV.values[current.AV]}、成立条件 ${labels.AC.values[current.AC]}、必要権限 ${labels.PR.values[current.PR]}、ユーザ操作 ${labels.UI.values[current.UI]}、スコープ ${labels.S.values[current.S]}、機密性 ${labels.C.values[current.C]}、完全性 ${labels.I.values[current.I]}、可用性 ${labels.A.values[current.A]}。`);
+  }
+  ids.forEach(id=>$(id).addEventListener('change',render));
+  render();
+})();
+</script>
+</body>
+</html>

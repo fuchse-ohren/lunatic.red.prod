@@ -1,0 +1,146 @@
+<!-- =============================================
+     KeybordStudio V1 - Keymap Studio sidebar UI
+     modules/keymap/keymap-ui.html
+     ============================================= -->
+
+<!-- Tabs (Keys / Macros / Lighting / Device / Export) -->
+<div class="km-tabs">
+    <button class="km-tab active" data-tab="keys">⌨ Keys</button>
+    <button class="km-tab"        data-tab="macros">🎬 Macros</button>
+    <button class="km-tab"        data-tab="lighting">💡 Lighting</button>
+    <button class="km-tab"        data-tab="device">🔌 Device</button>
+    <button class="km-tab"        data-tab="export">📁 Export</button>
+</div>
+
+<div class="km-tabpanels">
+    <!-- KEYS -->
+    <section class="km-panel active" id="km-panel-keys" data-panel="keys">
+        <h4 id="km-sec-keyboard">Keyboard layout</h4>
+        <div class="control-group km-row">
+            <select id="km-layout-select" style="flex:1;"></select>
+            <button id="km-sync-from-layout" class="km-btn">Sync from Layout</button>
+        </div>
+        <h4 id="km-sec-keys">Keycode picker</h4>
+        <p class="km-hint">Click a key on the keyboard, then choose its function below. Double-click to focus search.</p>
+        <div id="km-keycode-picker" class="km-kc-picker"></div>
+        <h4 id="km-sec-layers">Layers</h4>
+        <p class="km-hint">L0 is the base layer. Use <code>MO(n)</code> / <code>TG(n)</code> / <code>TO(n)</code> to access higher layers.</p>
+    </section>
+
+    <!-- MACROS -->
+    <section class="km-panel" id="km-panel-macros" data-panel="macros">
+        <h4 id="km-sec-macros">Macros</h4>
+        <div class="km-macros-host">
+            <div class="km-macro-list" id="km-macro-list"></div>
+            <div class="km-macro-detail">
+                <div class="control-group">
+                    <label class="km-label">Name</label>
+                    <input type="text" id="km-macro-name" maxlength="32" />
+                </div>
+                <div class="km-row">
+                    <button id="km-macro-record" class="km-btn">● Record</button>
+                    <button id="km-macro-clear"  class="km-btn">Clear</button>
+                    <button id="km-macro-test"   class="km-btn">▶ Test</button>
+                </div>
+                <div class="km-row">
+                    <button id="km-macro-write" class="km-btn km-btn-primary">Write to keyboard</button>
+                </div>
+                <div class="km-row">
+                    <input type="text" id="km-macro-text-input" placeholder="Type text…" />
+                    <button id="km-macro-text-add" class="km-btn">+ Text</button>
+                </div>
+                <div id="km-macro-editor" class="km-macro-editor"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIGHTING -->
+    <section class="km-panel" id="km-panel-lighting" data-panel="lighting">
+        <h4 id="km-sec-lighting">RGB Lighting</h4>
+        <div class="control-group">
+            <label class="km-label">Mode</label>
+            <select id="km-led-mode"></select>
+        </div>
+        <div class="km-row">
+            <div class="control-group" style="flex:1;">
+                <label class="km-label">Hue</label>
+                <input type="range" id="km-led-hue" min="0" max="359" value="0">
+            </div>
+            <div class="control-group" style="flex:1;">
+                <label class="km-label">Saturation</label>
+                <input type="range" id="km-led-sat" min="0" max="100" value="100">
+            </div>
+        </div>
+        <div class="km-row">
+            <div class="control-group" style="flex:1;">
+                <label class="km-label">Brightness</label>
+                <input type="range" id="km-led-bright" min="0" max="255" value="200">
+            </div>
+            <div class="control-group" style="flex:1;">
+                <label class="km-label">Speed</label>
+                <input type="range" id="km-led-speed" min="0" max="255" value="128">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="km-label">Presets</label>
+            <div id="km-led-presets" class="km-led-presets"></div>
+        </div>
+        <div class="control-group">
+            <label class="km-label">Per-key color (in <i>Per-key Custom</i> mode)</label>
+            <div class="km-row">
+                <input type="color" id="km-led-color" value="#44d62c" style="height:32px;flex:1;">
+                <button id="km-led-clear" class="km-btn">Clear all</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <button id="km-led-write" class="km-btn km-btn-primary">Push lighting to keyboard</button>
+        </div>
+        <p class="km-hint">Lighting also previews live in the canvas above.</p>
+    </section>
+
+    <!-- DEVICE -->
+    <section class="km-panel" id="km-panel-device" data-panel="device">
+        <h4 id="km-sec-device">Hardware (WebHID / VIA)</h4>
+        <p class="km-hint">Connect a VIA-compatible keyboard to enable real-time keymap, macro, and lighting sync.</p>
+        <div id="km-device-status" class="km-device-status">Click "Connect" to pair.</div>
+        <div class="km-row">
+            <button id="km-device-connect" class="km-btn km-btn-primary">🔌 Connect</button>
+            <button id="km-device-disconnect" class="km-btn">Disconnect</button>
+        </div>
+        <div class="km-row">
+            <button id="km-device-write" class="km-btn">Write full keymap</button>
+            <button id="km-device-read"  class="km-btn">Read from keyboard</button>
+        </div>
+        <div class="control-group">
+            <label class="km-checkbox">
+                <input type="checkbox" id="km-realtime" checked>
+                Real-time sync (write each change immediately)
+            </label>
+        </div>
+    </section>
+
+    <!-- EXPORT -->
+    <section class="km-panel" id="km-panel-export" data-panel="export">
+        <h4 id="km-sec-export">Export / Import</h4>
+        <div class="control-group">
+            <button id="km-export-json" class="km-btn km-btn-primary">💾 KeybordStudio (.kbskeymap.json)</button>
+        </div>
+        <div class="control-group">
+            <button id="km-export-via"  class="km-btn">VIA Editor (.json)</button>
+        </div>
+        <div class="control-group">
+            <button id="km-export-qmk"  class="km-btn">QMK info.json fragment</button>
+        </div>
+        <div class="control-group">
+            <button id="km-export-txt"  class="km-btn">Plain-text summary</button>
+        </div>
+        <hr style="border-color:#333;margin:8px 0;">
+        <div class="control-group">
+            <label class="km-label">Import a keymap file</label>
+            <input type="file" id="km-import-file" accept=".json,.kbskeymap.json,.vil">
+        </div>
+        <div class="control-group">
+            <button id="km-reset" class="km-btn">⟲ Reset to defaults</button>
+        </div>
+    </section>
+</div>

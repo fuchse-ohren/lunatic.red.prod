@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="Shift_JIS">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caido Character Encoding Test - Shift_JIS / Windows-31J</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.6; background: Canvas; color: CanvasText; }
+    header { padding: 3rem max(1.25rem, calc((100vw - 900px) / 2)); border-bottom: 1px solid color-mix(in srgb, CanvasText 18%, transparent); }
+    main { max-width: 900px; padding: 2rem 1.25rem 4rem; margin: 0 auto; }
+    .eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: .78rem; font-weight: 700; opacity: .72; }
+    h1 { line-height: 1.15; font-size: clamp(2rem, 5vw, 3.25rem); margin: .55rem 0 1rem; }
+    h2 { margin-top: 2.25rem; font-size: 1.35rem; }
+    p { max-width: 75ch; }
+    .pill { display: inline-block; border: 1px solid color-mix(in srgb, CanvasText 28%, transparent); border-radius: 999px; padding: .2rem .65rem; font-size: .85rem; }
+    .panel { border: 1px solid color-mix(in srgb, CanvasText 18%, transparent); border-radius: 14px; padding: 1rem 1.15rem; margin: 1rem 0; }
+    .sample { font-size: 1.25rem; overflow-wrap: anywhere; padding: .85rem; background: color-mix(in srgb, CanvasText 5%, Canvas); border-radius: 8px; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    code { overflow-wrap: anywhere; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: .9rem; border-radius: 8px; background: color-mix(in srgb, CanvasText 5%, Canvas); }
+    .muted { opacity: .78; }
+    .ok { font-weight: 650; }
+    ul { padding-left: 1.25rem; }
+    li { margin: .4rem 0; }
+    footer { border-top: 1px solid color-mix(in srgb, CanvasText 18%, transparent); padding-top: 1rem; margin-top: 3rem; font-size: .9rem; opacity: .78; }
+    a { color: LinkText; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">HTTP inspection test case</div>
+    <h1>Character Encoding Test</h1>
+    <p>Shift_JIS / Windows-31J (CP932) response body for testing HTTP proxy and message-editor behavior.</p>
+    <span class="pill">Single-file static test page</span>
+  </header>
+  <main>
+    <section>
+      <h2>Purpose</h2>
+      <p>This page is intentionally stored as <strong>Windows-31J (CP932) bytes</strong> and declares <code>Shift_JIS</code>. Open its URL through Caido and inspect the original HTTP response, the rendered body, and the behavior when the message is sent to Replay.</p>
+      <p class="muted">This is an actual non-UTF-8 HTML response only when the web server sends the matching HTTP charset header. See the server-header check below.</p>
+    </section>
+
+    <section>
+      <h2>Test case 1 - Basic Japanese text</h2>
+      <div class="panel">
+        <div class="eyebrow">Expected visible text</div>
+        <div class="sample">日本語の文字コードテスト</div>
+        <p class="muted">漢字・ひらがな・カタカナ。文字化けせずに表示されること。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Test case 2 - Shift_JIS trail bytes containing 0x5C</h2>
+      <div class="panel">
+        <div class="eyebrow">Expected visible text</div>
+        <div class="sample">表ソ十申能</div>
+        <p>These characters have multi-byte representations whose second byte is <code>0x5C</code> in Shift_JIS / Windows-31J. This can expose software that incorrectly treats raw text bytes as UTF-8 or mishandles backslash bytes.</p>
+        <pre>表  95 5C
+ソ  83 5C
+十  8F 5C
+申  90 5C
+能  94 5C</pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Test case 3 - Windows-31J extension characters</h2>
+      <div class="panel">
+        <div class="eyebrow">Expected visible text</div>
+        <div class="sample">髙橋・﨑・㈱・①・Ⅲ・～・－・￥</div>
+        <p>This line includes characters available in Windows-31J / CP932, including vendor extensions and compatibility characters. Some are not representable in strict Shift_JIS implementations, so differences between Shift_JIS and CP932 handling may be visible.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>HTTP response diagnostics</h2>
+      <div class="panel">
+        <p><strong>Browser-detected document encoding:</strong> <code id="documentEncoding">Checking...</code></p>
+        <p><strong>HTTP Content-Type returned by the server:</strong> <code id="responseContentType">Checking...</code></p>
+        <p id="headerWarning" class="muted">Checking whether the response headers match this test case.</p>
+      </div>
+      <pre>Expected response header:
+Content-Type: text/html; charset=Shift_JIS</pre>
+      <p><strong>Important:</strong> the HTTP <code>Content-Type</code> charset takes precedence over the HTML meta declaration in normal browser decoding. If the server sends <code>charset=UTF-8</code>, the page may be decoded incorrectly and the test will not be valid. Configure the server to send <code>charset=Shift_JIS</code> (or serve the body without a conflicting charset declaration).</p>
+    </section>
+
+    <section>
+      <h2>Suggested verification steps</h2>
+      <ul>
+        <li>Open this URL through Caido and confirm that the raw response body is preserved.</li>
+        <li>Confirm that the Japanese text above is readable in the response viewer, not only in the browser-rendered page.</li>
+        <li>Send the response or a request containing the same text to Replay and check for mojibake or byte changes.</li>
+        <li>Pay particular attention to the <code>0x5C</code> trail-byte examples and the CP932 extension characters.</li>
+      </ul>
+      <p class="muted">Scope note: one static HTML file can exercise one HTTP response encoding at a time. Separate endpoints or server-generated responses are needed to test EUC-JP, ISO-2022-JP, and other encodings as actual HTTP response bodies.</p>
+    </section>
+
+    <footer>
+      Minimal reproducible test page for a character-encoding feature request. No external scripts, fonts, or assets are required.
+    </footer>
+  </main>
+  <script>
+    document.getElementById('documentEncoding').textContent = document.characterSet || '(unavailable)';
+    fetch(location.href, { cache: 'no-store' }).then(function (response) {
+      var type = response.headers.get('content-type') || '(no Content-Type header)';
+      document.getElementById('responseContentType').textContent = type;
+      var warning = document.getElementById('headerWarning');
+      if (/charset\s*=\s*["']?utf-?8/i.test(type)) {
+        warning.textContent = 'Warning: the server declares UTF-8, so this is not a valid Shift_JIS response test. Change the server header to charset=Shift_JIS.';
+      } else if (/charset\s*=\s*["']?(shift[_-]?jis|windows-31j|cp932)/i.test(type)) {
+        warning.textContent = 'The response header declares a Shift_JIS / Windows-31J-compatible charset. This is suitable for the primary test.';
+      } else {
+        warning.textContent = 'The server does not explicitly declare a recognized Shift_JIS / Windows-31J charset. Check the raw HTTP response headers before using this as evidence.';
+      }
+    }).catch(function () {
+      document.getElementById('responseContentType').textContent = '(could not inspect; open from an HTTP(S) URL)';
+      document.getElementById('headerWarning').textContent = 'Host this file on your website and open it over HTTP(S) to inspect the response header.';
+    });
+  </script>
+</body>
+</html>

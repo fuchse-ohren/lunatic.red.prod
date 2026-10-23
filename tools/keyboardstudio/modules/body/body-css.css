@@ -1,0 +1,117 @@
+/* =============================================
+   KeybordStudio V1 - Body Generator Module CSS
+   modules/body/body-css.css
+   ============================================= */
+
+.body-section-header {
+    color: #00e5ff;
+    border-color: #00e5ff;
+}
+
+.body-param-group {
+    background: rgba(0, 229, 255, 0.05);
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 229, 255, 0.15);
+    margin-top: 5px;
+}
+
+.body-label {
+    color: #b2ebf2;
+    font-weight: bold;
+}
+
+.body-info-badge {
+    display: inline-block;
+    background: rgba(0, 229, 255, 0.15);
+    color: #b2ebf2;
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+/* Layout Preset Grid */
+.layout-preset-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    margin-top: 8px;
+}
+
+.layout-preset-btn {
+    padding: 8px 4px;
+    font-size: 0.7rem;
+    border: 1px solid #555;
+    background: #222;
+    color: #aaa;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.layout-preset-btn:hover {
+    border-color: #00e5ff;
+    color: #00e5ff;
+}
+
+.layout-preset-btn.active {
+    background: #00e5ff;
+    color: #000;
+    border-color: #00e5ff;
+    font-weight: bold;
+}
+
+.layout-preset-btn .lp-label {
+    display: block;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.layout-preset-btn .lp-desc {
+    display: block;
+    font-size: 0.55rem;
+    opacity: 0.7;
+    margin-top: 1px;
+}
+
+/* Mount Options Grid */
+.mount-options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.mount-option {
+    padding: 6px 8px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    background: #1a1a2e;
+    color: #ccc;
+    transition: all 0.2s;
+}
+
+.mount-option:hover {
+    border-color: #00e5ff;
+    color: #00e5ff;
+}
+
+.mount-option.active {
+    background: rgba(0, 229, 255, 0.15);
+    border-color: #00e5ff;
+    color: #00e5ff;
+}
+
+/* Module container animation */
+#module-body {
+    animation: bodyFadeIn 0.3s ease;
+}
+
+@keyframes bodyFadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
