@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<HTML>
+  <HEAD>
+    <meta charset="utf-8"/>
+    <style type="text/css">
+  body{
+    margin:0;
+    padding:0;
+
+  }
+
+  #content{
+    text-align: center;
+  }
+
+  #wallpaper_wrapper{
+    position:fixed;
+    top :-5vh;
+    left :-5vw;
+    width:110vw;
+    height:110vh;
+    z-index:-2;
+    background-image:url('./kuso.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    filter:blur(9.0px);
+  }
+
+  #video_wallpaper{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    display:none;
+    margin: 0 auto;
+    position: absolute;
+  }
+
+  #err{
+      position:relative;
+      top:calc(50vh - 5vw);
+      margin:0 auto;
+  }
+
+  #ERRCODE{
+    font-size:5vw;
+    color: #DDD;
+  }
+
+  #ERRCODE{
+    font-family:'メイリオ','小塚ゴシック Pr6N';
+    font-weight: bolder;
+    position:relative;
+    display: inline-block;
+  }
+
+  #share{
+    position:fixed;
+    left:5px;
+    top:5px;
+    z-index: 100;
+  }
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+    <script>
+    <!-- http://qiita.com/drasky1132/items/93ab71742175914e61cb  を利用 -->
+$(function() {
+  var getWindowMovieHeight = function() {
+    // ここでブラウザの縦横のサイズを取得します。
+    var windowSizeHeight = $(window).outerHeight();
+    var windowSizeWidth = $(window).outerWidth();
+
+    // メディアの縦横比に合わせて数値は変更して下さい。(メディアのサイズが width < heightの場合で書いています。逆の場合は演算子を逆にしてください。)
+    var windowMovieSizeWidth = windowSizeHeight * 1.76388889;
+    var windowMovieSizeHeight = windowSizeWidth / 1.76388889;
+    var windowMovieSizeWidthLeftMargin = (windowMovieSizeWidth - windowSizeWidth) / 2;
+
+    if (windowMovieSizeHeight < windowSizeHeight) {
+      // 横幅のほうが大きくなってしまう場合にだけ反応するようにしています。
+      $("#video_wallpaper").css({left: -windowMovieSizeWidthLeftMargin});
+    }
+  };
+
+  // 以下画面の可変にも対応できるように。
+  $(window).on('load', function(){
+    getWindowMovieHeight();
+  });
+
+  $(window).on('resize', function(){
+    getWindowMovieHeight();
+  });
+});
+
+</script>
+
+
+    <title>7時14分22秒カウンター</title>
+  </HEAD>
+
+  <BODY>
+   <!--内容-->
+   <span id="share"><a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-hashtags="071422">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></span>
+   <div id="wallpaper_wrapper">
+   <video id="video_wallpaper" src="kuso.mp4" width="100%" height="100%" loop/>
+   </div>
+     <div id="content">
+       <div id="err">
+         <div id="ERRCODE">8月16日(水)7時14分22秒まで<br>あと<font color="red"><span id="year">00</span>年<span id="day">00</span>日<span id="hour">00</span>時間<span id="min">00</span>分<span id="sec">00</span>秒</font></div>
+       </div>
+     </div>
+
+
+  </BODY>
+
+    <script type="text/javascript">  
+	  function findEarliestWednesday() {
+	    var year = (new Date()).getFullYear();
+	    if((new Date()).getMonth() >= 7 && (new Date()).getDate() > 16){
+	      year++
+	    }
+	  
+      // 0は日曜日、1は月曜日、2は火曜日、...、6は土曜日
+      const targetWeekday = 3; // 水曜日
+      const targetMonth = 8;   // 8月
+
+      while (new Date(year, targetMonth - 1, 16).getDay() !== targetWeekday) {
+        // 8月16日が水曜日でない場合は、次の年に進む
+        year++;
+      }
+      return (new Date(year+"/08/16 07:14:22"));
+      }
+	  
+      function calc_time(){
+        if(disabletime >= new Date()){
+          var time_t = new Date().getTime();
+          time_t = (disabletime - time_t) / 1000;
+	  var year = time_t / 60 / 60 / 24 / 365;
+	  year -= year % 1;
+	  var day = time_t - year * 31536000;
+          day = day / 60 / 60 / 24;
+          day -= day % 1;
+          var hour = time_t - year * 31536000 - day * 86400;
+          hour = hour / 60 / 60;
+          hour -= hour % 1;
+          var min = time_t - year * 31536000 - day * 86400 - hour * 3600;
+          min = min / 60;
+          min -= min % 1;
+          var sec = time_t - year * 31536000 - day * 86400 - hour * 3600 - min * 60;
+          sec -= sec % 1;
+
+	  document.getElementById('year').textContent = year;
+          document.getElementById('day').textContent = day;
+          document.getElementById('hour').textContent = hour;
+          document.getElementById('min').textContent = min;
+          document.getElementById('sec').textContent = sec;
+          document.title = `7時14分22秒カウンター(残:${year}年${day}日${hour}時${min}分${sec}秒)`;
+         }else{
+           document.getElementById("video_wallpaper").style.display = "block";
+           document.getElementById("video_wallpaper").play();
+         }
+      }
+	  
+	  const the_day = findEarliestWednesday()
+	  console.log(Date.parse(the_day));
+	  const disabletime = Date.parse(the_day);
+      calc_time();
+      setInterval("calc_time()",1000);
+    </script>
+    <script>
+const ua_white = /.*Firefox.*/
+if(!ua_white.test(navigator.userAgent)){
+  document.body.innerHTML = "数秒後に前のページに戻ります...";
+  document.title = "非対応ブラウザ";
+  alert('Firefox以外は非対応です。');
+  setTimeout(()=>{if(document.referrer != ""){location.href = document.referrer;}else{location.href = 'about:blank';}},5000);
+}else{
+  console.log("browser check: pass");
+}
+    </script>
+</HTML>

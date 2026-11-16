@@ -1,0 +1,640 @@
+<!-- =============================================
+     KeybordStudio V1 - Body Generator Module UI
+     modules/body/body-ui.html
+     ============================================= -->
+
+<!-- Layout Preset Section -->
+<h3 id="sec-body-layout" class="body-section-header" style="margin-top:0;">レイアウト (Layout)</h3>
+<div class="control-group">
+    <label class="body-label" data-i18n="lbl_layout_preset" data-hint="body_hint_layout">配列プリセット</label>
+    <div class="layout-preset-grid" id="layout-preset-buttons">
+        <button type="button" class="layout-preset-btn active" data-layout="60">
+            <span class="lp-label">60%</span><span class="lp-desc">Compact</span>
+        </button>
+        <button type="button" class="layout-preset-btn" data-layout="65">
+            <span class="lp-label">65%</span><span class="lp-desc">+Arrows</span>
+        </button>
+        <button type="button" class="layout-preset-btn" data-layout="75">
+            <span class="lp-label">75%</span><span class="lp-desc">+F-Row</span>
+        </button>
+        <button type="button" class="layout-preset-btn" data-layout="tkl">
+            <span class="lp-label">TKL</span><span class="lp-desc">Tenkeyless</span>
+        </button>
+        <button type="button" class="layout-preset-btn" data-layout="full">
+            <span class="lp-label">Full</span><span class="lp-desc">104/108</span>
+        </button>
+        <button type="button" class="layout-preset-btn" data-layout="40">
+            <span class="lp-label">40%</span><span class="lp-desc">Minimal</span>
+        </button>
+        <button type="button" class="layout-preset-btn" data-layout="alice">
+            <span class="lp-label">Alice</span><span class="lp-desc">Ergo</span>
+        </button>
+        <button type="button" class="layout-preset-btn" data-layout="macro">
+            <span class="lp-label">Macro</span><span class="lp-desc">3×3</span>
+        </button>
+        <button type="button" class="layout-preset-btn" data-layout="1800">
+            <span class="lp-label">1800</span><span class="lp-desc">96% Compact</span>
+        </button>
+    </div>
+</div>
+<div class="control-group">
+    <label class="body-label" data-hint="body_hint_layout_standard">ISO / ANSI / JIS</label>
+    <select id="body-layout-standard">
+        <option value="ansi">ANSI</option>
+        <option value="iso">ISO</option>
+        <option value="jis">JIS</option>
+    </select>
+</div>
+<div class="control-group">
+    <label class="body-label" data-hint="body_hint_pitch"><span data-i18n="lbl_key_pitch">キースイッチピッチ</span> <span id="v-body-pitch" class="val">19.05</span>mm</label>
+    <input type="range" id="body-key-pitch" min="17.0" max="20.0" step="0.05" value="19.05">
+</div>
+<div class="control-group">
+    <label class="body-label" data-hint="body_hint_kle">KLE Import</label>
+    <textarea id="body-kle-input" rows="3" placeholder="Paste KLE Raw Data here..." style="font-size:0.75rem;"></textarea>
+    <button id="btn-kle-import" class="btn-small" style="margin-top:4px;">Import KLE Layout</button>
+</div>
+
+<div class="control-group" style="margin-top:10px; padding-top:10px; border-top:1px solid #333;">
+    <label data-i18n="body_lbl_pcb_import">PCB / Plate Import (DXF/SVG)</label>
+    <button id="body-pcb-import-btn" class="btn-small secondary"
+        style="width:100%; border-color:#ffb74d; color:#ffb74d;"
+        data-i18n="body_btn_pcb_import">PCB / プレート読込</button>
+    <div id="body-pcb-loaded-info" style="display:none; margin-top:6px; padding:6px 8px; background:rgba(255,183,77,0.08); border-left:3px solid #ffb74d; border-radius:3px; font-size:0.72rem; color:#ffe082;"></div>
+    <input type="file" id="body-pcb-file-input" accept=".dxf,.svg,.DXF,.SVG" style="display:none;">
+</div>
+
+<!-- Layout Studio Import -->
+<div class="control-group" style="margin-top:6px;">
+    <label class="body-label">Layout Studio Import</label>
+    <div id="custom-layout-indicator" style="display:none; align-items:center; gap:6px; padding:6px 8px; background:rgba(0,229,255,0.1); border:1px solid #00e5ff; border-radius:4px; margin-bottom:6px;">
+        <span style="color:#00e5ff; font-size:0.7rem; font-weight:bold;">CUSTOM:</span>
+        <span class="custom-layout-name" style="color:#e0f7fa; font-size:0.75rem; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+        <button id="btn-clear-custom-layout" class="btn-small" style="font-size:0.65rem; padding:2px 6px; background:rgba(255,82,82,0.2); border:1px solid #ff5252; color:#ff5252; border-radius:3px; cursor:pointer;" title="プリセットに戻す">&#x2715;</button>
+    </div>
+    <div id="layout-gallery-grid" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:4px; max-height:180px; overflow-y:auto; padding:2px;">
+        <div style="grid-column:1/-1; text-align:center; color:#666; padding:10px; font-size:0.7rem;">読み込み中...</div>
+    </div>
+    <button id="btn-refresh-layout-gallery" class="btn-small" style="margin-top:4px; width:100%; font-size:0.7rem;">ギャラリー更新</button>
+</div>
+<style>
+.layout-gallery-tile {
+    width:100%; aspect-ratio:4/3; border:1px solid #333; border-radius:4px;
+    cursor:pointer; overflow:hidden; position:relative; background:#0d0d1a;
+    transition:border-color 0.2s, box-shadow 0.2s;
+}
+.layout-gallery-tile:hover { border-color:#00e5ff; box-shadow:0 0 8px rgba(0,229,255,0.3); }
+.layout-gallery-tile.active { border-color:#00e5ff; box-shadow:0 0 12px rgba(0,229,255,0.5); }
+.layout-gallery-tile img { width:100%; height:100%; object-fit:contain; pointer-events:none; }
+.layout-gallery-tile .tile-name {
+    position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.7);
+    color:#e0f7fa; font-size:0.55rem; padding:1px 3px; overflow:hidden;
+    text-overflow:ellipsis; white-space:nowrap;
+}
+</style>
+
+<!-- Blocker / WKL -->
+<div class="body-param-group">
+    <label class="toggle-switch" style="width:auto; margin:0;" data-hint="body_hint_wkl">
+        <input type="checkbox" id="body-wkl" class="toggle-input">
+        <span class="toggle-knob" style="width:28px; height:14px;"></span>
+        <span class="toggle-label" style="font-size:0.75rem;">WKL (Winkeyless)</span>
+    </label>
+    <label class="toggle-switch" style="width:auto; margin:4px 0 0 0;" data-hint="body_hint_hhkb">
+        <input type="checkbox" id="body-hhkb-blocker" class="toggle-input">
+        <span class="toggle-knob" style="width:28px; height:14px;"></span>
+        <span class="toggle-label" style="font-size:0.75rem;">HHKB Blocker</span>
+    </label>
+</div>
+
+<!-- Mount Style Section -->
+<h3 id="sec-body-mount" class="body-section-header">マウント方式 (Mount Style)</h3>
+<div class="control-group">
+    <label class="body-label" data-hint="body_hint_mount">マウントタイプ</label>
+    <div class="mount-options-grid" id="mount-type-buttons">
+        <div class="mount-option active" data-mount="tray">Tray Mount</div>
+        <div class="mount-option" data-mount="gasket">Gasket Mount</div>
+        <div class="mount-option" data-mount="top">Top Mount</div>
+        <div class="mount-option" data-mount="bottom">Bottom Mount</div>
+        <div class="mount-option" data-mount="sandwich">Sandwich</div>
+        <div class="mount-option" data-mount="integrated">Integrated Plate</div>
+        <div class="mount-option" data-mount="oring">O-Ring (Bakeneko)</div>
+        <div class="mount-option" data-mount="plateless">Plateless</div>
+    </div>
+</div>
+<!-- Tray mount params -->
+<div id="mount-tray-params" class="body-param-group">
+    <label class="body-label" data-hint="body_hint_standoff">スタンドオフ <span class="body-info-badge">Tray</span></label>
+    <div class="control-group"><label><span>高さ</span> <span id="v-standoff-h" class="val">5.0</span>mm</label><input type="range" id="standoff-height" min="3.0" max="10.0" step="0.5" value="5.0"></div>
+    <div class="control-group"><label><span>直径</span> <span id="v-standoff-d" class="val">5.5</span>mm</label><input type="range" id="standoff-diameter" min="3.0" max="8.0" step="0.5" value="5.5"></div>
+    <div class="control-group"><label><span>ネジ穴径</span> <span id="v-standoff-screw" class="val">2.5</span>mm</label><input type="range" id="standoff-screw" min="1.5" max="4.0" step="0.1" value="2.5"></div>
+</div>
+<!-- Gasket mount params -->
+<div id="mount-gasket-params" class="body-param-group" style="display:none;">
+    <label class="body-label" data-hint="body_hint_gasket">ガスケットタブ <span class="body-info-badge">Gasket</span></label>
+    <div class="control-group"><label><span>タブ幅</span> <span id="v-gasket-w" class="val">5.0</span>mm</label><input type="range" id="gasket-tab-width" min="2.0" max="10.0" step="0.5" value="5.0"></div>
+    <div class="control-group"><label><span>タブ厚み</span> <span id="v-gasket-t" class="val">2.5</span>mm</label><input type="range" id="gasket-tab-thickness" min="1.0" max="5.0" step="0.5" value="2.5"></div>
+    <div class="control-group"><label><span>タブ間隔</span> <span id="v-gasket-spacing" class="val">30</span>mm</label><input type="range" id="gasket-tab-spacing" min="15" max="60" step="5" value="30"></div>
+</div>
+
+<!-- Case Design Section -->
+<h3 id="sec-body-case" class="body-section-header">ケース形状 (Case Design)</h3>
+<div class="control-group"><label class="body-label" data-hint="body_hint_bezel_top"><span>ベゼル幅（上）</span> <span id="v-bezel-top" class="val">8.0</span>mm</label><input type="range" id="bezel-top" min="1.0" max="30.0" step="0.5" value="8.0"></div>
+<div class="control-group"><label class="body-label" data-hint="body_hint_bezel_bottom"><span>ベゼル幅（下）</span> <span id="v-bezel-bottom" class="val">5.0</span>mm</label><input type="range" id="bezel-bottom" min="1.0" max="20.0" step="0.5" value="5.0"></div>
+<div class="control-group"><label class="body-label" data-hint="body_hint_bezel_side"><span>ベゼル幅（左右）</span> <span id="v-bezel-side" class="val">5.0</span>mm</label><input type="range" id="bezel-side" min="1.0" max="15.0" step="0.5" value="5.0"></div>
+<div class="control-group"><label class="body-label" data-hint="body_hint_corner"><span>コーナーR（フィレット）</span> <span id="v-body-fillet" class="val">3.0</span>mm</label><input type="range" id="body-corner-radius" min="0.0" max="15.0" step="0.5" value="3.0"></div>
+<div class="control-group"><label class="body-label" data-hint="body_hint_wall"><span>ケース壁厚</span> <span id="v-body-wall" class="val">3.0</span>mm</label><input type="range" id="body-wall-thickness" min="1.5" max="6.0" step="0.5" value="3.0"></div>
+<div class="control-group">
+    <label class="body-label" data-hint="body_hint_profile_type">プロファイル</label>
+    <select id="body-profile-type">
+        <option value="high">High Profile</option>
+        <option value="low">Low Profile</option>
+        <option value="floating">Floating Key</option>
+    </select>
+</div>
+<div class="control-group">
+    <label class="body-label" data-hint="body_hint_bottom_thick"><span>底面厚み</span> <span id="v-body-bottom-thick" class="val">2.5</span>mm</label>
+    <input type="range" id="body-bottom-thickness" min="1.0" max="6.0" step="0.5" value="2.5">
+</div>
+
+<!-- Ergonomics Section -->
+<h3 id="sec-body-ergo" class="body-section-header">人間工学 (Ergonomics)</h3>
+<div class="control-group"><label class="body-label" data-hint="body_hint_tilt"><span>タイピング角度</span> <span id="v-body-tilt" class="val">0.0</span>°</label><input type="range" id="body-tilt-angle" min="0" max="15" step="0.5" value="0.0"></div>
+<div class="control-group">
+    <label class="toggle-switch" style="width:auto; margin:0;" data-hint="body_hint_neg_tilt">
+        <input type="checkbox" id="body-neg-tilt" class="toggle-input">
+        <span class="toggle-knob" style="width:28px; height:14px;"></span>
+        <span class="toggle-label" style="font-size:0.75rem;">逆チルト（ネガティブ）</span>
+    </label>
+</div>
+<div class="control-group">
+    <label class="body-label" data-hint="body_hint_feet">角度調節足 (Tilt Feet)</label>
+    <div class="mount-options-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="mount-option feet-stage-btn active" data-stage="0">格納 (Flat)</div>
+        <div class="mount-option feet-stage-btn" data-stage="1">段階1 (+4°)</div>
+        <div class="mount-option feet-stage-btn" data-stage="2">段階2 (+8°)</div>
+    </div>
+</div>
+<div class="control-group">
+    <label class="toggle-switch" style="width:auto; margin:0;" data-hint="body_hint_rubber_pads">
+        <input type="checkbox" id="body-rubber-pads" class="toggle-input" checked>
+        <span class="toggle-knob" style="width:28px; height:14px;"></span>
+        <span class="toggle-label" style="font-size:0.75rem;">ゴム足 (Rubber Pads)</span>
+    </label>
+</div>
+<div class="control-group"><label class="body-label" data-hint="body_hint_comfort_edge"><span>Comfort Edge R</span> <span id="v-comfort-edge" class="val">2.0</span>mm</label><input type="range" id="body-comfort-edge" min="0" max="5.0" step="0.5" value="2.0"></div>
+
+<!-- Connectivity Section -->
+<h3 id="sec-body-port" class="body-section-header">コネクタ (Connectivity)</h3>
+<div class="control-group">
+    <label class="body-label" data-hint="body_hint_usb">USBポート形状</label>
+    <select id="body-usb-type">
+        <option value="usb-c">USB-C</option>
+        <option value="micro-usb">Micro-USB</option>
+        <option value="mini-usb">Mini-USB</option>
+        <option value="trrs">TRRS (Split)</option>
+    </select>
+</div>
+<div class="control-group">
+    <label class="body-label" data-hint="body_hint_usb_pos_x"><span>ポート横位置 (X)</span> <span id="v-usb-pos-x" class="val">50</span>%</label>
+    <input type="range" id="body-usb-pos-x" min="10" max="90" step="1" value="50">
+</div>
+<div class="control-group">
+    <label class="body-label" data-hint="body_hint_usb_pos_y"><span>ポート高さ (Y)</span> <span id="v-usb-pos-y" class="val">50</span>%</label>
+    <input type="range" id="body-usb-pos-y" min="10" max="90" step="1" value="50">
+</div>
+<div class="control-group"><label class="body-label" data-hint="body_hint_port_margin"><span>ポート開口マージン</span> <span id="v-port-margin" class="val">0.5</span>mm</label><input type="range" id="body-port-margin" min="0" max="2.0" step="0.1" value="0.5"></div>
+
+<!-- Internal Structure Section -->
+<h3 id="sec-body-internal" class="body-section-header">内部構造 (Internal)</h3>
+<div class="control-group"><label class="body-label" data-hint="body_hint_pcb_clearance"><span>PCB下クリアランス</span> <span id="v-pcb-clearance" class="val">3.0</span>mm</label><input type="range" id="body-pcb-clearance" min="1.0" max="8.0" step="0.5" value="3.0"></div>
+<div class="body-param-group">
+    <label class="toggle-switch" style="width:auto; margin:0;" data-hint="body_hint_ribs">
+        <input type="checkbox" id="body-ribs" class="toggle-input">
+        <span class="toggle-knob" style="width:28px; height:14px;"></span>
+        <span class="toggle-label" style="font-size:0.75rem;">補強リブ (Ribs)</span>
+    </label>
+</div>
+<div class="body-param-group">
+    <label class="toggle-switch" style="width:auto; margin:0;" data-hint="body_hint_battery">
+        <input type="checkbox" id="body-battery-space" class="toggle-input">
+        <span class="toggle-knob" style="width:28px; height:14px;"></span>
+        <span class="toggle-label" style="font-size:0.75rem;">バッテリースペース (BLE)</span>
+    </label>
+</div>
+<div id="battery-pos-params" class="body-param-group" style="display:none;">
+    <div class="control-group"><label class="body-label"><span>バッテリー位置 X</span> <span id="v-bat-pos-x" class="val">50</span>%</label><input type="range" id="body-bat-pos-x" min="0" max="100" step="1" value="50"></div>
+    <div class="control-group"><label class="body-label"><span>バッテリー位置 Z</span> <span id="v-bat-pos-z" class="val">50</span>%</label><input type="range" id="body-bat-pos-z" min="0" max="100" step="1" value="50"></div>
+</div>
+<div class="control-group"><label class="body-label"><span>内部容積</span> <span id="v-internal-volume" class="val">0</span>cm³</label></div>
+
+<!-- 3D Print Optimization Section -->
+<h3 id="sec-body-print" class="body-section-header">3Dプリント最適化</h3>
+<div class="control-group"><label class="body-label" data-hint="body_hint_tolerance"><span>公差 (Tolerance)</span> <span id="v-body-tolerance" class="val">0.15</span>mm</label><input type="range" id="body-tolerance" min="0.05" max="0.5" step="0.05" value="0.15"></div>
+<div class="control-group">
+    <label class="body-label" data-hint="body_hint_insert_nut">インサートナット穴径</label>
+    <select id="body-insert-nut">
+        <option value="m2">M2 (3.2mm穴)</option>
+        <option value="m2.5">M2.5 (3.6mm穴)</option>
+        <option value="m3" selected>M3 (4.0mm穴)</option>
+        <option value="m4">M4 (5.0mm穴)</option>
+    </select>
+</div>
+<div class="body-param-group">
+    <label class="toggle-switch" style="width:auto; margin:0;" data-hint="body_hint_split">
+        <input type="checkbox" id="body-split-print" class="toggle-input">
+        <span class="toggle-knob" style="width:28px; height:14px;"></span>
+        <span class="toggle-label" style="font-size:0.75rem;">分割出力 (Split for small bed)</span>
+    </label>
+</div>
+<div class="body-param-group">
+    <label class="toggle-switch" style="width:auto; margin:0;" data-hint="body_hint_mouse_ear">
+        <input type="checkbox" id="body-mouse-ear" class="toggle-input">
+        <span class="toggle-knob" style="width:28px; height:14px;"></span>
+        <span class="toggle-label" style="font-size:0.75rem;">マウスイヤー（反り防止）</span>
+    </label>
+</div>
+
+<!-- Add-ons Section -->
+<h3 id="sec-body-addon" class="body-section-header">アドオン (Add-ons)</h3>
+<div class="body-param-group">
+    <label class="toggle-switch" style="width:auto; margin:0;" data-hint="body_hint_encoder">
+        <input type="checkbox" id="body-encoder" class="toggle-input">
+        <span class="toggle-knob" style="width:28px; height:14px;"></span>
+        <span class="toggle-label" style="font-size:0.75rem;">ロータリーエンコーダー穴</span>
+    </label>
+</div>
+<div class="body-param-group">
+    <label class="toggle-switch" style="width:auto; margin:0;" data-hint="body_hint_oled">
+        <input type="checkbox" id="body-oled" class="toggle-input">
+        <span class="toggle-knob" style="width:28px; height:14px;"></span>
+        <span class="toggle-label" style="font-size:0.75rem;">OLEDディスプレイ窓</span>
+    </label>
+</div>
+<div class="body-param-group">
+    <label class="toggle-switch" style="width:auto; margin:0;" data-hint="body_hint_tripod">
+        <input type="checkbox" id="body-tripod" class="toggle-input">
+        <span class="toggle-knob" style="width:28px; height:14px;"></span>
+        <span class="toggle-label" style="font-size:0.75rem;">三脚穴 (1/4インチ)</span>
+    </label>
+</div>
+
+<!-- Text / Legend Section -->
+<h3 id="sec-body-text" class="body-section-header">テキスト印字 (Text / Legend)</h3>
+
+<!-- ターゲット選択ドロップダウン (keycap generator の text-target-select と同じ方式) -->
+<select id="body-text-target-select" style="background:rgba(0,0,0,0.6); border:1px solid #00e5ff; color:#00e5ff; padding:6px 8px; cursor:pointer; width:100%; font-size:0.85rem; font-weight:bold; border-radius:4px; margin-bottom:8px;">
+    <option value="topText">トップケース上面</option>
+    <option value="topSide">トップケース側面</option>
+    <option value="bottomText">ボトムケース底面</option>
+    <option value="bottomSide">ボトムケース側面</option>
+    <option value="svg">SVG アイコン</option>
+</select>
+
+<!-- トップ上面パネル -->
+<div id="body-text-panel-topText">
+    <div class="control-group">
+        <label class="toggle-switch" style="width:auto; margin:0;">
+            <input type="checkbox" id="body-enable-top-text" class="toggle-input">
+            <span class="toggle-knob" style="width:28px; height:14px;"></span>
+            <span class="toggle-label" style="font-size:0.75rem;">テキストを生成する</span>
+        </label>
+    </div>
+    <div class="control-group">
+        <input type="text" id="body-top-text" value="KeybordStudio" style="width:100%; background:#0d0d1a; color:#fff; border:1px solid #333; border-radius:4px; padding:6px; font-size:0.8rem;">
+    </div>
+    <div class="control-group">
+        <label class="body-label">フォント</label>
+        <div class="custom-select-container" id="body-top-text-font-ui">
+            <div class="custom-select-head" id="body-top-text-font-head">Helvetiker ▼</div>
+            <div class="custom-select-list" id="body-top-text-font-list"></div>
+        </div>
+    </div>
+    <div class="control-group"><label class="body-label"><span>サイズ</span> <span id="v-top-text-size" class="val">6.0</span></label>
+        <input type="range" id="body-top-text-size" min="2" max="30" step="0.5" value="6.0"></div>
+    <div class="control-group"><label class="body-label"><span>高さ</span> <span id="v-top-text-height" class="val">0.5</span>mm</label>
+        <input type="range" id="body-top-text-height" min="0.1" max="3.0" step="0.1" value="0.5"></div>
+    <div class="control-group"><label class="body-label"><span>位置 X</span> <span id="v-top-text-x" class="val">0</span></label>
+        <input type="range" id="body-top-text-x" min="-150" max="150" step="0.5" value="0"></div>
+    <div class="control-group"><label class="body-label"><span>位置 Z</span> <span id="v-top-text-z" class="val">0</span></label>
+        <input type="range" id="body-top-text-z" min="-100" max="100" step="0.5" value="0"></div>
+</div>
+
+<!-- トップ側面パネル -->
+<div id="body-text-panel-topSide" style="display:none;">
+    <div class="control-group">
+        <label class="toggle-switch" style="width:auto; margin:0;">
+            <input type="checkbox" id="body-enable-top-side" class="toggle-input">
+            <span class="toggle-knob" style="width:28px; height:14px;"></span>
+            <span class="toggle-label" style="font-size:0.75rem;">テキストを生成する</span>
+        </label>
+    </div>
+    <div class="control-group">
+        <input type="text" id="body-top-side-text" value="KeybordStudio" style="width:100%; background:#0d0d1a; color:#fff; border:1px solid #333; border-radius:4px; padding:6px; font-size:0.8rem;">
+    </div>
+    <div class="control-group">
+        <label class="body-label">フォント</label>
+        <div class="custom-select-container" id="body-top-side-font-ui">
+            <div class="custom-select-head" id="body-top-side-font-head">Helvetiker ▼</div>
+            <div class="custom-select-list" id="body-top-side-font-list"></div>
+        </div>
+    </div>
+    <div class="control-group"><label class="body-label"><span>サイズ</span> <span id="v-top-side-size" class="val">4.0</span></label>
+        <input type="range" id="body-top-side-size" min="2" max="20" step="0.5" value="4.0"></div>
+    <div class="control-group">
+        <label class="body-label">面</label>
+        <select id="body-top-side-face">
+            <option value="front">前面 (Front)</option>
+            <option value="back">背面 (Back)</option>
+            <option value="left">左面 (Left)</option>
+            <option value="right">右面 (Right)</option>
+        </select>
+    </div>
+    <div class="control-group"><label class="body-label"><span>高さ位置 Y</span> <span id="v-top-side-y" class="val">0</span></label>
+        <input type="range" id="body-top-side-y" min="-20" max="20" step="0.5" value="0"></div>
+</div>
+
+<!-- ボトム底面パネル -->
+<div id="body-text-panel-bottomText" style="display:none;">
+    <div class="control-group">
+        <label class="toggle-switch" style="width:auto; margin:0;">
+            <input type="checkbox" id="body-enable-bottom-text" class="toggle-input">
+            <span class="toggle-knob" style="width:28px; height:14px;"></span>
+            <span class="toggle-label" style="font-size:0.75rem;">テキストを生成する</span>
+        </label>
+    </div>
+    <div class="control-group">
+        <input type="text" id="body-bottom-text" value="KeybordStudio" style="width:100%; background:#0d0d1a; color:#fff; border:1px solid #333; border-radius:4px; padding:6px; font-size:0.8rem;">
+    </div>
+    <div class="control-group">
+        <label class="body-label">フォント</label>
+        <div class="custom-select-container" id="body-bottom-text-font-ui">
+            <div class="custom-select-head" id="body-bottom-text-font-head">Helvetiker ▼</div>
+            <div class="custom-select-list" id="body-bottom-text-font-list"></div>
+        </div>
+    </div>
+    <div class="control-group"><label class="body-label"><span>サイズ</span> <span id="v-bottom-text-size" class="val">6.0</span></label>
+        <input type="range" id="body-bottom-text-size" min="2" max="30" step="0.5" value="6.0"></div>
+    <div class="control-group"><label class="body-label"><span>高さ</span> <span id="v-bottom-text-height" class="val">0.5</span>mm</label>
+        <input type="range" id="body-bottom-text-height" min="0.1" max="3.0" step="0.1" value="0.5"></div>
+    <div class="control-group"><label class="body-label"><span>位置 X</span> <span id="v-bottom-text-x" class="val">0</span></label>
+        <input type="range" id="body-bottom-text-x" min="-150" max="150" step="0.5" value="0"></div>
+    <div class="control-group"><label class="body-label"><span>位置 Z</span> <span id="v-bottom-text-z" class="val">0</span></label>
+        <input type="range" id="body-bottom-text-z" min="-100" max="100" step="0.5" value="0"></div>
+</div>
+
+<!-- ボトム側面パネル -->
+<div id="body-text-panel-bottomSide" style="display:none;">
+    <div class="control-group">
+        <label class="toggle-switch" style="width:auto; margin:0;">
+            <input type="checkbox" id="body-enable-bottom-side" class="toggle-input">
+            <span class="toggle-knob" style="width:28px; height:14px;"></span>
+            <span class="toggle-label" style="font-size:0.75rem;">テキストを生成する</span>
+        </label>
+    </div>
+    <div class="control-group">
+        <input type="text" id="body-bottom-side-text" value="KeybordStudio" style="width:100%; background:#0d0d1a; color:#fff; border:1px solid #333; border-radius:4px; padding:6px; font-size:0.8rem;">
+    </div>
+    <div class="control-group">
+        <label class="body-label">フォント</label>
+        <div class="custom-select-container" id="body-bottom-side-font-ui">
+            <div class="custom-select-head" id="body-bottom-side-font-head">Helvetiker ▼</div>
+            <div class="custom-select-list" id="body-bottom-side-font-list"></div>
+        </div>
+    </div>
+    <div class="control-group"><label class="body-label"><span>サイズ</span> <span id="v-bottom-side-size" class="val">4.0</span></label>
+        <input type="range" id="body-bottom-side-size" min="2" max="20" step="0.5" value="4.0"></div>
+    <div class="control-group">
+        <label class="body-label">面</label>
+        <select id="body-bottom-side-face">
+            <option value="front">前面 (Front)</option>
+            <option value="back" selected>背面 (Back)</option>
+            <option value="left">左面 (Left)</option>
+            <option value="right">右面 (Right)</option>
+        </select>
+    </div>
+    <div class="control-group"><label class="body-label"><span>高さ位置 Y</span> <span id="v-bottom-side-y" class="val">0</span></label>
+        <input type="range" id="body-bottom-side-y" min="-20" max="20" step="0.5" value="0"></div>
+</div>
+
+<!-- SVGアイコンパネル -->
+<div id="body-text-panel-svg" style="display:none;">
+    <div class="control-group">
+        <label class="toggle-switch" style="width:auto; margin:0;">
+            <input type="checkbox" id="body-enable-svg" class="toggle-input">
+            <span class="toggle-knob" style="width:28px; height:14px;"></span>
+            <span class="toggle-label" style="font-size:0.75rem;">SVGを生成する</span>
+        </label>
+    </div>
+
+    <!-- ストックアイコン -->
+    <div style="border:1px solid #00e5ff; border-radius:4px; padding:8px; margin:6px 0;">
+        <label style="color:#00e5ff; font-weight:bold; font-size:0.75rem;">アイコンリスト</label>
+        <p style="font-size:0.65rem; color:#888; margin:3px 0;">クリックでSVGとして適用</p>
+        <div class="control-group" style="margin:5px 0;">
+            <select id="body-svg-icon-category" style="font-size:0.75rem; padding:4px; width:100%; background:#0d0d1a; color:#ccc; border:1px solid #333;">
+                <option value="all">すべて</option>
+            </select>
+        </div>
+        <div class="stock-icon-grid" id="body-svg-icon-grid">
+            <div style="grid-column: 1/-1; text-align:center; color:#666; padding:10px;">読み込み中...</div>
+        </div>
+        <div class="control-group" style="margin-top:8px;">
+            <label class="body-label"><span>アイコンサイズ</span> <span id="v-body-svg-icon-scale" class="val">1.0</span></label>
+            <input type="range" id="body-svg-icon-scale" min="0.01" max="3" step="0.01" value="1.0">
+        </div>
+        <button id="body-svg-clear" class="secondary btn-small" style="margin-top:5px; font-size:0.7rem; padding:4px 8px; background:rgba(0,229,255,0.1); border:1px solid #00e5ff; color:#00e5ff; border-radius:4px; cursor:pointer;">選択解除</button>
+    </div>
+
+    <!-- ファイルアップロード -->
+    <div class="control-group" style="margin-top:6px;">
+        <button id="body-svg-upload-btn" style="width:100%; background:rgba(0,229,255,0.1); border:1px solid #00e5ff; color:#00e5ff; padding:8px; border-radius:6px; cursor:pointer; font-size:0.8rem; font-weight:bold;">SVGファイルを読み込む</button>
+        <input type="file" id="body-svg-file-input" accept=".svg" style="display:none;">
+    </div>
+
+    <!-- 配置面 -->
+    <div class="control-group" style="margin-top:6px;">
+        <label class="body-label">配置面</label>
+        <select id="body-svg-target-face" style="width:100%; background:#0d0d1a; color:#ccc; border:1px solid #333; padding:5px; font-size:0.8rem;">
+            <option value="top">トップケース上面</option>
+            <option value="bottom">ボトムケース底面</option>
+        </select>
+    </div>
+
+    <!-- スライダー -->
+    <div class="control-group"><label class="body-label"><span>サイズ</span> <span id="v-body-svg-scale" class="val">1.0</span></label>
+        <input type="range" id="body-svg-scale" min="0.01" max="3" step="0.01" value="1.0"></div>
+    <div class="control-group"><label class="body-label"><span>厚み</span> <span id="v-body-svg-thickness" class="val">0.5</span>mm</label>
+        <input type="range" id="body-svg-thickness" min="0.1" max="5.0" step="0.1" value="0.5"></div>
+    <div class="control-group"><label class="body-label"><span>位置 X</span> <span id="v-body-svg-pos-x" class="val">0</span></label>
+        <input type="range" id="body-svg-pos-x" min="-150" max="150" step="0.5" value="0"></div>
+    <div class="control-group"><label class="body-label"><span>位置 Z</span> <span id="v-body-svg-pos-z" class="val">0</span></label>
+        <input type="range" id="body-svg-pos-z" min="-100" max="100" step="0.5" value="0"></div>
+    <div class="control-group"><label class="body-label"><span>回転 Z</span> <span id="v-body-svg-rot-z" class="val">0</span>°</label>
+        <input type="range" id="body-svg-rot-z" min="-180" max="180" step="5" value="0"></div>
+</div>
+
+<!-- Colors Section (AMS連携 ドロップダウン統合) -->
+<h3 id="sec-body-color" class="body-section-header">色設定 (Colors)</h3>
+<p style="font-size:0.65rem; color:#888; margin:3px 0 8px 0;">AMSスロットから選択（AMS設定で色を登録）</p>
+<div class="control-group" data-hint="body_hint_colors">
+    <select id="body-palette-target-select" style="background:rgba(0,0,0,0.6);
+        border:1px solid #00e5ff; color:#00e5ff; padding:6px 8px; cursor:pointer;
+        width:100%; font-size:0.85rem; font-weight:bold; border-radius:4px; margin-bottom:8px;">
+        <option value="0">トップケース</option>
+        <option value="1">ボトムケース</option>
+        <option value="2">プレート</option>
+        <option value="3">ゴム足</option>
+        <option value="4">角度調節足</option>
+        <option value="5">テキスト</option>
+    </select>
+    <div id="body-unified-ams-palette" class="ams-select-palette" style="margin-top:6px;"></div>
+</div>
+<button id="btn-body-ams-config"
+    style="margin-top:10px; width:100%; padding:10px; background:linear-gradient(135deg, #1a237e, #4a148c); border:1px solid #7c4dff; color:#fff; border-radius:6px; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;"
+    onmouseover="this.style.borderColor='#b388ff'; this.style.boxShadow='0 0 15px rgba(124,77,255,0.4)';"
+    onmouseout="this.style.borderColor='#7c4dff'; this.style.boxShadow='none';">
+    <svg viewBox="0 0 117 133" style="width:20px; height:20px;">
+        <path fill="#00e5ff" d="M49.6,15.6l36.07-.03c-3.48,12.09-5.69,30.38-5.69,50.85s2.25,39.07,5.78,51.16l-36.19-.23c.07-.21.13-.43.19-.65V16.14c-.05-.18-.1-.36-.16-.54Z"/>
+        <path fill="#ccc" d="M100.54.5c8.65,0,15.65,29.51,15.65,65.92s-7,65.91-15.65,65.91c-.83,0-1.65-.28-2.45-.81,7.47-4.98,13.19-32.23,13.19-65.1S105.56,6.29,98.09,1.31c.8-.53,1.62-.81,2.45-.81Z"/>
+        <path fill="#888" d="M49.58,15.59V.51c8.65,0,15.65,29.51,15.65,65.91s-7,65.91-15.65,65.91v-15.08"/>
+        <path fill="#aaa" d="M.8,66.42c0-36.41,7-65.91,15.66-65.91s15.65,29.5,15.65,65.91-7,65.91-15.65,65.91S.8,102.84.8,66.42Z"/>
+    </svg>
+    <span>AMS色設定（スライサー同期用）</span>
+</button>
+
+<!-- Export Section -->
+<h3 id="sec-body-export" class="body-section-header">エクスポート</h3>
+<button id="btn-body-export" class="primary-3mf" style="width:100%; padding:12px; font-size:0.9rem; font-weight:bold;" data-hint="body_hint_export">エクスポート</button>
+
+<div class="control-group" style="margin-top:12px; padding-top:10px; border-top:1px solid #444;">
+    <button id="body-collision-check-btn" class="btn-small secondary"
+        style="width:100%; border-color:#ff7043; color:#ff7043;"
+        data-i18n="body_btn_collision_check">干渉チェック</button>
+    <div id="body-collision-result" style="display:none; margin-top:6px; padding:8px 10px; background:rgba(255,255,255,0.04); border-left:3px solid #ff7043; border-radius:3px; font-size:0.74rem; line-height:1.5; max-height:280px; overflow-y:auto;"></div>
+</div>
+
+<!-- Phase 7-3: ケース断面ビュー -->
+<h3 id="sec-body-cross-section" class="body-section-header" data-i18n="body_h_cross_section">ケース断面ビュー</h3>
+<div class="control-group">
+    <label class="toggle-switch"><input type="checkbox" id="body-cross-section-enabled" class="toggle-input"><span class="toggle-knob"></span><span class="toggle-label" data-i18n="body_lbl_enable_cross_section">断面を表示</span></label>
+    <div class="control-row" style="margin-top:6px;">
+        <div style="flex:1"><label><span data-i18n="body_lbl_cross_section_axis">軸</span></label>
+            <select id="body-cross-section-axis" style="background:rgba(0,0,0,0.6); border:1px solid #444; color:#fff; padding:4px; width:100%; font-size:0.85rem; border-radius:3px;">
+                <option value="x" data-i18n="body_opt_axis_x">X 軸 (横)</option>
+                <option value="y" selected data-i18n="body_opt_axis_y">Y 軸 (高さ)</option>
+                <option value="z" data-i18n="body_opt_axis_z">Z 軸 (奥行き)</option>
+            </select>
+        </div>
+        <div style="flex:1"><label><span data-i18n="body_lbl_cross_section_pos">位置</span> <span id="v-body-cross-section-pos" class="val">0</span> mm</label><input type="range" id="body-cross-section-pos" min="-150" max="150" step="1" value="0"></div>
+    </div>
+    <p style="font-size:0.65rem; color:#888; margin:4px 0 0 0;" data-i18n="body_cross_section_note">※ 表示専用機能です。STL/3MF 出力には影響しません。</p>
+</div>
+
+<!-- Phase 9: アシスト機能 -->
+<h3 id="sec-body-assist" class="body-section-header" data-i18n="body_h_assist">アシスト機能 (Phase 9)</h3>
+
+<!-- 1. Weight & material estimate -->
+<div class="control-group" style="border-top:1px solid #222; padding-top:8px;">
+    <label class="body-label" data-i18n="body_lbl_assist_material">材料 (Weight & Cost)</label>
+    <select id="body-assist-material" style="background:rgba(0,0,0,0.6); border:1px solid #444; color:#fff; padding:4px; width:100%; font-size:0.8rem; border-radius:3px;">
+        <option value="pla">PLA (1.24 g/cm³ - $25/kg)</option>
+        <option value="abs">ABS (1.04 g/cm³ - $28/kg)</option>
+        <option value="petg">PETG (1.27 g/cm³ - $28/kg)</option>
+        <option value="nylon">Nylon (1.13 g/cm³ - $60/kg)</option>
+        <option value="resin">Resin (1.10 g/cm³ - $70/kg)</option>
+    </select>
+    <button id="body-assist-weight-btn" class="btn-small" style="margin-top:4px; width:100%;" data-i18n="body_btn_assist_weight">重量・コスト推定</button>
+</div>
+
+<!-- 2. Screw post auto-placement -->
+<div class="control-group" style="margin-top:6px;">
+    <button id="body-assist-screwpost-btn" class="btn-small" style="width:100%;" data-i18n="body_btn_assist_screwpost">ネジ柱推奨位置を表示</button>
+</div>
+
+<!-- 3. Insert guide -->
+<div class="control-group" style="margin-top:6px;">
+    <label class="body-label" data-i18n="body_lbl_assist_insert">インサート (Heat-set)</label>
+    <select id="body-assist-insert" style="background:rgba(0,0,0,0.6); border:1px solid #444; color:#fff; padding:4px; width:100%; font-size:0.8rem; border-radius:3px;">
+        <option value="m2">M2</option>
+        <option value="m2_5">M2.5</option>
+        <option value="m3" selected>M3</option>
+    </select>
+    <button id="body-assist-insert-btn" class="btn-small" style="margin-top:4px; width:100%;" data-i18n="body_btn_assist_insert">推奨穴寸法を表示</button>
+</div>
+
+<!-- 4. Gasket compression simulator -->
+<div class="control-group" style="margin-top:6px;">
+    <label class="body-label" data-i18n="body_lbl_assist_gasket">ガスケット圧縮シミュレーター</label>
+    <div style="display:flex; gap:4px; margin-top:4px;">
+        <div style="flex:1;">
+            <label style="font-size:0.7rem; color:#aaa;" data-i18n="body_lbl_gasket_thick_mm">厚み(mm)</label>
+            <input type="number" id="body-assist-gasket-thickness" value="2.5" min="0.5" max="10" step="0.1" style="width:100%; background:#0d0d1a; color:#fff; border:1px solid #333; border-radius:3px; padding:3px; font-size:0.75rem;">
+        </div>
+        <div style="flex:1;">
+            <label style="font-size:0.7rem; color:#aaa;" data-i18n="body_lbl_gasket_hardness">硬度(ShoreA)</label>
+            <input type="number" id="body-assist-gasket-hardness" value="50" min="10" max="100" step="1" style="width:100%; background:#0d0d1a; color:#fff; border:1px solid #333; border-radius:3px; padding:3px; font-size:0.75rem;">
+        </div>
+        <div style="flex:1;">
+            <label style="font-size:0.7rem; color:#aaa;" data-i18n="body_lbl_gasket_compress">圧縮率(%)</label>
+            <input type="number" id="body-assist-gasket-compression" value="20" min="0" max="50" step="1" style="width:100%; background:#0d0d1a; color:#fff; border:1px solid #333; border-radius:3px; padding:3px; font-size:0.75rem;">
+        </div>
+    </div>
+    <button id="body-assist-gasket-btn" class="btn-small" style="margin-top:4px; width:100%;" data-i18n="body_btn_assist_gasket">推奨内部高さを計算</button>
+</div>
+
+<!-- 5. Acoustic tuning preset -->
+<div class="control-group" style="margin-top:6px;">
+    <label class="body-label" data-i18n="body_lbl_assist_acoustic">音響チューニング プリセット</label>
+    <select id="body-assist-acoustic" style="background:rgba(0,0,0,0.6); border:1px solid #444; color:#fff; padding:4px; width:100%; font-size:0.8rem; border-radius:3px;">
+        <option value="hollow" data-i18n="body_opt_acoustic_hollow">Hollow (中空・響き)</option>
+        <option value="bass" data-i18n="body_opt_acoustic_bass">Bass (低音強調)</option>
+        <option value="firm" selected data-i18n="body_opt_acoustic_firm">Firm (硬質)</option>
+        <option value="silent" data-i18n="body_opt_acoustic_silent">Silent (静音)</option>
+        <option value="foam" data-i18n="body_opt_acoustic_foam">Foam-Heavy (フォーム充填)</option>
+    </select>
+    <button id="body-assist-acoustic-btn" class="btn-small" style="margin-top:4px; width:100%;" data-i18n="body_btn_assist_acoustic">プリセット適用</button>
+</div>
+
+<!-- 6. USB port template -->
+<div class="control-group" style="margin-top:6px;">
+    <label class="body-label" data-i18n="body_lbl_assist_usb">USBポートテンプレート</label>
+    <button id="body-assist-usb-btn" class="btn-small" style="width:100%;" data-i18n="body_btn_assist_usb">選択中ポート寸法を表示</button>
+</div>
+
+<!-- 7. Tilt angle verification -->
+<div class="control-group" style="margin-top:6px;">
+    <button id="body-assist-tilt-btn" class="btn-small" style="width:100%;" data-i18n="body_btn_assist_tilt">タイピング角度を検証</button>
+</div>
+
+<!-- 8. Variation generator -->
+<div class="control-group" style="margin-top:6px;">
+    <label class="body-label" data-i18n="body_lbl_assist_variation">バリエーション生成</label>
+    <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:3px; margin-top:4px;">
+        <button class="btn-small body-assist-var-btn" data-variation="low" data-i18n="body_btn_var_low">Low</button>
+        <button class="btn-small body-assist-var-btn" data-variation="standard" data-i18n="body_btn_var_standard">Std</button>
+        <button class="btn-small body-assist-var-btn" data-variation="high" data-i18n="body_btn_var_high">High</button>
+        <button class="btn-small body-assist-var-btn" data-variation="wedge" data-i18n="body_btn_var_wedge">Wedge</button>
+        <button class="btn-small body-assist-var-btn" data-variation="floating" data-i18n="body_btn_var_floating">Float</button>
+    </div>
+
+    <!-- Phase 11: 分割ケース設計 -->
+    <label style="margin-top:10px;" data-i18n="body_lbl_split_case">分割ケース設計 (Bed-size check)</label>
+    <div class="control-row" style="gap:4px;">
+        <select id="body-split-printer" style="background:rgba(0,0,0,0.6); border:1px solid #444; color:#fff; padding:4px; flex:1; font-size:0.8rem; border-radius:3px;">
+            <option value="bambu-x1">Bambu X1/P1 (256³)</option>
+            <option value="bambu-a1">Bambu A1 (256³)</option>
+            <option value="bambu-a1m">Bambu A1 mini (180³)</option>
+            <option value="prusa-mk4">Prusa MK4 (250×210×220)</option>
+            <option value="prusa-xl">Prusa XL (360³)</option>
+            <option value="creality-k1">Creality K1 (220³ /250H)</option>
+            <option value="creality-k2">Creality K2 Plus (350³)</option>
+            <option value="voron-2.4-300">Voron 2.4 (300³)</option>
+            <option value="voron-2.4-350">Voron 2.4 (350³)</option>
+        </select>
+        <button id="body-split-check-btn" class="btn-small secondary" style="border-color:#26c6da; color:#26c6da;" data-i18n="body_btn_split_check">分割判定</button>
+    </div>
+</div>
+
+<!-- Inline result panel -->
+<div id="body-assist-result" style="display:none; margin-top:8px; padding:8px 10px; background:rgba(0,229,255,0.06); border-left:3px solid #00e5ff; border-radius:3px; font-size:0.74rem; line-height:1.5; color:#e0f7fa; max-height:280px; overflow-y:auto;"></div>

@@ -1,0 +1,423 @@
+{
+  "categories": [
+    {
+      "id": "arrows",
+      "name": "Arrows",
+      "nameJa": "矢印"
+    },
+    {
+      "id": "media",
+      "name": "Media",
+      "nameJa": "メディア"
+    },
+    {
+      "id": "modifiers",
+      "name": "Modifiers",
+      "nameJa": "修飾キー"
+    },
+    {
+      "id": "system",
+      "name": "System",
+      "nameJa": "システム"
+    },
+    {
+      "id": "symbols",
+      "name": "Symbols",
+      "nameJa": "記号"
+    }
+  ],
+  "icons": [
+    {
+      "id": "down",
+      "name": "Down",
+      "nameJa": "下矢印",
+      "category": "arrows",
+      "file": "arrows/down.svg"
+    },
+    {
+      "id": "download",
+      "name": "Download",
+      "nameJa": "ダウンロード",
+      "category": "arrows",
+      "file": "arrows/download.svg"
+    },
+    {
+      "id": "left",
+      "name": "Left",
+      "nameJa": "左矢印",
+      "category": "arrows",
+      "file": "arrows/left.svg"
+    },
+    {
+      "id": "recycle1",
+      "name": "Recycle1",
+      "nameJa": "Recycle1",
+      "category": "arrows",
+      "file": "arrows/recycle1.svg"
+    },
+    {
+      "id": "recycle2",
+      "name": "Recycle2",
+      "nameJa": "Recycle2",
+      "category": "arrows",
+      "file": "arrows/recycle2.svg"
+    },
+    {
+      "id": "right-simple",
+      "name": "Right Simple",
+      "nameJa": "右矢印",
+      "category": "arrows",
+      "file": "arrows/right-simple.svg"
+    },
+    {
+      "id": "right",
+      "name": "Right",
+      "nameJa": "右矢印",
+      "category": "arrows",
+      "file": "arrows/right.svg"
+    },
+    {
+      "id": "share",
+      "name": "Share",
+      "nameJa": "シェア",
+      "category": "arrows",
+      "file": "arrows/share.svg"
+    },
+    {
+      "id": "up",
+      "name": "Up",
+      "nameJa": "上矢印",
+      "category": "arrows",
+      "file": "arrows/up.svg"
+    },
+    {
+      "id": "uturn",
+      "name": "Uturn",
+      "nameJa": "Uターン",
+      "category": "arrows",
+      "file": "arrows/uturn.svg"
+    },
+    {
+      "id": "mute",
+      "name": "Mute",
+      "nameJa": "ミュート",
+      "category": "media",
+      "file": "media/mute.svg"
+    },
+    {
+      "id": "pause",
+      "name": "Pause",
+      "nameJa": "一時停止",
+      "category": "media",
+      "file": "media/pause.svg"
+    },
+    {
+      "id": "play",
+      "name": "Play",
+      "nameJa": "再生",
+      "category": "media",
+      "file": "media/play.svg"
+    },
+    {
+      "id": "skip-back",
+      "name": "Skip Back",
+      "nameJa": "スキップ前へ",
+      "category": "media",
+      "file": "media/skip-back.svg"
+    },
+    {
+      "id": "skip-forward",
+      "name": "Skip Forward",
+      "nameJa": "スキップ次へ",
+      "category": "media",
+      "file": "media/skip-forward.svg"
+    },
+    {
+      "id": "stop",
+      "name": "Stop",
+      "nameJa": "停止",
+      "category": "media",
+      "file": "media/stop.svg"
+    },
+    {
+      "id": "volume",
+      "name": "Volume",
+      "nameJa": "音量",
+      "category": "media",
+      "file": "media/volume.svg"
+    },
+    {
+      "id": "alt",
+      "name": "Alt",
+      "nameJa": "Alt",
+      "category": "modifiers",
+      "file": "modifiers/alt.svg"
+    },
+    {
+      "id": "backspace",
+      "name": "Backspace",
+      "nameJa": "Backspace",
+      "category": "modifiers",
+      "file": "modifiers/backspace.svg"
+    },
+    {
+      "id": "capslock",
+      "name": "Capslock",
+      "nameJa": "CapsLock",
+      "category": "modifiers",
+      "file": "modifiers/capslock.svg"
+    },
+    {
+      "id": "command",
+      "name": "Command",
+      "nameJa": "Command",
+      "category": "modifiers",
+      "file": "modifiers/command.svg"
+    },
+    {
+      "id": "ctrl",
+      "name": "Ctrl",
+      "nameJa": "Ctrl",
+      "category": "modifiers",
+      "file": "modifiers/ctrl.svg"
+    },
+    {
+      "id": "enter",
+      "name": "Enter",
+      "nameJa": "Enter",
+      "category": "modifiers",
+      "file": "modifiers/enter.svg"
+    },
+    {
+      "id": "escape",
+      "name": "Escape",
+      "nameJa": "Esc",
+      "category": "modifiers",
+      "file": "modifiers/escape.svg"
+    },
+    {
+      "id": "fn",
+      "name": "Fn",
+      "nameJa": "Fn",
+      "category": "modifiers",
+      "file": "modifiers/fn.svg"
+    },
+    {
+      "id": "option",
+      "name": "Option",
+      "nameJa": "Option",
+      "category": "modifiers",
+      "file": "modifiers/option.svg"
+    },
+    {
+      "id": "shift",
+      "name": "Shift",
+      "nameJa": "Shift",
+      "category": "modifiers",
+      "file": "modifiers/shift.svg"
+    },
+    {
+      "id": "tab",
+      "name": "Tab",
+      "nameJa": "Tab",
+      "category": "modifiers",
+      "file": "modifiers/tab.svg"
+    },
+    {
+      "id": "windows",
+      "name": "Windows",
+      "nameJa": "Windows",
+      "category": "modifiers",
+      "file": "modifiers/windows.svg"
+    },
+    {
+      "id": "windows11",
+      "name": "Windows11",
+      "nameJa": "Windows11",
+      "category": "modifiers",
+      "file": "modifiers/windows11.svg"
+    },
+    {
+      "id": "bluetooth",
+      "name": "Bluetooth",
+      "nameJa": "Bluetooth",
+      "category": "system",
+      "file": "system/bluetooth.svg"
+    },
+    {
+      "id": "brightness",
+      "name": "Brightness",
+      "nameJa": "明るさ",
+      "category": "system",
+      "file": "system/brightness.svg"
+    },
+    {
+      "id": "camera",
+      "name": "Camera",
+      "nameJa": "カメラ",
+      "category": "system",
+      "file": "system/camera.svg"
+    },
+    {
+      "id": "delete",
+      "name": "Delete",
+      "nameJa": "削除",
+      "category": "system",
+      "file": "system/delete.svg"
+    },
+    {
+      "id": "gear",
+      "name": "Gear",
+      "nameJa": "設定",
+      "category": "system",
+      "file": "system/gear.svg"
+    },
+    {
+      "id": "home",
+      "name": "Home",
+      "nameJa": "ホーム",
+      "category": "system",
+      "file": "system/home.svg"
+    },
+    {
+      "id": "lock",
+      "name": "Lock",
+      "nameJa": "ロック",
+      "category": "system",
+      "file": "system/lock.svg"
+    },
+    {
+      "id": "menu",
+      "name": "Menu",
+      "nameJa": "メニュー",
+      "category": "system",
+      "file": "system/menu.svg"
+    },
+    {
+      "id": "power",
+      "name": "Power",
+      "nameJa": "電源",
+      "category": "system",
+      "file": "system/power.svg"
+    },
+    {
+      "id": "refresh",
+      "name": "Refresh",
+      "nameJa": "更新",
+      "category": "system",
+      "file": "system/refresh.svg"
+    },
+    {
+      "id": "search",
+      "name": "Search",
+      "nameJa": "検索",
+      "category": "system",
+      "file": "system/search.svg"
+    },
+    {
+      "id": "wifi",
+      "name": "Wifi",
+      "nameJa": "WiFi",
+      "category": "system",
+      "file": "system/wifi.svg"
+    },
+    {
+      "id": "check",
+      "name": "Check",
+      "nameJa": "チェック",
+      "category": "symbols",
+      "file": "symbols/check.svg"
+    },
+    {
+      "id": "close",
+      "name": "Close",
+      "nameJa": "閉じる",
+      "category": "symbols",
+      "file": "symbols/close.svg"
+    },
+    {
+      "id": "fire",
+      "name": "Fire",
+      "nameJa": "炎",
+      "category": "symbols",
+      "file": "symbols/fire.svg"
+    },
+    {
+      "id": "gamepad",
+      "name": "Gamepad",
+      "nameJa": "ゲームパッド",
+      "category": "symbols",
+      "file": "symbols/gamepad.svg"
+    },
+    {
+      "id": "heart",
+      "name": "Heart",
+      "nameJa": "ハート",
+      "category": "symbols",
+      "file": "symbols/heart.svg"
+    },
+    {
+      "id": "lightning",
+      "name": "Lightning",
+      "nameJa": "稲妻",
+      "category": "symbols",
+      "file": "symbols/lightning.svg"
+    },
+    {
+      "id": "minus",
+      "name": "Minus",
+      "nameJa": "マイナス",
+      "category": "symbols",
+      "file": "symbols/minus.svg"
+    },
+    {
+      "id": "music",
+      "name": "Music",
+      "nameJa": "音楽",
+      "category": "symbols",
+      "file": "symbols/music.svg"
+    },
+    {
+      "id": "plus",
+      "name": "Plus",
+      "nameJa": "プラス",
+      "category": "symbols",
+      "file": "symbols/plus.svg"
+    },
+    {
+      "id": "skull",
+      "name": "Skull",
+      "nameJa": "ドクロ",
+      "category": "symbols",
+      "file": "symbols/skull.svg"
+    },
+    {
+      "id": "smile",
+      "name": "Smile",
+      "nameJa": "スマイル",
+      "category": "symbols",
+      "file": "symbols/smile.svg"
+    },
+    {
+      "id": "star",
+      "name": "Star",
+      "nameJa": "星",
+      "category": "symbols",
+      "file": "symbols/star.svg"
+    },
+    {
+      "id": "keycapgeneratoricon",
+      "name": "KeycapgeneratorIcon",
+      "nameJa": "KeycapgeneratorIcon",
+      "category": "modifiers",
+      "file": "modifiers/keycapgeneratorIcon.svg"
+    },
+    {
+      "id": "octicons-mark-github",
+      "name": "Octicons Mark Github",
+      "nameJa": "Octicons Mark Github",
+      "category": "symbols",
+      "file": "symbols/Octicons-mark-github.svg"
+    }
+  ]
+}
